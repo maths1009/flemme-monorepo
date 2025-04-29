@@ -21,5 +21,26 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - '8080:80'
+  minio:
+    image: minio/minio:latest
+    container_name: flemme_minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - '${MINIO_PORT}:9000'
+      - '${MINIO_CONSOLE_PORT}:9001'
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: flemme_mailhog
+    restart: always
+    ports:
+      - '${MAIL_PORT}:1025'
+      - '8025:8025'
 volumes:
   mariadb_data:
+  minio_data:

@@ -1,0 +1,30 @@
+{
+  "name": "@flemme/emails",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "email build",
+    "clean": "rm -rf dist",
+    "dev": "email dev -p 3001",
+    "export": "email export",
+    "lint": "eslint \"{src}/**/*.ts\" --fix"
+  },
+  "dependencies": {
+    "@react-email/components": "0.1.1",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
+  "devDependencies": {
+    "@flemme/eslint-config": "workspace:*",
+    "@flemme/ts-config": "workspace:*",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "eslint": "catalog:",
+    "react-email": "4.0.17",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

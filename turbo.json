@@ -10,7 +10,6 @@
     },
     "lint": {
       "dependsOn": ["^lint"],
-      "cache": false,
       "outputLogs": "full"
     },
     "dev": {
@@ -24,6 +23,10 @@
     "test": {
       "cache": false,
       "dependsOn": ["^test"]
+    },
+    "clean": {
+      "cache": false,
+      "dependsOn": ["^clean"]
     }
   }
 }

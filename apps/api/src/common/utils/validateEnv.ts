@@ -15,6 +15,11 @@ export const EnvSchema = z.object({
   DB_USER: z.string(),
   DB_PASSWORD: z.string(),
   DB_NAME: z.string(),
+  MINIO_ROOT_USER: z.string(),
+  MINIO_ROOT_PASSWORD: z.string(),
+  SESSION_EXPIRATION_TIME: z.string().transform((data) => +data),
+  JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string().default('30d'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

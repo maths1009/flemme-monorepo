@@ -26,14 +26,14 @@
     }
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.10",
+    "@changesets/cli": "^2.29.7",
     "@types/node": "catalog:",
     "commitizen": "^4.3.1",
-    "commitlint": "19.8.0",
+    "commitlint": "19.8.1",
     "commitlint-config-gitmoji": "^2.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.2.11",
+    "lint-staged": "^16.0.0",
     "prettier": "catalog:",
     "prettier-plugin-css-order": "^2.1.2",
     "prettier-plugin-organize-imports": "^4.1.0",
@@ -43,7 +43,7 @@
     "typescript": "catalog:",
     "zod": "catalog:"
   },
-  "packageManager": "pnpm@10.7.1",
+  "packageManager": "pnpm@10.12.4",
   "engines": {
     "node": ">=22"
   }

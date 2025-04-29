@@ -1,6 +1,6 @@
 import { Env } from '@/common/utils';
 import { swagger } from '@/swagger';
-import { RequestMethod } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
@@ -31,6 +31,10 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
         path: '/api-docs',
         method: RequestMethod.GET,
       },
+      {
+        path: '/health',
+        method: RequestMethod.GET,
+      },
     ],
   });
 
@@ -46,7 +50,20 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   app.useLogger(logger);
 
-  await swagger(app);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  if (configService.get('NODE_ENV') !== 'production') {
+    await swagger(app);
+  }
 
   await app.listen(configService.get('PORT')!, () => {
     logger.log(

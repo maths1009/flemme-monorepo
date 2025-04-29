@@ -17,6 +17,7 @@ export const EnvSchema = z.object({
   DB_NAME: z.string(),
   MINIO_ROOT_USER: z.string(),
   MINIO_ROOT_PASSWORD: z.string(),
+  ACCESS_TOKEN_SECRET: z.string(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

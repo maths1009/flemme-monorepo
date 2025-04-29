@@ -14,6 +14,7 @@
     "dev:web": "pnpm dev --filter=web",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "init": "pnpm install && find . -name '.env.example' -exec sh -c 'cp \"$1\" \"${1%.example}\"' sh {} \\;",
     "lint": "turbo lint",
     "prepare": "husky",
     "start": "turbo start",

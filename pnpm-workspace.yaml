@@ -1,0 +1,25 @@
+packages:
+  - apps/*
+  - packages/*
+
+catalog:
+  typescript: ^5.8.2
+  eslint: ^9.20.0
+  prettier: ^3.5.0
+  "@types/node": ^22.14.0
+  zod: ^3.24.1
+
+catalogs:
+  react19:
+    react: ^19.0.0
+    react-dom: ^19.0.0
+    "@types/react": ^19.0.11
+    "@types/react-dom": ^19.0.4
+
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - nestjs-pino
+  - sharp

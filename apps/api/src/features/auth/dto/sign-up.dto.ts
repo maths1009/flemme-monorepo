@@ -1,4 +1,5 @@
 import { isUnique } from '@/common/decorators';
+import { SafeUser } from '@/common/interfaces';
 import { User } from '@/features/users/entities/user.entity';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import {
@@ -50,5 +51,5 @@ export class SignUpResponseDto {
   access_token: string;
 
   @ApiProperty({ type: OmitType(User, ['password', 'role_id']) })
-  user: Omit<User, 'password' | 'role_id'>;
+  user: SafeUser;
 }

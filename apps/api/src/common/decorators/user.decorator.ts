@@ -1,9 +1,24 @@
-import { TokenPayload } from '@/common/interfaces';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
+/**
+ * Décorateur pour extraire les informations utilisateur incluant l'ID et la session
+ * depuis le token JWT décodé par la stratégie JWT
+ *
+ * @example
+ * @User() user: { userId: number; sessionId: number }
+ *
+ * @example
+ * @User('userId') userId: number
+ */
 export const User = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): TokenPayload => {
+  (data: string | undefined, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    return request.user; // Guards jwt-auth will add user to request and decoded token
+    const user = request.user;
+
+    if (data) {
+      return user && user[data];
+    }
+
+    return user;
   },
 );

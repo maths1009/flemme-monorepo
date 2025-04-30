@@ -111,7 +111,7 @@ importers:
         version: link:../../packages/ts-config
       '@nestjs/cli':
         specifier: ^11.0.0
-        version: 11.0.5(@swc/cli@0.6.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3))(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.15.3)
+        version: 11.0.5(@swc/cli@0.7.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3))(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.15.3)
       '@nestjs/config':
         specifier: ^4.0.0
         version: 4.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
@@ -134,8 +134,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.21(pg@8.14.1)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.15.3)(typescript@5.7.3)))
       '@swc/cli':
-        specifier: ^0.6.0
-        version: 0.6.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)
+        specifier: ^0.7.0
+        version: 0.7.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)
       '@swc/core':
         specifier: ^1.10.14
         version: 1.11.11(@swc/helpers@0.5.15)
@@ -1527,8 +1527,8 @@ packages:
   '@sqltools/formatter@1.2.5':
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
 
-  '@swc/cli@0.6.0':
-    resolution: {integrity: sha512-Q5FsI3Cw0fGMXhmsg7c08i4EmXCrcl+WnAxb6LYOLHw4JFFC3yzmx9LaXZ7QMbA+JZXbigU2TirI7RAfO0Qlnw==}
+  '@swc/cli@0.7.3':
+    resolution: {integrity: sha512-rnVXNnlURjdOuPaBIwZ3TmBA44BF/eP0j154LanlgPEYfau74ige7cpKlKkZr1IBqMOG99lAnYNxQipDWA3hdg==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
@@ -6604,7 +6604,7 @@ snapshots:
       '@napi-rs/nice-win32-x64-msvc': 1.0.1
     optional: true
 
-  '@nestjs/cli@11.0.5(@swc/cli@0.6.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3))(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.15.3)':
+  '@nestjs/cli@11.0.5(@swc/cli@0.7.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3))(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.15.3)':
     dependencies:
       '@angular-devkit/core': 19.1.8(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.1.8(chokidar@4.0.3)
@@ -6626,7 +6626,7 @@ snapshots:
       webpack: 5.98.0(@swc/core@1.11.11(@swc/helpers@0.5.15))
       webpack-node-externals: 3.0.0
     optionalDependencies:
-      '@swc/cli': 0.6.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)
+      '@swc/cli': 0.7.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)
       '@swc/core': 1.11.11(@swc/helpers@0.5.15)
     transitivePeerDependencies:
       - '@types/node'
@@ -6866,7 +6866,7 @@ snapshots:
 
   '@sqltools/formatter@1.2.5': {}
 
-  '@swc/cli@0.6.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)':
+  '@swc/cli@0.7.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(chokidar@4.0.3)':
     dependencies:
       '@swc/core': 1.11.11(@swc/helpers@0.5.15)
       '@swc/counter': 0.1.3

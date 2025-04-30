@@ -4,6 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
+import { DeviceType, OsType } from '../sessions/entities/session.entity';
+import { SessionsService } from '../sessions/sessions.service';
 import { User } from '../users/entities/user.entity';
 import { SignInResponseDto } from './dto/sign-in.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
@@ -12,6 +14,7 @@ import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 export class AuthService {
   constructor(
     private jwtUtils: JwtService,
+    private sessionsService: SessionsService,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
@@ -37,32 +40,47 @@ export class AuthService {
     });
 
     const savedUser = await this.usersRepository.save(user);
-    const payload = this.jwtUtils.createTokenPayload(savedUser.id);
+
+    // Create session for the new user
+    const { token } = await this.sessionsService.createSession(
+      savedUser.id,
+      DeviceType.OTHER,
+      OsType.OTHER,
+    );
+
     const { password, role_id, ...result } = savedUser;
 
     return {
-      access_token: this.jwtUtils.signToken(payload),
+      access_token: token,
       user: result,
     };
   }
 
-  async signIn(user: SafeUser): Promise<SignInResponseDto> {
-    const payload = this.jwtUtils.createTokenPayload(user.id);
-    const token = this.jwtUtils.signToken(payload);
+  async signIn(
+    user: SafeUser,
+    deviceType?: DeviceType,
+    osType?: OsType,
+  ): Promise<SignInResponseDto> {
+    // Create new session for this login
+    const { token } = await this.sessionsService.createSession(
+      user.id,
+      deviceType || DeviceType.OTHER,
+      osType || OsType.OTHER,
+    );
+
     return {
       access_token: token,
       user,
     };
   }
 
-  async signOut(userId: number) {
-    console.log(`User with ID ${userId} signed out`);
-    return { message: userId };
+  async signOut(userId: number, sessionId: number) {
+    await this.sessionsService.invalidateSession(sessionId, userId);
+    return { message: 'Successfully signed out' };
   }
 
   async signOutAllDevices(userId: number) {
-    // In a real application, you would invalidate all tokens for this user
-    // This could be done by adding all tokens to a blacklist
+    await this.sessionsService.invalidateAllSessions(userId);
     return { message: 'Successfully signed out from all devices' };
   }
 }

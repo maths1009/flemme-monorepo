@@ -10,6 +10,7 @@ import { IsUniqueConstraint } from './common/decorators';
 import { JwtAuthGuard } from './common/guards';
 import { AuthModule } from './features/auth/auth.module';
 import { HealthModule } from './features/health/health.module';
+import { SessionsModule } from './features/sessions/sessions.module';
 import { UsersModule } from './features/users/users.module';
 
 @Module({
@@ -28,6 +29,7 @@ import { UsersModule } from './features/users/users.module';
     DatabaseModule,
     HealthModule,
     UsersModule,
+    SessionsModule,
     AuthModule,
   ],
 })

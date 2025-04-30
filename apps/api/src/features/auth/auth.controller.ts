@@ -2,7 +2,7 @@ import { ApiValidationResponse } from '@/common/decorators/api-validation-respon
 import { Public } from '@/common/decorators/public.decorator';
 import { User } from '@/common/decorators/user.decorator';
 import { LocalAuthGuard } from '@/common/guards/local-auth.guard';
-import { RequestWithUser, TokenPayload } from '@/common/interfaces';
+import { RequestWithUser } from '@/common/interfaces';
 import {
   Body,
   Controller,
@@ -13,6 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { DeviceType, OsType } from '../sessions/entities/session.entity';
 import { AuthService } from './auth.service';
 import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
@@ -54,8 +55,16 @@ export class AuthController {
     description: 'Invalid credentials',
   })
   @ApiValidationResponse()
-  async signIn(@Req() req: RequestWithUser): Promise<SignInResponseDto> {
-    return this.authService.signIn(req.user);
+  async signIn(
+    @Req() req: RequestWithUser,
+    @Body() signInDto: SignInDto,
+  ): Promise<SignInResponseDto> {
+    // Vous pouvez récupérer les informations sur le device et l'OS à partir des headers
+    // ou d'autres moyens dans une implémentation réelle
+    const deviceType = DeviceType.OTHER; // À personnaliser selon vos besoins
+    const osType = OsType.OTHER; // À personnaliser selon vos besoins
+
+    return this.authService.signIn(req.user, deviceType, osType);
   }
 
   @Post('signout')
@@ -65,8 +74,8 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User successfully signed out',
   })
-  async signOut(@User() token: TokenPayload) {
-    return this.authService.signOut(token.sub);
+  async signOut(@User() user: { userId: number; sessionId: number }) {
+    return this.authService.signOut(user.userId, user.sessionId);
   }
 
   @Post('signout-all')
@@ -76,7 +85,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User successfully signed out from all devices',
   })
-  async signOutAllDevices(@User() token: TokenPayload) {
-    return this.authService.signOutAllDevices(token.sub);
+  async signOutAllDevices(@User() user: { userId: number }) {
+    return this.authService.signOutAllDevices(user.userId);
   }
 }

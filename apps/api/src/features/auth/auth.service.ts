@@ -1,10 +1,11 @@
+import { SafeUser } from '@/common/interfaces';
 import { JwtService } from '@/common/services';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
-import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
+import { SignInResponseDto } from './dto/sign-in.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<Omit<User, 'password' | 'role_id'> | null> {
+  ): Promise<SafeUser | null> {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, role_id, ...result } = user;
@@ -36,7 +37,7 @@ export class AuthService {
     });
 
     const savedUser = await this.usersRepository.save(user);
-    const payload = this.jwtUtils.createTokenPayload(user.id, user.email);
+    const payload = this.jwtUtils.createTokenPayload(savedUser.id);
     const { password, role_id, ...result } = savedUser;
 
     return {
@@ -45,23 +46,18 @@ export class AuthService {
     };
   }
 
-  async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
-    const user = await this.validateUser(signInDto.email, signInDto.password);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const payload = this.jwtUtils.createTokenPayload(user.id, user.email);
+  async signIn(user: SafeUser): Promise<SignInResponseDto> {
+    const payload = this.jwtUtils.createTokenPayload(user.id);
+    const token = this.jwtUtils.signToken(payload);
     return {
-      access_token: this.jwtUtils.signToken(payload),
-      user: user,
+      access_token: token,
+      user,
     };
   }
 
   async signOut(userId: number) {
-    // In a real application, you would invalidate the token
-    // This could be done by adding the token to a blacklist
-    return { message: 'Successfully signed out' };
+    console.log(`User with ID ${userId} signed out`);
+    return { message: userId };
   }
 
   async signOutAllDevices(userId: number) {

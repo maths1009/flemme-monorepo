@@ -1,13 +1,18 @@
 import { ApiValidationResponse } from '@/common/decorators/api-validation-response.decorator';
 import { Public } from '@/common/decorators/public.decorator';
 import { User } from '@/common/decorators/user.decorator';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { LocalAuthGuard } from '@/common/guards/local-auth.guard';
+import { RequestWithUser, TokenPayload } from '@/common/interfaces';
 import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
@@ -20,6 +25,7 @@ export class AuthController {
   @Post('signup')
   @Public()
   @HttpCode(HttpStatus.CREATED)
+  /* DOC */
   @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -33,8 +39,11 @@ export class AuthController {
 
   @Post('signin')
   @Public()
+  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
+  /* DOC */
   @ApiOperation({ summary: 'Sign in a user' })
+  @ApiBody({ type: SignInDto })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed in',
@@ -45,31 +54,29 @@ export class AuthController {
     description: 'Invalid credentials',
   })
   @ApiValidationResponse()
-  async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
-    return this.authService.signIn(signInDto);
+  async signIn(@Req() req: RequestWithUser): Promise<SignInResponseDto> {
+    return this.authService.signIn(req.user);
   }
 
   @Post('signout')
-  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign out the current user' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed out',
   })
-  async signOut(@User() token: any) {
+  async signOut(@User() token: TokenPayload) {
     return this.authService.signOut(token.sub);
   }
 
   @Post('signout-all')
-  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign out the current user from all devices' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed out from all devices',
   })
-  async signOutAllDevices(@User() token: any) {
+  async signOutAllDevices(@User() token: TokenPayload) {
     return this.authService.signOutAllDevices(token.sub);
   }
 }

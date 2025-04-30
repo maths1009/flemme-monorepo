@@ -1,4 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { User } from '@/features/users/entities/user.entity';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class SignInDto {
@@ -10,4 +11,12 @@ export class SignInDto {
   @IsString()
   @MinLength(12)
   password: string;
+}
+
+export class SignInResponseDto {
+  @ApiProperty()
+  access_token: string;
+
+  @ApiProperty({ type: OmitType(User, ['password', 'role_id']) })
+  user: Omit<User, 'password' | 'role_id'>;
 }

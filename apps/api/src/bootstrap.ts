@@ -3,8 +3,10 @@ import { swagger } from '@/swagger';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { useContainer } from 'class-validator';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import { AppModule } from './app.module';
 
 /**
  * This function initializes the NestJS application with various middlewares, settings, and configurations.
@@ -60,6 +62,8 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
       },
     }),
   );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   if (configService.get('NODE_ENV') !== 'production') {
     await swagger(app);

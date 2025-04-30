@@ -1,6 +1,6 @@
 import { ApiValidationResponse } from '@/common/decorators/api-validation-response.decorator';
 import { Public } from '@/common/decorators/public.decorator';
-import { Token } from '@/common/decorators/token.decorator';
+import { User } from '@/common/decorators/user.decorator';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -9,8 +9,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SignInDto } from './dto/sign-in.dto';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
+import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -24,9 +24,10 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'User successfully registered',
+    type: SignUpResponseDto,
   })
   @ApiValidationResponse()
-  async signUp(@Body() signUpDto: SignUpDto) {
+  async signUp(@Body() signUpDto: SignUpDto): Promise<SignUpResponseDto> {
     return this.authService.signUp(signUpDto);
   }
 
@@ -37,9 +38,14 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed in',
+    type: SignInResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid credentials',
   })
   @ApiValidationResponse()
-  async signIn(@Body() signInDto: SignInDto) {
+  async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
     return this.authService.signIn(signInDto);
   }
 
@@ -51,7 +57,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User successfully signed out',
   })
-  async signOut(@Token() token: any) {
+  async signOut(@User() token: any) {
     return this.authService.signOut(token.sub);
   }
 
@@ -63,7 +69,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User successfully signed out from all devices',
   })
-  async signOutAllDevices(@Token() token: any) {
+  async signOutAllDevices(@User() token: any) {
     return this.authService.signOutAllDevices(token.sub);
   }
 }

@@ -12,24 +12,11 @@ export class JwtService {
   ) {}
 
   /**
-   * Creates token payload with user id and session id
-   * @param userId User ID
-   * @param sessionId Session ID
-   * @returns TokenPayload with sub field containing the user ID and sid field containing the session ID
-   */
-  createTokenPayload(userId: number, sessionId: number): TokenPayload {
-    return {
-      sub: userId,
-      sid: sessionId,
-    };
-  }
-
-  /**
    * Sign JWT token with payload
    * @param payload TokenPayload containing user information
    * @returns Signed JWT token string
    */
-  signToken(payload: TokenPayload): string {
+  sign(payload: TokenPayload): string {
     const expiresIn = this.configService.get('ACCESS_TOKEN_EXPIRES_IN');
     return this.jwtService.sign(payload, {
       secret: this.configService.get('ACCESS_TOKEN_SECRET'),

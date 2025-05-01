@@ -1,8 +1,8 @@
+import { User } from '@/common/decorators';
 import { ApiValidationResponse } from '@/common/decorators/api-validation-response.decorator';
 import { Public } from '@/common/decorators/public.decorator';
-import { User } from '@/common/decorators/user.decorator';
 import { LocalAuthGuard } from '@/common/guards/local-auth.guard';
-import { RequestWithUser } from '@/common/interfaces';
+import { RequestWithUser, TokenPayload } from '@/common/interfaces';
 import {
   Body,
   Controller,
@@ -55,14 +55,9 @@ export class AuthController {
     description: 'Invalid credentials',
   })
   @ApiValidationResponse()
-  async signIn(
-    @Req() req: RequestWithUser,
-    @Body() signInDto: SignInDto,
-  ): Promise<SignInResponseDto> {
-    // Vous pouvez récupérer les informations sur le device et l'OS à partir des headers
-    // ou d'autres moyens dans une implémentation réelle
-    const deviceType = DeviceType.OTHER; // À personnaliser selon vos besoins
-    const osType = OsType.OTHER; // À personnaliser selon vos besoins
+  async signIn(@Req() req: RequestWithUser): Promise<SignInResponseDto> {
+    const deviceType = DeviceType.OTHER;
+    const osType = OsType.OTHER;
 
     return this.authService.signIn(req.user, deviceType, osType);
   }
@@ -74,11 +69,15 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User successfully signed out',
   })
-  async signOut(@User() user: { userId: number; sessionId: number }) {
-    return this.authService.signOut(user.userId, user.sessionId);
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid credentials',
+  })
+  async signOut(@User() user: TokenPayload) {
+    return user;
   }
 
-  @Post('signout-all')
+  /*   @Post('signout-all')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign out the current user from all devices' })
   @ApiResponse({
@@ -87,5 +86,5 @@ export class AuthController {
   })
   async signOutAllDevices(@User() user: { userId: number }) {
     return this.authService.signOutAllDevices(user.userId);
-  }
+  } */
 }

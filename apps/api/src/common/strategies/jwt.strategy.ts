@@ -20,18 +20,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(
-    _req: Request,
-    payload: TokenPayload,
-  ): Promise<{ userId: number; sessionId: number }> {
+  async validate(_req: Request, payload: TokenPayload): Promise<TokenPayload> {
     try {
       await this.sessionsService.validateSession(payload.sid, payload.sub);
-      return {
-        userId: payload.sub,
-        sessionId: payload.sid,
-      };
+      return payload;
     } catch (error) {
-      throw new UnauthorizedException('Invalid session');
+      throw new UnauthorizedException(error ?? 'Invalid session');
     }
   }
 }

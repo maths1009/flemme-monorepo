@@ -13,7 +13,7 @@ import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtUtils: JwtService,
+    private jwtService: JwtService,
     private sessionsService: SessionsService,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -34,21 +34,26 @@ export class AuthService {
   async signUp(signUpDto: SignUpDto): Promise<SignUpResponseDto> {
     const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
 
+    /* user */
     const user = this.usersRepository.create({
       ...signUpDto,
       password: hashedPassword,
     });
-
     const savedUser = await this.usersRepository.save(user);
+    const { password, role_id, ...result } = savedUser;
 
-    // Create session for the new user
-    const { token } = await this.sessionsService.createSession(
+    /* sessions */
+    const session = await this.sessionsService.createSession(
       savedUser.id,
       DeviceType.OTHER,
       OsType.OTHER,
     );
 
-    const { password, role_id, ...result } = savedUser;
+    /* token */
+    const token = this.jwtService.sign({
+      sid: session.id,
+      sub: savedUser.id,
+    });
 
     return {
       access_token: token,
@@ -58,15 +63,21 @@ export class AuthService {
 
   async signIn(
     user: SafeUser,
-    deviceType?: DeviceType,
-    osType?: OsType,
+    deviceType: DeviceType,
+    osType: OsType,
   ): Promise<SignInResponseDto> {
-    // Create new session for this login
-    const { token } = await this.sessionsService.createSession(
+    /* session */
+    const session = await this.sessionsService.createSession(
       user.id,
-      deviceType || DeviceType.OTHER,
-      osType || OsType.OTHER,
+      deviceType,
+      osType,
     );
+
+    /* token */
+    const token = this.jwtService.sign({
+      sid: session.id,
+      sub: user.id,
+    });
 
     return {
       access_token: token,

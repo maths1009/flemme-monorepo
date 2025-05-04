@@ -7,7 +7,9 @@ import { Repository } from 'typeorm';
 import { DeviceType, OsType } from '../sessions/entities/session.entity';
 import { SessionsService } from '../sessions/sessions.service';
 import { User } from '../users/entities/user.entity';
-import { SignInResponseDto } from './dto/sign-in.dto';
+import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
+import { SignOutAllDto } from './dto/sign-out-all.dto';
+import { SignOutDto } from './dto/sign-out.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 
 @Injectable()
@@ -19,12 +21,11 @@ export class AuthService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<SafeUser | null> {
-    const user = await this.usersRepository.findOne({ where: { email } });
-    if (user && (await bcrypt.compare(password, user.password))) {
+  async validateUser(signInDto: SignInDto): Promise<SafeUser | null> {
+    const user = await this.usersRepository.findOne({
+      where: { email: signInDto.email },
+    });
+    if (user && (await bcrypt.compare(signInDto.password, user.password))) {
       const { password, role_id, ...result } = user;
       return result;
     }
@@ -85,13 +86,16 @@ export class AuthService {
     };
   }
 
-  async signOut(userId: number, sessionId: number) {
-    await this.sessionsService.invalidateSession(sessionId, userId);
-    return { message: 'Successfully signed out' };
+  async signOut(signOutDto: SignOutDto): Promise<string> {
+    await this.sessionsService.invalidateSession(
+      signOutDto.sessionId,
+      signOutDto.userId,
+    );
+    return 'Successfully signed out';
   }
 
-  async signOutAllDevices(userId: number) {
-    await this.sessionsService.invalidateAllSessions(userId);
-    return { message: 'Successfully signed out from all devices' };
+  async signOutAllDevices(signOutAllDto: SignOutAllDto): Promise<string> {
+    await this.sessionsService.invalidateAllSessions(signOutAllDto.userId);
+    return 'Successfully signed out from all devices';
   }
 }

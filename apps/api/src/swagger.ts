@@ -5,6 +5,11 @@ export const swagger = async (app: NestExpressApplication) => {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Flemme api')
     .addBearerAuth()
+    .addGlobalResponse({
+      status: 500,
+      description: 'Internal server error',
+      //todo add error response type
+    })
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-docs', app, document);

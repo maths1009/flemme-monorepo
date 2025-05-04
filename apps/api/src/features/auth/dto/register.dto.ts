@@ -10,7 +10,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class SignUpDto {
+export class RegisterDto {
   @ApiProperty()
   @IsString()
   @MinLength(2)
@@ -46,7 +46,7 @@ export class SignUpDto {
   phone_number: string;
 }
 
-export class SignUpResponseDto {
+export class RegisterResponseDto {
   @ApiProperty()
   access_token: string;
 

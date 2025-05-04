@@ -1,28 +1,36 @@
-import { ApiJwtResponse, User } from '@/common/decorators';
+import { ApiException, ApiJwtResponse, User } from '@/common/decorators';
 import { ApiValidationResponse } from '@/common/decorators/api-validation-response.decorator';
 import { Public } from '@/common/decorators/public.decorator';
 import { LocalAuthGuard } from '@/common/guards/local-auth.guard';
 import { RequestWithUser, TokenPayload } from '@/common/interfaces';
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Post,
   Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DeviceType, OsType } from '../sessions/entities/session.entity';
+import { SessionsService } from '../sessions/sessions.service';
 import { AuthService } from './auth.service';
-import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
-import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
+import { LoginDto, LoginResponseDto } from './dto/login.dto';
+import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly sessionsService: SessionsService,
+  ) {}
 
-  @Post('signup')
+  @Post('register')
   @Public()
   @HttpCode(HttpStatus.CREATED)
   /* DOC */
@@ -30,63 +38,63 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'User successfully registered',
-    type: SignUpResponseDto,
+    type: RegisterResponseDto,
   })
   @ApiValidationResponse()
-  async signUp(@Body() signUpDto: SignUpDto): Promise<SignUpResponseDto> {
-    return this.authService.signUp(signUpDto);
+  @ApiException([
+    () => new BadRequestException('Email is already in use'),
+    () => new BadRequestException('Username is already in use'),
+  ])
+  async register(
+    @Body() registerDto: RegisterDto,
+  ): Promise<RegisterResponseDto> {
+    return this.authService.register(registerDto);
   }
 
-  @Post('signin')
+  @Post('login')
   @Public()
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   /* DOC */
-  @ApiOperation({ summary: 'Sign in a user' })
-  @ApiBody({ type: SignInDto })
+  @ApiOperation({ summary: 'Authenticate a user' })
+  @ApiBody({ type: LoginDto })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'User successfully signed in',
-    type: SignInResponseDto,
+    description: 'User successfully authenticated',
+    type: LoginResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Invalid credentials',
-  })
-  async signIn(@Req() req: RequestWithUser): Promise<SignInResponseDto> {
+  @ApiException(() => new UnauthorizedException('Invalid credentials'))
+  async login(@Req() req: RequestWithUser): Promise<LoginResponseDto> {
     const deviceType = DeviceType.OTHER;
     const osType = OsType.OTHER;
 
-    return this.authService.signIn(req.user, deviceType, osType);
+    return this.authService.login(req.user, deviceType, osType);
   }
 
-  @Post('signout')
-  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
   /* DOC */
-  @ApiOperation({ summary: 'Sign out the current user' })
+  @ApiOperation({ summary: 'Terminate the current session (logout)' })
   @ApiJwtResponse()
   @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'User successfully signed out',
+    status: HttpStatus.NO_CONTENT,
+    description: 'Session successfully terminated',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Session not found',
-  })
-  async signOut(@User() user: TokenPayload): Promise<string> {
-    return this.authService.signOut({ userId: user.sub, sessionId: user.sid });
+  @ApiException(() => new NotFoundException('Session not found'))
+  async logout(@User() user: TokenPayload): Promise<void> {
+    await this.sessionsService.deleteByIdAndUserId(user.sid, user.sub);
   }
 
-  @Post('signout-all')
-  @HttpCode(HttpStatus.OK)
+  @Post('logout-all')
+  @HttpCode(HttpStatus.NO_CONTENT)
   /* DOC */
-  @ApiOperation({ summary: 'Sign out the current user from all devices' })
+  @ApiOperation({ summary: 'Terminate all user sessions (global logout)' })
   @ApiJwtResponse()
   @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'User successfully signed out from all devices',
+    status: HttpStatus.NO_CONTENT,
+    description: 'All sessions successfully terminated',
   })
-  async signOutAllDevices(@User('sub') userId: number) {
-    return this.authService.signOutAllDevices({ userId });
+  async logoutAll(@User() user: TokenPayload): Promise<void> {
+    await this.sessionsService.deleteByUserId(user.sub);
   }
 }

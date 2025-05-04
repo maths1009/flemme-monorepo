@@ -21,9 +21,9 @@ export class SessionsService {
    * @param userId User ID
    * @param deviceType Device type (default to OTHER)
    * @param osType OS type (default to OTHER)
-   * @returns Created session with token
+   * @returns Created session
    */
-  async createSession(
+  async create(
     userId: number,
     deviceType: DeviceType = DeviceType.OTHER,
     osType: OsType = OsType.OTHER,
@@ -35,55 +35,105 @@ export class SessionsService {
       expired_at: this.jwtService.getTokenExpirationDate(),
     });
 
-    const savedSession = await this.sessionsRepository.save(session);
-
-    return savedSession;
+    return await this.sessionsRepository.save(session);
   }
 
   /**
-   * Validate a session by ID and check if it's expired
-   * @param sessionId Session ID
-   * @param userId User ID to verify session ownership
-   * @returns Session if valid, throws UnauthorizedException if expired or not found
+   * Find all sessions in the system
+   * @param limit Optional limit for pagination
+   * @param offset Optional offset for pagination
+   * @returns Array of all sessions
    */
-  async validateSession(sessionId: number, userId: number): Promise<Session> {
+  async findAll(limit = 100, offset = 0): Promise<Session[]> {
+    return this.sessionsRepository.find({
+      order: { created_at: 'DESC' },
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  /**
+   * Find all sessions for a user
+   * @param userId User ID
+   * @returns Array of sessions
+   */
+  async findByUserId(userId: number): Promise<Session[]> {
+    return this.sessionsRepository.find({
+      where: { user_id: userId },
+      order: { created_at: 'DESC' },
+    });
+  }
+
+  /**
+   * Find a session by its ID
+   * @param id Session ID
+   * @returns Session or null if not found
+   */
+  async findById(id: number): Promise<Session | null> {
+    return this.sessionsRepository.findOne({
+      where: { id },
+    });
+  }
+
+  /**
+   * Validate if a session is active and belongs to the specified user
+   * @param id Session ID
+   * @param userId User ID
+   * @returns Session if valid
+   * @throws UnauthorizedException if expired or not found
+   */
+  async validate(id: number, userId: number): Promise<Session> {
     const session = await this.sessionsRepository.findOne({
-      where: { id: sessionId, user_id: userId },
+      where: { id, user_id: userId },
     });
 
     if (!session) {
-      throw new UnauthorizedException('Session not found');
+      throw new UnauthorizedException('Session invalide ou non trouvée');
     }
 
     if (new Date() > session.expired_at) {
-      await this.sessionsRepository.delete(sessionId);
-      throw new UnauthorizedException('Session expired');
+      await this.deleteById(id);
+      throw new UnauthorizedException('Session expirée');
     }
 
     return session;
   }
 
   /**
-   * Invalidate a session by ID
-   * @param sessionId Session ID
-   * @param userId User ID to verify session ownership
+   * Delete a single session by ID
+   * @param id Session ID
+   * @throws NotFoundException if session not found
    */
-  async invalidateSession(sessionId: number, userId: number): Promise<void> {
-    const result = await this.sessionsRepository.delete({
-      id: sessionId,
-      user_id: userId,
-    });
+  async deleteById(id: number): Promise<void> {
+    const result = await this.sessionsRepository.delete({ id });
 
     if (result.affected === 0) {
-      throw new NotFoundException('Session not found');
+      throw new NotFoundException('Session non trouvée');
     }
   }
 
   /**
-   * Invalidate all sessions for a user
+   * Delete a session for a specific user
+   * @param id Session ID
+   * @param userId User ID
+   * @throws NotFoundException if session not found
+   */
+  async deleteByIdAndUserId(id: number, userId: number): Promise<void> {
+    const result = await this.sessionsRepository.delete({
+      id,
+      user_id: userId,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException('Session non trouvée');
+    }
+  }
+
+  /**
+   * Delete all sessions for a user
    * @param userId User ID
    */
-  async invalidateAllSessions(userId: number): Promise<void> {
+  async deleteByUserId(userId: number): Promise<void> {
     await this.sessionsRepository.delete({ user_id: userId });
   }
 }

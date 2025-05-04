@@ -7,10 +7,8 @@ import { Repository } from 'typeorm';
 import { DeviceType, OsType } from '../sessions/entities/session.entity';
 import { SessionsService } from '../sessions/sessions.service';
 import { User } from '../users/entities/user.entity';
-import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
-import { SignOutAllDto } from './dto/sign-out-all.dto';
-import { SignOutDto } from './dto/sign-out.dto';
-import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
+import { LoginDto, LoginResponseDto } from './dto/login.dto';
+import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,30 +19,30 @@ export class AuthService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async validateUser(signInDto: SignInDto): Promise<SafeUser | null> {
+  async validateUser(loginDto: LoginDto): Promise<SafeUser | null> {
     const user = await this.usersRepository.findOne({
-      where: { email: signInDto.email },
+      where: { email: loginDto.email },
     });
-    if (user && (await bcrypt.compare(signInDto.password, user.password))) {
+    if (user && (await bcrypt.compare(loginDto.password, user.password))) {
       const { password, role_id, ...result } = user;
       return result;
     }
     return null;
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<SignUpResponseDto> {
-    const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
+  async register(registerDto: RegisterDto): Promise<RegisterResponseDto> {
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     /* user */
     const user = this.usersRepository.create({
-      ...signUpDto,
+      ...registerDto,
       password: hashedPassword,
     });
     const savedUser = await this.usersRepository.save(user);
     const { password, role_id, ...result } = savedUser;
 
     /* sessions */
-    const session = await this.sessionsService.createSession(
+    const session = await this.sessionsService.create(
       savedUser.id,
       DeviceType.OTHER,
       OsType.OTHER,
@@ -62,13 +60,13 @@ export class AuthService {
     };
   }
 
-  async signIn(
+  async login(
     user: SafeUser,
     deviceType: DeviceType,
     osType: OsType,
-  ): Promise<SignInResponseDto> {
+  ): Promise<LoginResponseDto> {
     /* session */
-    const session = await this.sessionsService.createSession(
+    const session = await this.sessionsService.create(
       user.id,
       deviceType,
       osType,
@@ -84,18 +82,5 @@ export class AuthService {
       access_token: token,
       user,
     };
-  }
-
-  async signOut(signOutDto: SignOutDto): Promise<string> {
-    await this.sessionsService.invalidateSession(
-      signOutDto.sessionId,
-      signOutDto.userId,
-    );
-    return 'Successfully signed out';
-  }
-
-  async signOutAllDevices(signOutAllDto: SignOutAllDto): Promise<string> {
-    await this.sessionsService.invalidateAllSessions(signOutAllDto.userId);
-    return 'Successfully signed out from all devices';
   }
 }

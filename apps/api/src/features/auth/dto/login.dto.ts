@@ -3,7 +3,7 @@ import { User } from '@/features/users/entities/user.entity';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
-export class SignInDto {
+export class LoginDto {
   @ApiProperty()
   @IsEmail()
   email: string;
@@ -14,7 +14,7 @@ export class SignInDto {
   password: string;
 }
 
-export class SignInResponseDto {
+export class LoginResponseDto {
   @ApiProperty()
   access_token: string;
 

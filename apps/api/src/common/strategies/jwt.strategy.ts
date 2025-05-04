@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(_req: Request, payload: TokenPayload): Promise<TokenPayload> {
-    await this.sessionsService.validateSession(payload.sid, payload.sub);
+    await this.sessionsService.validate(payload.sid, payload.sub);
     return payload;
   }
 }

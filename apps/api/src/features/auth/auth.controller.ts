@@ -1,4 +1,4 @@
-import { User } from '@/common/decorators';
+import { ApiJwtResponse, User } from '@/common/decorators';
 import { ApiValidationResponse } from '@/common/decorators/api-validation-response.decorator';
 import { Public } from '@/common/decorators/public.decorator';
 import { LocalAuthGuard } from '@/common/guards/local-auth.guard';
@@ -12,13 +12,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DeviceType, OsType } from '../sessions/entities/session.entity';
 import { AuthService } from './auth.service';
 import { SignInDto, SignInResponseDto } from './dto/sign-in.dto';
 import { SignUpDto, SignUpResponseDto } from './dto/sign-up.dto';
 
-@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -54,7 +53,6 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid credentials',
   })
-  @ApiValidationResponse()
   async signIn(@Req() req: RequestWithUser): Promise<SignInResponseDto> {
     const deviceType = DeviceType.OTHER;
     const osType = OsType.OTHER;
@@ -64,27 +62,31 @@ export class AuthController {
 
   @Post('signout')
   @HttpCode(HttpStatus.OK)
+  /* DOC */
   @ApiOperation({ summary: 'Sign out the current user' })
+  @ApiJwtResponse()
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed out',
   })
   @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Invalid credentials',
+    status: HttpStatus.NOT_FOUND,
+    description: 'Session not found',
   })
-  async signOut(@User() user: TokenPayload) {
-    return user;
+  async signOut(@User() user: TokenPayload): Promise<string> {
+    return this.authService.signOut({ userId: user.sub, sessionId: user.sid });
   }
 
-  /*   @Post('signout-all')
+  @Post('signout-all')
   @HttpCode(HttpStatus.OK)
+  /* DOC */
   @ApiOperation({ summary: 'Sign out the current user from all devices' })
+  @ApiJwtResponse()
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User successfully signed out from all devices',
   })
-  async signOutAllDevices(@User() user: { userId: number }) {
-    return this.authService.signOutAllDevices(user.userId);
-  } */
+  async signOutAllDevices(@User('sub') userId: number) {
+    return this.authService.signOutAllDevices({ userId });
+  }
 }

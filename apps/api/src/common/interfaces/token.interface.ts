@@ -1,4 +1,4 @@
 export interface TokenPayload {
-  sub: number;
-  sid: number;
+  sub: number; // userId
+  sid: number; // sessionId
 }

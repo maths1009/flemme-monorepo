@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import { Providers } from '@/components';
+import '@/styles/globals.css';
+import { ReactNode } from 'react';
 
 const RootLayout = ({
   children,

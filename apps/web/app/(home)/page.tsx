@@ -1,5 +1,7 @@
+import Button from '@/components/common/Button';
+
 const Page = () => {
-  return <section>Hello world</section>;
+  return <Button loop />;
 };
 
 export default Page;

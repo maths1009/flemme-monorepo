@@ -1,3 +1,4 @@
+import { DateTransformer } from '@/common/transformers';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Column,
@@ -28,6 +29,10 @@ export class User {
   @ApiProperty()
   email: string;
 
+  @Column({ default: false })
+  @ApiProperty()
+  email_verified: boolean;
+
   @Column()
   @ApiProperty()
   password: string;
@@ -36,17 +41,14 @@ export class User {
   @ApiPropertyOptional()
   profile_picture_url?: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'varchar',
+    length: 30,
+    default: () => 'CURRENT_TIMESTAMP',
+    transformer: new DateTransformer(),
+  })
   @ApiProperty()
-  created_at: Date;
-
-  @Column({ length: 20, unique: true })
-  @ApiProperty()
-  phone_number: string;
-
-  @Column({ default: false })
-  @ApiProperty()
-  phone_verified: boolean;
+  created_at: string;
 
   @Column({ default: true })
   @ApiProperty()

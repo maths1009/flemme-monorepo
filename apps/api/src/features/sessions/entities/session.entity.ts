@@ -1,3 +1,4 @@
+import { DateTransformer } from '@/common/transformers';
 import { User } from '@/features/users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -9,57 +10,52 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export enum DeviceType {
-  DESKTOP = 'desktop',
-  MOBILE = 'mobile',
-  TABLET = 'tablet',
-  OTHER = 'other',
-}
-
-export enum OsType {
-  WINDOWS = 'windows',
-  MAC = 'mac',
-  LINUX = 'linux',
-  IOS = 'ios',
-  ANDROID = 'android',
-  OTHER = 'other',
-}
-
 @Entity('sessions')
 export class Session {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;
 
-  @CreateDateColumn()
-  @ApiProperty()
-  created_at: Date;
-
-  @Column()
-  @ApiProperty()
-  expired_at: Date;
-
-  @Column({
-    type: 'enum',
-    enum: DeviceType,
-    default: DeviceType.OTHER,
-  })
-  @ApiProperty({ enum: DeviceType })
-  device_type: DeviceType;
-
-  @Column({
-    type: 'enum',
-    enum: OsType,
-    default: OsType.OTHER,
-  })
-  @ApiProperty({ enum: OsType })
-  os_type: OsType;
-
   @Column()
   @ApiProperty()
   user_id: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @Column()
+  @ApiProperty()
+  browser: string;
+
+  @Column()
+  @ApiProperty()
+  device: string;
+
+  @CreateDateColumn({
+    type: 'varchar',
+    length: 30,
+    default: () => 'CURRENT_TIMESTAMP',
+    transformer: new DateTransformer(),
+  })
+  @ApiProperty()
+  created_at: string;
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+    length: 30,
+    default: () => 'CURRENT_TIMESTAMP',
+    transformer: new DateTransformer(),
+  })
+  @ApiProperty()
+  last_used_at: string;
+
+  @Column({
+    type: 'varchar',
+    length: 30,
+    transformer: new DateTransformer(),
+  })
+  @ApiProperty()
+  expired_at: string;
 }

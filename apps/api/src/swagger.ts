@@ -8,7 +8,6 @@ export const swagger = async (app: NestExpressApplication) => {
     .addGlobalResponse({
       status: 500,
       description: 'Internal server error',
-      //todo add error response type
     })
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);

@@ -1,0 +1,96 @@
+import { Public } from '@/common/decorators/public.decorator';
+import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { AuthService } from './auth.service';
+import { LoginDto, LoginResponseDto } from './dto/login.dto';
+import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+
+@ApiTags('auth')
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  /* DOC */
+  @ApiOperation({ summary: 'Connecter un utilisateur' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Connexion réussie',
+    type: LoginResponseDto,
+  })
+  @ApiException(() => UnauthorizedException, {
+    description: 'Identifiants invalides',
+  })
+  async login(@Req() req: Request) {
+    return this.authService.login(
+      req.user as any,
+      req.headers['user-agent'] || 'unknown',
+    );
+  }
+
+  @Public()
+  @Post('register')
+  /* DOC */
+  @ApiOperation({ summary: 'Inscrire un nouvel utilisateur' })
+  @ApiBody({ type: RegisterDto })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Utilisateur créé avec succès',
+    type: RegisterResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: "L'utilisateur existe déjà",
+  })
+  async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
+    return await this.authService.register(
+      registerDto,
+      req.headers['user-agent'] || 'unknown',
+    );
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.ACCEPTED)
+  /* DOC */
+  @ApiOperation({ summary: 'Déconnecter un utilisateur' })
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: 'Déconnexion réussie',
+  })
+  async logout(@Req() req: Request) {
+    const user = req.user as any;
+    await this.authService.logout(user.sessionId);
+    return { message: 'Déconnexion réussie' };
+  }
+
+  @Post('logout-all')
+  @HttpCode(HttpStatus.ACCEPTED)
+  /* DOC */
+  @ApiOperation({
+    summary: 'Déconnecter un utilisateur de toutes ses sessions',
+  })
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: 'Déconnexion réussie de toutes les sessions',
+  })
+  async logoutAll(@Req() req: Request) {
+    const user = req.user!;
+    await this.authService.logoutAll(user?.id);
+  }
+}

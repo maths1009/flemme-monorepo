@@ -4,8 +4,10 @@ import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
+import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import * as passport from 'passport';
 import { AppModule } from './app.module';
 
 /**
@@ -22,6 +24,10 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
   const configService = app.get(ConfigService<Env>);
 
   app.use(helmet());
+
+  app.use(cookieParser());
+
+  app.use(passport.initialize());
 
   app.setGlobalPrefix('api', {
     exclude: [
@@ -47,7 +53,9 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
   app.enableCors({
     credentials: true,
     origin: configService.get('ALLOW_CORS_URL'),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'Date'],
   });
 
   app.useLogger(logger);

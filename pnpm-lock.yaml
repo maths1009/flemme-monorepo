@@ -86,7 +86,7 @@ importers:
         version: 5.8.3
       zod:
         specifier: 'catalog:'
-        version: 3.24.4
+        version: 3.25.61
 
   apps/api:
     dependencies:
@@ -5705,6 +5705,9 @@ packages:
   zod@3.24.4:
     resolution: {integrity: sha512-OdqJE9UDRPwWsrHjLN2F8bPxvwJBK22EHLWtanu0LSYr5YqzsaaW3RMgmjwr8Rypg5k+meEJdSPXJZXE/yqOMg==}
 
+  zod@3.25.61:
+    resolution: {integrity: sha512-fzfJgUw78LTNnHujj9re1Ov/JJQkRZZGDMcYqSx7Hp4rPOkKywaFHq0S6GoHeXs0wGNE/sIOutkXgnwzrVOGCQ==}
+
 snapshots:
 
   '@adobe/css-tools@4.4.2': {}
@@ -11315,3 +11318,5 @@ snapshots:
   yoctocolors-cjs@2.1.2: {}
 
   zod@3.24.4: {}
+
+  zod@3.25.61: {}

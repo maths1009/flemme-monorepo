@@ -3,6 +3,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { UserErrorMessages } from './errors/user-error-message';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,7 @@ export class UsersService {
     });
 
     if (existingUser) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException(UserErrorMessages.USER_ALREADY_EXISTS);
     }
 
     userData.password = await hashPassword(userData.password!);

@@ -1,6 +1,6 @@
 import { Env } from '@/common/utils';
 import { swagger } from '@/swagger';
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { HttpException, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
@@ -67,6 +67,16 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
       transform: true,
       transformOptions: {
         enableImplicitConversion: true,
+      },
+      exceptionFactory: (errors) => {
+        const messages = errors.map((error) => {
+          const constraints = error.constraints;
+          if (constraints) {
+            return `${error.property}: ${Object.values(constraints).join(', ')}`;
+          }
+          return `${error.property}: Validation failed`;
+        });
+        return new HttpException(messages, 400);
       },
     }),
   );

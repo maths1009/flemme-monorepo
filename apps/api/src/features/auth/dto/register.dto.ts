@@ -1,4 +1,4 @@
-import { User } from '@/features/users/entities/user.entity';
+import { UserDto } from '@/features/users/dto/user.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
@@ -40,8 +40,8 @@ export class RegisterDto {
 }
 
 export class RegisterResponseDto {
-  @ApiProperty()
-  user: Omit<User, 'password'>;
+  @ApiProperty({ type: () => UserDto })
+  user: UserDto;
   @ApiProperty()
   access_token: string;
 }

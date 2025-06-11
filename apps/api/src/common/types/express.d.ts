@@ -1,8 +1,8 @@
-import { User as IUser } from '@/features/users/entities/user.entity';
+import { UserDto } from '@/features/users/dto/user.dto';
 
 declare global {
   namespace Express {
-    interface User extends Omit<IUser, 'password'> {
+    interface User extends UserDto {
       sessionId: number;
     }
   }

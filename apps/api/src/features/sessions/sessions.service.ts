@@ -14,21 +14,18 @@ export class SessionsService {
     private readonly configService: ConfigService,
   ) {}
 
-  async createSession(userId: number, userAgent: string): Promise<Session> {
-    const { browser, engine } = UAParser(userAgent);
+  async create(userId: number, userAgent: string): Promise<Session> {
+    const { browser, os } = UAParser(userAgent);
 
     const session = this.sessionsRepository.create({
       user_id: userId,
       last_used_at: dayjs().toISOString(),
       expired_at: dayjs()
-        .add(
-          parseInt(this.configService.get('SESSION_EXPIRATION_TIME')!),
-          'millisecond',
-        )
+        .add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond')
         .toISOString(),
       created_at: dayjs().toISOString(),
-      browser: browser.name,
-      device: engine.name,
+      browser_type: browser.name,
+      os_type: os.name,
     });
 
     return this.sessionsRepository.save(session);

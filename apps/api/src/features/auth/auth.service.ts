@@ -4,6 +4,7 @@ import { SessionsService } from '../sessions/sessions.service';
 import { UsersService } from '../users/users.service';
 
 import { comparePasswords } from '@/common/utils/password';
+import { UserDto } from '@/features/users/dto/user.dto';
 import { User } from '../users/entities/user.entity';
 import { LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
@@ -16,10 +17,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<Omit<User, 'password'> | null> {
+  private toUserDto(user: User): UserDto {
+    const { password, ...userDto } = user;
+    return userDto;
+  }
+
+  async validateUser(email: string, password: string): Promise<UserDto | null> {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) return null;
@@ -28,8 +31,7 @@ export class AuthService {
 
     if (!isPasswordValid) return null;
 
-    const { password: _, ...result } = user;
-    return result;
+    return this.toUserDto(user);
   }
 
   async register(
@@ -38,29 +40,21 @@ export class AuthService {
   ): Promise<RegisterResponseDto> {
     const user = await this.usersService.create(registerDto);
 
-    const session = await this.sessionsService.createSession(
-      user.id,
-      userAgent,
-    );
+    const session = await this.sessionsService.create(user.id, userAgent);
 
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
 
-    const { password: _, ...result } = user;
-    return { user: result, access_token };
+    return { user: this.toUserDto(user), access_token };
   }
 
   async login(user: User, userAgent: string): Promise<LoginResponseDto> {
-    const session = await this.sessionsService.createSession(
-      user.id,
-      userAgent,
-    );
+    const session = await this.sessionsService.create(user.id, userAgent);
 
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
 
-    const { password: _, ...result } = user;
-    return { user: result, access_token };
+    return { user: this.toUserDto(user), access_token };
   }
 
   async logout(sessionId: number): Promise<void> {

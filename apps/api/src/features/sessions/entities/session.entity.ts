@@ -1,4 +1,3 @@
-import { DateTransformer } from '@/common/transformers';
 import { User } from '@/features/users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -16,6 +15,35 @@ export class Session {
   @ApiProperty()
   id: number;
 
+  @CreateDateColumn({
+    type: 'datetime',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  @ApiProperty()
+  created_at: Date;
+
+  @Column({ type: 'datetime' })
+  @ApiProperty()
+  expired_at: Date;
+
+  @Column({ type: 'datetime' })
+  @ApiProperty()
+  last_used_at: Date;
+
+  @Column({
+    type: 'varchar',
+    default: 'unknown',
+  })
+  @ApiProperty({ type: 'string', default: 'unknown' })
+  browser_type: string;
+
+  @Column({
+    type: 'varchar',
+    default: 'unknown',
+  })
+  @ApiProperty({ type: 'string', default: 'unknown' })
+  os_type: string;
+
   @Column()
   @ApiProperty()
   user_id: number;
@@ -23,39 +51,4 @@ export class Session {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @Column()
-  @ApiProperty()
-  browser: string;
-
-  @Column()
-  @ApiProperty()
-  device: string;
-
-  @CreateDateColumn({
-    type: 'varchar',
-    length: 30,
-    default: () => 'CURRENT_TIMESTAMP',
-    transformer: new DateTransformer(),
-  })
-  @ApiProperty()
-  created_at: string;
-
-  @Column({
-    nullable: true,
-    type: 'varchar',
-    length: 30,
-    default: () => 'CURRENT_TIMESTAMP',
-    transformer: new DateTransformer(),
-  })
-  @ApiProperty()
-  last_used_at: string;
-
-  @Column({
-    type: 'varchar',
-    length: 30,
-    transformer: new DateTransformer(),
-  })
-  @ApiProperty()
-  expired_at: string;
 }

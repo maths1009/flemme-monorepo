@@ -1,3 +1,4 @@
+import { Roles } from '@/common/decorators';
 import { Controller, Get } from '@nestjs/common';
 import {
   DiskHealthIndicator,
@@ -6,6 +7,7 @@ import {
   MemoryHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { RoleEnum } from '../roles/enum/role.enum';
 
 @Controller('health')
 export class HealthController {
@@ -16,6 +18,7 @@ export class HealthController {
     private readonly memory: MemoryHealthIndicator,
   ) {}
 
+  @Roles(RoleEnum.USER)
   @Get()
   @HealthCheck()
   check() {

@@ -1,3 +1,4 @@
+import { RoleEnum } from '@/features/roles/enum/role.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UserDto {
@@ -20,16 +21,7 @@ export class UserDto {
   email_verified: boolean;
 
   @ApiPropertyOptional()
-  email_verification_code?: string;
-
-  @ApiPropertyOptional()
-  email_verification_expired_at?: Date;
-
-  @ApiPropertyOptional()
   profile_picture_url?: string;
-
-  @ApiProperty()
-  created_at: Date;
 
   @ApiPropertyOptional()
   suspended_at?: Date;
@@ -39,4 +31,7 @@ export class UserDto {
 
   @ApiProperty()
   score: number;
+
+  @ApiProperty({ enum: RoleEnum })
+  role: RoleEnum;
 }

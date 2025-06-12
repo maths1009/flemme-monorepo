@@ -32,9 +32,8 @@ export class SessionsService {
   }
 
   async findOne(id: number): Promise<Session | null> {
-    return this.sessionsRepository.findOne({
+    return await this.sessionsRepository.findOne({
       where: { id },
-      relations: ['user'],
     });
   }
 

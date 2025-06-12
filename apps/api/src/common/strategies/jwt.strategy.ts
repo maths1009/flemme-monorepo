@@ -1,3 +1,4 @@
+import { AuthErrorMessages } from '@/features/auth/errors/auth-error-messages.enum';
 import { SessionsService } from '@/features/sessions/sessions.service';
 import { UsersService } from '@/features/users/users.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -6,7 +7,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import * as dayjs from 'dayjs';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthErrorMessages } from '../../auth/errors/auth-error-messages.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -47,6 +47,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const { password, ...userWithoutPassword } = user;
 
-    return { ...userWithoutPassword, sessionId };
+    return { ...userWithoutPassword, sessionId, role: user.role.name };
   }
 }

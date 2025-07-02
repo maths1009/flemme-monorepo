@@ -171,7 +171,7 @@ importers:
         version: 8.1.0
       '@types/multer':
         specifier: ^1.4.12
-        version: 1.4.12
+        version: 1.4.13
       '@types/passport-jwt':
         specifier: ^4.0.1
         version: 4.0.1
@@ -1833,8 +1833,8 @@ packages:
   '@types/minimatch@5.1.2':
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
 
-  '@types/multer@1.4.12':
-    resolution: {integrity: sha512-pQ2hoqvXiJt2FP9WQVLPRO+AmiIm/ZYkavPlIQnx282u4ZrVdztx0pkh3jjpQt0Kz+YI0YhSG264y08UJKoUQg==}
+  '@types/multer@1.4.13':
+    resolution: {integrity: sha512-bhhdtPw7JqCiEfC9Jimx5LqX9BDIPJEh2q/fQ4bqbBPtyEZYr3cvF22NwG0DmPZNYA0CAf2CnqDB4KIGGpJcaw==}
 
   '@types/node-fetch@2.6.12':
     resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
@@ -7183,7 +7183,7 @@ snapshots:
 
   '@types/minimatch@5.1.2': {}
 
-  '@types/multer@1.4.12':
+  '@types/multer@1.4.13':
     dependencies:
       '@types/express': 5.0.1
 

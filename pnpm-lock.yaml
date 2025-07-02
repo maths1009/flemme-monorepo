@@ -128,7 +128,7 @@ importers:
         version: 1.0.0
       ua-parser-js:
         specifier: ^2.0.3
-        version: 2.0.3
+        version: 2.0.4
     devDependencies:
       '@flemme/eslint-config':
         specifier: workspace:*
@@ -3202,8 +3202,8 @@ packages:
     resolution: {integrity: sha512-yDYSgNMraqvnxiEXO4hi88+YZxaHC6QKzb5N84iRCTDeRO7ZALpir/lVmf/uXUhnwUr2O4HU8s/n6x+yNjQkHw==}
     engines: {node: '>= 14.17'}
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
+  form-data@4.0.3:
+    resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
     engines: {node: '>= 6'}
 
   forwarded@0.2.0:
@@ -5377,8 +5377,8 @@ packages:
   ua-is-frozen@0.1.2:
     resolution: {integrity: sha512-RwKDW2p3iyWn4UbaxpP2+VxwqXh0jpvdxsYpZ5j/MLLiQOfbsV5shpgQiw93+KMYQPcteeMQ289MaAFzs3G9pw==}
 
-  ua-parser-js@2.0.3:
-    resolution: {integrity: sha512-LZyXZdNttONW8LjzEH3Z8+6TE7RfrEiJqDKyh0R11p/kxvrV2o9DrT2FGZO+KVNs3k+drcIQ6C3En6wLnzJGpw==}
+  ua-parser-js@2.0.4:
+    resolution: {integrity: sha512-XiBOnM/UpUq21ZZ91q2AVDOnGROE6UQd37WrO9WBgw4u2eGvUCNOheMmZ3EfEUj7DLHr8tre+Um/436Of/Vwzg==}
     hasBin: true
 
   uid@2.0.2:
@@ -7190,7 +7190,7 @@ snapshots:
   '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 24.0.10
-      form-data: 4.0.2
+      form-data: 4.0.3
 
   '@types/node@12.20.55': {}
 
@@ -8846,11 +8846,12 @@ snapshots:
   form-data-encoder@2.1.4:
     optional: true
 
-  form-data@4.0.2:
+  form-data@4.0.3:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
       mime-types: 2.1.35
 
   forwarded@0.2.0: {}
@@ -11042,7 +11043,7 @@ snapshots:
 
   ua-is-frozen@0.1.2: {}
 
-  ua-parser-js@2.0.3:
+  ua-parser-js@2.0.4:
     dependencies:
       '@types/node-fetch': 2.6.12
       detect-europe-js: 0.1.2

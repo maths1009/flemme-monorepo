@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranches": ["development"],
+  "rangeStrategy": "bump",
+  "updateInternalDeps": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeSchedule": ["at any time"],
+      "dependencyDashboardApproval": false,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "ignoreTests": true
+    }
+  ],
+  "timezone": "Europe/Paris"
+}

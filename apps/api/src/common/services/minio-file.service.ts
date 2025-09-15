@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Minio from 'minio';
 import { Readable } from 'stream';
+import { BucketEnum } from '../enums';
 import { Env } from '../utils';
 import { BaseFileService, FileInfo, FileUploadOptions } from './file.service';
 
@@ -25,18 +26,18 @@ export class MinioFileService extends BaseFileService {
   }
 
   private async initializeBuckets(): Promise<void> {
-    const buckets = [this.defaultBucket, 'profile-picture'];
+    const buckets = [this.defaultBucket, ...Object.values(BucketEnum)];
 
     for (const bucket of buckets) {
       try {
         const bucketExists = await this.minioClient.bucketExists(bucket);
         if (!bucketExists) {
           await this.minioClient.makeBucket(bucket, 'us-east-1');
-          this.logger.log(`Bucket ${bucket} créé avec succès`);
+          this.logger.log(`Bucket ${bucket} created successfully`);
         }
       } catch (error) {
         this.logger.error(
-          `Erreur lors de l'initialisation du bucket ${bucket}: ${error}`,
+          `Error initializing bucket ${bucket}: ${error}`,
         );
       }
     }
@@ -97,8 +98,8 @@ export class MinioFileService extends BaseFileService {
         key: filename,
       };
     } catch (error) {
-      this.logger.error(`Erreur lors de l'upload du fichier: ${error}`);
-      throw new Error(`Échec de l'upload du fichier: ${error}`);
+      this.logger.error(`Error uploading file: ${error}`);
+      throw new Error(`Error uploading file: ${error}`);
     }
   }
 
@@ -109,9 +110,9 @@ export class MinioFileService extends BaseFileService {
       this.logger.log(`Fichier ${filename} supprimé avec succès`);
     } catch (error) {
       this.logger.error(
-        `Erreur lors de la suppression du fichier ${filename}: ${error}`,
+        `Error deleting file ${filename}: ${error}`,
       );
-      throw new Error(`Échec de la suppression du fichier: ${error}`);
+      throw new Error(`Error deleting file: ${error}`);
     }
   }
 
@@ -139,9 +140,9 @@ export class MinioFileService extends BaseFileService {
       );
     } catch (error) {
       this.logger.error(
-        `Erreur lors de la génération de l'URL signée: ${error}`,
+        `Error generating signed URL: ${error}`,
       );
-      throw new Error(`Échec de la génération de l'URL signée: ${error}`);
+      throw new Error(`Error generating signed URL: ${error}`);
     }
   }
 
@@ -162,9 +163,9 @@ export class MinioFileService extends BaseFileService {
       return await this.streamToBuffer(stream);
     } catch (error) {
       this.logger.error(
-        `Erreur lors de la récupération du fichier ${filename}: ${error}`,
+        `Error retrieving file ${filename}: ${error}`,
       );
-      throw new Error(`Échec de la récupération du fichier: ${error}`);
+      throw new Error(`Error retrieving file: ${error}`);
     }
   }
 
@@ -196,8 +197,8 @@ export class MinioFileService extends BaseFileService {
         });
       });
     } catch (error) {
-      this.logger.error(`Erreur lors de la liste des fichiers: ${error}`);
-      throw new Error(`Échec de la liste des fichiers: ${error}`);
+      this.logger.error(`Error listing files: ${error}`);
+      throw new Error(`Error listing files: ${error}`);
     }
   }
 

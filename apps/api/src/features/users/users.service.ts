@@ -2,6 +2,7 @@ import {
   FILE_SERVICE,
   FileServiceInterface,
 } from '@/common/services/file.service';
+import { BucketEnum } from '@/common/enums';
 import { hashPassword } from '@/common/utils';
 import {
   BadRequestException,
@@ -81,7 +82,7 @@ export class UsersService {
     file: Express.Multer.File,
   ): Promise<void> {
     const filename = `${userId}.png`;
-    const bucket = 'profile-picture';
+    const bucket = BucketEnum.PROFILE_PICTURE;
 
     try {
       const oldFileExists = await this.fileService.exists(filename, bucket);

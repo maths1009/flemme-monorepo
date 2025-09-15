@@ -23,6 +23,8 @@ import { Request } from 'express';
 import { UploadProfilePictureDto } from './dto/upload-profile-picture.dto';
 import { UserErrorMessages } from './errors/user-error-message';
 import { UsersService } from './users.service';
+import { FileValidationPipe } from '@/common/pipes';
+import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
 
 @ApiTags('users')
 @Controller('users')
@@ -42,10 +44,23 @@ export class UsersController {
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_NOT_FOUND,
   })
+  @ApiException(() => BadRequestException, {
+    description: FileValidationMessages.FILE_REQUIRED,
+  })
+  @ApiException(() => BadRequestException, {
+    description: FileValidationMessages.FILE_TOO_LARGE,
+  })
+  @ApiException(() => BadRequestException, {
+    description: FileValidationMessages.FILE_TYPE_NOT_ALLOWED,
+  })
   @UseInterceptors(FileInterceptor('file'))
   async uploadProfilePicture(
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(new FileValidationPipe({
+      maxSize: 5 * 1024 * 1024,
+      allowedMimeTypes: ['image/jpeg', 'image/png'],
+      required: true,
+    })) file: Express.Multer.File,
     @Req() req: Request,
   ): Promise<void> {
     const currentUser = req.user!;

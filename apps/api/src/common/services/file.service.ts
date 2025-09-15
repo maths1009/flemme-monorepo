@@ -1,4 +1,5 @@
 import { Readable } from 'stream';
+import { BucketEnum } from '../enums';
 
 export interface FileUploadOptions {
   bucket?: string;
@@ -50,7 +51,7 @@ export interface FileServiceInterface {
 export abstract class BaseFileService implements FileServiceInterface {
   protected defaultBucket: string;
 
-  constructor(defaultBucket: string = 'private') {
+  constructor(defaultBucket: string = BucketEnum.PRIVATE) {
     this.defaultBucket = defaultBucket;
   }
 

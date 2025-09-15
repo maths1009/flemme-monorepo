@@ -1,4 +1,5 @@
 import { FileServiceInterface } from '@/common/services/file.service';
+import { BucketEnum } from '@/common/enums';
 import { UserDto } from '../dto/user.dto';
 import { User } from '../entities/user.entity';
 
@@ -11,7 +12,7 @@ export class UserMapper {
 
     if (fileService) {
       const filename = `${user.id}.png`;
-      const bucket = 'profile-picture';
+      const bucket = BucketEnum.PROFILE_PICTURE;
       const fileExists = await fileService.exists(filename, bucket);
 
       if (fileExists) {

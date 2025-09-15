@@ -164,7 +164,7 @@ importers:
         specifier: ^1.4.9
         version: 1.4.9(@types/express@5.0.3)
       '@types/express':
-        specifier: ^5.0.0
+        specifier: ^5.0.3
         version: 5.0.3
       '@types/glob':
         specifier: ^8.1.0
@@ -7433,7 +7433,7 @@ snapshots:
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
-      '@types/node': 22.15.16
+      '@types/node': 24.0.10
 
   '@types/cookie-parser@1.4.9(@types/express@5.0.3)':
     dependencies:

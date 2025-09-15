@@ -40,6 +40,10 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
         path: '/api-docs',
         method: RequestMethod.GET,
       },
+      {
+        path: '/health',
+        method: RequestMethod.GET,
+      },
     ],
   });
 

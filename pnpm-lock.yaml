@@ -170,7 +170,7 @@ importers:
         specifier: ^8.1.0
         version: 8.1.0
       '@types/multer':
-        specifier: ^1.4.12
+        specifier: ^1.4.13
         version: 1.4.13
       '@types/passport-jwt':
         specifier: ^4.0.1

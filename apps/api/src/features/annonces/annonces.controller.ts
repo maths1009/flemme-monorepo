@@ -53,6 +53,9 @@ export class AnnoncesController {
     status: HttpStatus.ACCEPTED,
     description: "Annonce deleted successfully",
   })
+  @ApiException(() => NotFoundException, {
+    description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
+  })
   async deleteAnnonce(@Param('id') id: string, @Req() req: Request) {
     this.annoncesService.delete(id, req.user!.id);
   }

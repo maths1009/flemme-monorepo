@@ -3,6 +3,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Param,
@@ -18,6 +19,7 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiParam,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -89,5 +91,22 @@ export class UsersController {
       );
     }
     await this.usersService.uploadProfilePicture(id, file);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiOperation({ summary: 'Delete user' })
+  @ApiParam({ name: 'id', description: 'User id' })
+  @ApiException(() => BadRequestException, {
+    description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+  })
+  async deleteUser(@Param('id') id: string, @Req() req: Request) {
+    const currentUser = req.user!;
+    if (currentUser.id !== id) {
+      throw new BadRequestException(
+        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+      );
+    }
+    await this.usersService.delete(id);
   }
 }

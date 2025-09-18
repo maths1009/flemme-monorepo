@@ -100,11 +100,11 @@ export class AuthService {
     await this.sessionsService.delete(sessionId);
   }
 
-  async logoutAll(userId: number): Promise<void> {
+  async logoutAll(userId: string): Promise<void> {
     await this.sessionsService.deleteUserSessions(userId);
   }
 
-  async verifyEmail(userId: number, code: number): Promise<void> {
+  async verifyEmail(userId: string, code: number): Promise<void> {
     const user = await this.usersService.findOne(userId);
     switch (true) {
       case !user:

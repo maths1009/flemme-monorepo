@@ -6,12 +6,13 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column({ length: 100 })
   firstname: string;
@@ -43,6 +44,12 @@ export class User {
   })
   created_at: Date;
 
+  @UpdateDateColumn({
+    type: 'datetime',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updated_at: Date;
+
   @Column({ type: 'datetime', nullable: true })
   suspended_at?: Date;
 
@@ -52,10 +59,13 @@ export class User {
   @Column({ default: 0 })
   score: number;
 
-  @Column({ default: 2 })
-  role_id: number;
+  @Column({ default: 0 })
+  average_response_time: number;
+
+  @Column({ nullable: true })
+  role_id?: number;
 
   @ManyToOne(() => Role, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
-  role: Role;
+  role?: Role;
 }

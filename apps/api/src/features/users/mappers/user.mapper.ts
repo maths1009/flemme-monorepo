@@ -34,8 +34,10 @@ export class UserMapper {
       notif_enabled: user.notif_enabled,
       score: user.score,
       email_verified: user.email_verified,
-      role: user.role.name,
+      role: user.role?.name,
       profile_picture_url: profilePictureUrl,
+      average_response_time: user.average_response_time,
+      updated_at: user.updated_at,
     };
   }
 }

@@ -5,7 +5,7 @@ declare global {
   namespace Express {
     interface User extends Omit<UserEntity, 'password'> {
       sessionId: number;
-      role: RoleEnum;
+      role?: RoleEnum;
     }
   }
 }

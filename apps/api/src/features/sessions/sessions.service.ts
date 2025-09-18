@@ -14,7 +14,7 @@ export class SessionsService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(userId: number, userAgent: string): Promise<Session> {
+  async create(userId: string, userAgent: string): Promise<Session> {
     const { browser, os } = UAParser(userAgent);
 
     const session = this.sessionsRepository.create({
@@ -48,7 +48,7 @@ export class SessionsService {
     await this.sessionsRepository.delete(id);
   }
 
-  async deleteUserSessions(userId: number): Promise<void> {
+  async deleteUserSessions(userId: string): Promise<void> {
     await this.sessionsRepository.delete({ user_id: userId });
   }
 }

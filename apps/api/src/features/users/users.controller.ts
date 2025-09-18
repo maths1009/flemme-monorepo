@@ -1,11 +1,12 @@
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   BadRequestException,
+  Body,
   Controller,
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  Patch,
   Put,
   Req,
   UploadedFile,
@@ -25,11 +26,29 @@ import { UserErrorMessages } from './errors/user-error-message';
 import { UsersService } from './users.service';
 import { FileValidationPipe } from '@/common/pipes';
 import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
+import { UpdateUserDto } from './dto/user.dto';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Patch(':id')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiOperation({ summary: 'Update user' })
+  @ApiParam({ name: 'id', description: 'User id' })
+  @ApiBody({ type: UpdateUserDto })
+  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Req() req: Request) {
+    //TODO: send email to user if email is changed
+    const currentUser = req.user!;
+    if (currentUser.id !== id) {
+      throw new BadRequestException(
+        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+      );
+    }
+    return this.usersService.update(id, updateUserDto);
+  }
+
 
   @Put(':id/profile-picture')
   @HttpCode(HttpStatus.ACCEPTED)
@@ -39,7 +58,7 @@ export class UsersController {
   @ApiBody({ type: UploadProfilePictureDto })
   @ApiException(() => BadRequestException, {
     description:
-      UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER_PROFILE_PICTURE,
+      UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
   })
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_NOT_FOUND,
@@ -55,7 +74,7 @@ export class UsersController {
   })
   @UseInterceptors(FileInterceptor('file'))
   async uploadProfilePicture(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @UploadedFile(new FileValidationPipe({
       maxSize: 5 * 1024 * 1024,
       allowedMimeTypes: ['image/jpeg', 'image/png'],
@@ -66,7 +85,7 @@ export class UsersController {
     const currentUser = req.user!;
     if (currentUser.id !== id) {
       throw new BadRequestException(
-        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER_PROFILE_PICTURE,
+        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
       );
     }
     await this.usersService.uploadProfilePicture(id, file);

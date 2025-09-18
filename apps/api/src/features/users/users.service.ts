@@ -62,14 +62,14 @@ export class UsersService {
     });
   }
 
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     return await this.usersRepository.findOne({
       where: { id },
       relations: ['role'],
     });
   }
 
-  async update(id: number, userData: Partial<User>): Promise<User> {
+  async update(id: string, userData: Partial<User>): Promise<User> {
     await this.usersRepository.update(id, userData);
     const user = (await this.usersRepository.findOne({
       where: { id },
@@ -78,7 +78,7 @@ export class UsersService {
   }
 
   async uploadProfilePicture(
-    userId: number,
+    userId: string,
     file: Express.Multer.File,
   ): Promise<void> {
     const filename = `${userId}.png`;

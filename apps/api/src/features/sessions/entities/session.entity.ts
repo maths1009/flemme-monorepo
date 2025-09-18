@@ -38,7 +38,7 @@ export class Session {
   os_type: string;
 
   @Column()
-  user_id: number;
+  user_id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })

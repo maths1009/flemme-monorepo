@@ -24,7 +24,7 @@ export class AnnoncesService {
 
   async findAll(
     paginationDto: AnnonceParamsDto,
-    user_id: number,
+    user_id: string,
   ): Promise<PaginatedResponseDto<AnnonceDto>> {
     const queryBuilder = this.annoncesRepository
       .createQueryBuilder('annonce')

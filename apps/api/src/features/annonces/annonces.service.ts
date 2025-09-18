@@ -73,4 +73,12 @@ export class AnnoncesService {
     }
     await this.annoncesRepository.update(id, updateAnnonceDto);
   }
+
+  async delete(id: string, user_id: string): Promise<void> {
+    const annonce = await this.annoncesRepository.findOne({ where: { id, user_id } });
+    if (!annonce) {
+      throw new NotFoundException(AnnonceErrorMessages.ANNONCE_NOT_FOUND);
+    }
+    await this.annoncesRepository.delete(id);
+  }
 }

@@ -1,5 +1,5 @@
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
-import { Body, Controller, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Query, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Query, Req } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AnnoncesService } from './annonces.service';
@@ -45,4 +45,15 @@ export class AnnoncesController {
     //TODO: send notification to user that his annonce has been updated
   }
 
+  @Delete(':id')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiOperation({ summary: 'Delete an annonce' })
+  @ApiParam({ name: 'id', description: "Annonce id" })
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: "Annonce deleted successfully",
+  })
+  async deleteAnnonce(@Param('id') id: string, @Req() req: Request) {
+    this.annoncesService.delete(id, req.user!.id);
+  }
 }

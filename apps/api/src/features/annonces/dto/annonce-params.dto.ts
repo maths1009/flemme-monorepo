@@ -19,7 +19,7 @@ export class AnnonceParamsDto extends PaginationDto {
   @ApiProperty({
     required: false,
     default: 5,
-    description: 'Distance en kilomètres',
+    description: 'Distance in kilometers',
   })
   @Type(() => Number)
   @IsNumber()

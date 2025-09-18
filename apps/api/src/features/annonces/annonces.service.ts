@@ -4,13 +4,14 @@ import {
   FileServiceInterface,
 } from '@/common/services/file.service';
 import { PaginationService } from '@/common/services/pagination.service';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AnnonceParamsDto } from './dto/annonce-params.dto';
-import { AnnonceDto } from './dto/annonce.dto';
+import { AnnonceDto, UpdateAnnonceDto } from './dto/annonce.dto';
 import { Annonce } from './entities/annonce.entity';
 import { AnnonceMapper } from './mappers/annonce.mapper';
+import { AnnonceErrorMessages } from './errors/annonce-error-message';
 
 @Injectable()
 export class AnnoncesService {
@@ -63,5 +64,13 @@ export class AnnoncesService {
           ),
         ),
     );
+  }
+
+  async update(id: string, updateAnnonceDto: UpdateAnnonceDto, user_id: string): Promise<void> {
+    const annonce = await this.annoncesRepository.findOne({ where: { id, user_id } });
+    if (!annonce) {
+      throw new NotFoundException(AnnonceErrorMessages.ANNONCE_NOT_FOUND);
+    }
+    await this.annoncesRepository.update(id, updateAnnonceDto);
   }
 }

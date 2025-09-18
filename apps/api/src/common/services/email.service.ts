@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { Env } from '../utils';
+import { render } from '@react-email/render';
+import { WelcomeEmail } from '@flemme/emails';
 
 export type EmailOptions = Pick<
   nodemailer.SendMailOptions,
@@ -55,6 +57,7 @@ export class EmailService {
   }
 
   async sendWelcomeEmail(to: string, name: string): Promise<void> {
+    /* const html = await render(await WelcomeEmail({userName: name, confirmationUrl: 'https://google.com'})) */
     await this.send({
       to,
       subject: 'Bienvenue sur Flemme !',

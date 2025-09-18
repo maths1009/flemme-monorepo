@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
 import { Repository } from 'typeorm';
-import { UAParser } from 'ua-parser-js';
 import { Session } from './entities/session.entity';
 
 @Injectable()

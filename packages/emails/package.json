@@ -2,6 +2,9 @@
   "name": "@flemme/emails",
   "version": "1.0.0",
   "private": true,
+  "exports": {
+    ".": "./index.ts"
+  },
   "scripts": {
     "build": "email build",
     "clean": "rm -rf dist",
@@ -22,9 +25,5 @@
     "eslint": "catalog:",
     "react-email": "4.0.17",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
   }
 }

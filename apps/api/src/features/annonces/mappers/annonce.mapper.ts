@@ -16,6 +16,7 @@ export class AnnonceMapper {
       latitude: annonce.latitude,
       longitude: annonce.longitude,
       created_at: annonce.created_at,
+      updated_at: annonce.updated_at,
       user: await UserMapper.toDto(annonce.user, fileService),
     };
   }

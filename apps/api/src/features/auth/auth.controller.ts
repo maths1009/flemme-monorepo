@@ -20,6 +20,7 @@ import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { RequestResetPasswordDto, ConfirmResetPasswordDto } from './dto/reset-password.dto';
 import { AuthErrorMessages } from './errors/auth-error-messages.enum';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
@@ -135,5 +136,37 @@ export class AuthController {
   async resendEmailVerification(@Req() req: Request) {
     const user = req.user!;
     await this.authService.sendEmailVerificationEmail(user as any);
+  }
+
+  @Public()
+  @Post('request-password-reset')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiOperation({ summary: 'Request password reset' })
+  @ApiBody({ type: RequestResetPasswordDto })
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: 'Password reset email sent if user exists',
+  })
+  async requestPasswordReset(@Body() requestResetPasswordDto: RequestResetPasswordDto) {
+    await this.authService.requestPasswordReset(requestResetPasswordDto);
+  }
+
+  @Public()
+  @Post('confirm-password-reset')
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiOperation({ summary: 'Confirm password reset' })
+  @ApiBody({ type: ConfirmResetPasswordDto })
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+    description: 'Password reset successfully',
+  })
+  @ApiException(() => BadRequestException, {
+    description: AuthErrorMessages.INVALID_RESET_TOKEN,
+  })
+  @ApiException(() => BadRequestException, {
+    description: AuthErrorMessages.RESET_TOKEN_EXPIRED,
+  })
+  async confirmPasswordReset(@Body() confirmResetPasswordDto: ConfirmResetPasswordDto) {
+    await this.authService.confirmPasswordReset(confirmResetPasswordDto);
   }
 }

@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { Env } from '../utils';
 import { render } from '@react-email/render';
-import { WelcomeEmail } from '@flemme/emails';
 
 export type EmailOptions = Pick<
   nodemailer.SendMailOptions,
@@ -83,6 +82,23 @@ export class EmailService {
         <p>Votre code de vérification est : ${verificationCode}</p>
       `,
       text: `Bienvenue ${name} ! Votre code de vérification est : ${verificationCode}`,
+    });
+  }
+
+  async sendResetPasswordEmail(
+    to: string,
+    name: string,
+    resetUrl: string,
+  ): Promise<void> {
+    /* const html = await render(ResetPasswordEmail({ userName: name, resetUrl })); */
+    await this.send({
+      to,
+      subject: 'Réinitialisation de votre mot de passe',
+      html: `
+        <h1>Réinitialisation de votre mot de passe</h1>
+        <p>Bonjour ${name}, vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur ce lien : ${resetUrl}</p>
+      `,
+      text: `Bonjour ${name}, vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur ce lien : ${resetUrl}`,
     });
   }
 }

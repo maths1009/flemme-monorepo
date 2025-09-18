@@ -4,7 +4,6 @@ export const EnvSchema = z.object({
   HOST: z.string(),
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.string().transform((data) => +data),
-  ALLOW_CORS_URL: z.string().url(),
   DB_HOST: z.string(),
   DB_PORT: z.string(),
   DB_USER: z.string(),
@@ -27,6 +26,7 @@ export const EnvSchema = z.object({
   MAIL_FROM: z.string(),
   MAIL_SECURE: z.string().transform((data) => data === 'true'),
   MAIL_IGNORE_TLS: z.string().transform((data) => data === 'true'),
+  FRONTEND_URL: z.string().url(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

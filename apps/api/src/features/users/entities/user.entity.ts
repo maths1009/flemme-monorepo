@@ -38,6 +38,12 @@ export class User {
   @Column({ type: 'datetime', nullable: true })
   email_verification_expired_at?: Date | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  password_reset_token?: string | null;
+
+  @Column({ type: 'datetime', nullable: true })
+  password_reset_expired_at?: Date | null;
+
   @CreateDateColumn({
     type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',

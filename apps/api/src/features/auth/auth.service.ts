@@ -15,7 +15,7 @@ import {
   FileServiceInterface,
 } from '@/common/services/file.service';
 import { generateOtpCode } from '@/common/utils/2fa.util';
-import { comparePasswords } from '@/common/utils/password.util';
+import { comparePasswords, hashPassword } from '@/common/utils/password.util';
 import { UserDto } from '@/features/users/dto/user.dto';
 import { User } from '@/features/users/entities/user.entity';
 import { UserMapper } from '@/features/users/mappers/user.mapper';
@@ -23,6 +23,7 @@ import * as dayjs from 'dayjs';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
+import { RequestResetPasswordDto, ConfirmResetPasswordDto } from './dto/reset-password.dto';
 import { AuthErrorMessages } from './errors/auth-error-messages.enum';
 
 @Injectable()
@@ -129,4 +130,68 @@ export class AuthService {
     user.email_verification_expired_at = null;
     await this.usersService.update(userId, user);
   }
+
+  async requestPasswordReset(requestResetPasswordDto: RequestResetPasswordDto): Promise<void> {
+    const { email } = requestResetPasswordDto;
+    
+    const user = await this.usersService.findByEmail(email);
+    
+    //! SECURITY: If user not found, do nothing and return
+    if (!user) return;
+    
+    const resetPayload: ResetPasswordJwtPayload = {
+      email: user.email,
+      type: 'password_reset',
+    };
+    
+    const resetToken = this.jwtService.sign(resetPayload, {
+      expiresIn: '1h',
+    });
+    const resetExpiry = dayjs().add(1, 'hour').toDate();
+
+    user.password_reset_token = resetToken;
+    user.password_reset_expired_at = resetExpiry;
+    await this.usersService.update(user.id, user);
+
+    const resetUrl = `${this.configService.get('FRONTEND_URL')}/reset-password?token=${resetToken}`;
+
+    await this.emailService.sendResetPasswordEmail(
+      user.email,
+      user.firstname,
+      resetUrl,
+    );
+  }
+
+  async confirmPasswordReset(confirmResetPasswordDto: ConfirmResetPasswordDto): Promise<void> {
+    const { token, newPassword } = confirmResetPasswordDto;
+
+    const payload = this.jwtService.verify<ResetPasswordJwtPayload>(token);
+    
+    if (payload.type !== 'password_reset') {
+      throw new BadRequestException(AuthErrorMessages.INVALID_RESET_TOKEN);
+    }
+
+    const user = await this.usersService.findByEmail(payload.email);
+
+    if (!user) {
+      throw new BadRequestException(AuthErrorMessages.INVALID_RESET_TOKEN);
+    }
+
+    if (user.password_reset_token !== token) {
+      throw new BadRequestException(AuthErrorMessages.INVALID_RESET_TOKEN);
+    }
+
+    if (dayjs().isAfter(dayjs(user.password_reset_expired_at))) {
+      throw new BadRequestException(AuthErrorMessages.RESET_TOKEN_EXPIRED);
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    user.password = hashedPassword;
+    user.password_reset_token = null;
+    user.password_reset_expired_at = null;
+    await this.usersService.update(user.id, user);
+    await this.sessionsService.deleteUserSessions(user.id);
+  }
+
 }

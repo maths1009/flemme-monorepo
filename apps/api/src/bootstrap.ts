@@ -49,7 +49,7 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   app.enableCors({
     credentials: true,
-    origin: configService.get('ALLOW_CORS_URL'),
+    origin: configService.get('FRONTEND_URL'),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['Content-Length', 'Date'],

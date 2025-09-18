@@ -67,11 +67,12 @@ export class AuthService {
 
   async register(
     registerDto: RegisterDto,
-    userAgent: string,
+    userAgent?: string,
+    ip?: string,
   ): Promise<RegisterResponseDto> {
     const user = await this.usersService.create(registerDto);
 
-    const session = await this.sessionsService.create(user.id, userAgent);
+    const session = await this.sessionsService.create(user.id, userAgent, ip);
 
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
@@ -84,8 +85,8 @@ export class AuthService {
     };
   }
 
-  async login(user: User, userAgent: string): Promise<LoginResponseDto> {
-    const session = await this.sessionsService.create(user.id, userAgent);
+  async login(user: User, userAgent?: string, ip?: string): Promise<LoginResponseDto> {
+    const session = await this.sessionsService.create(user.id, userAgent, ip);
 
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
@@ -96,7 +97,7 @@ export class AuthService {
     };
   }
 
-  async logout(sessionId: number): Promise<void> {
+  async logout(sessionId: string): Promise<void> {
     await this.sessionsService.delete(sessionId);
   }
 

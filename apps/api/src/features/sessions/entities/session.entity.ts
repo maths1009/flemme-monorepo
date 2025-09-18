@@ -6,12 +6,13 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('sessions')
 export class Session {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @CreateDateColumn({
     type: 'datetime',
@@ -22,20 +23,14 @@ export class Session {
   @Column({ type: 'datetime' })
   expired_at: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   last_used_at: Date;
 
-  @Column({
-    type: 'varchar',
-    default: 'unknown',
-  })
-  browser_type: string;
+  @Column({ type: 'varchar', nullable: true })
+  user_agent?: string;
 
-  @Column({
-    type: 'varchar',
-    default: 'unknown',
-  })
-  os_type: string;
+  @Column({ type: 'varchar', nullable: true })
+  ip?: string;
 
   @Column()
   user_id: string;

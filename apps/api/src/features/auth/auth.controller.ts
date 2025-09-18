@@ -63,7 +63,8 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
     return await this.authService.register(
       registerDto,
-      req.headers['user-agent'] || 'unknown',
+      req.headers['user-agent'],
+      req.ip,
     );
   }
 

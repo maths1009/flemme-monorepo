@@ -1,3 +1,3 @@
 interface JwtPayload {
-  sessionId: number;
+  sessionId: string;
 }

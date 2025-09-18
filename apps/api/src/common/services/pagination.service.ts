@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm';
+import { FindManyOptions, ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm';
 import { PaginatedResponseDto, PaginationDto } from '../dto/pagination.dto';
 
 type TransformFunction<T extends ObjectLiteral, R> = (
@@ -11,14 +11,21 @@ export class PaginationService {
   async paginate<T extends ObjectLiteral, R extends ObjectLiteral = T>(
     repository: Repository<T>,
     paginationDto: PaginationDto,
-    queryBuilder?: SelectQueryBuilder<T>,
+    builder?: SelectQueryBuilder<T> | FindManyOptions<T>,
     transform?: TransformFunction<T, R>,
   ): Promise<PaginatedResponseDto<R>> {
+
     const { page = 1, limit = 10 } = paginationDto;
     const skip = (page - 1) * limit;
 
-    const query = queryBuilder || repository.createQueryBuilder('entity');
-    const [data, total] = await query.skip(skip).take(limit).getManyAndCount();
+  
+    const [data, total] = builder instanceof SelectQueryBuilder ? 
+      await builder.skip(skip).take(limit).getManyAndCount() : 
+      await repository.findAndCount({
+        skip,
+        take: limit,
+        ...builder,
+      });
 
     const transformedData = transform
       ? await transform(data)

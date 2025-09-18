@@ -11,6 +11,7 @@ import { PaginationModule } from './common/modules/pagination.module';
 import { JwtStrategy } from './common/strategies/jwt.strategy';
 import { AnnoncesModule } from './features/annonces/annonces.module';
 import { AuthModule } from './features/auth/auth.module';
+import { FeedbackModule } from './features/feedbacks/feedback.module';
 import { RolesModule } from './features/roles/roles.module';
 import { SessionsModule } from './features/sessions/sessions.module';
 import { UsersModule } from './features/users/users.module';
@@ -42,6 +43,7 @@ import { UsersModule } from './features/users/users.module';
     AuthModule,
     RolesModule,
     AnnoncesModule,
+    FeedbackModule,
     PaginationModule,
   ],
 })

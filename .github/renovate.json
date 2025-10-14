@@ -7,10 +7,12 @@
   "commitMessagePrefix": "📦️ ",
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchUpdateTypes": ["patch"],
       "automerge": true,
       "ignoreTests": true,
-      "schedule": ["every 1 hour"]
+      "groupName": "dependency patches",
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
     }
   ],
   "timezone": "Europe/Paris"

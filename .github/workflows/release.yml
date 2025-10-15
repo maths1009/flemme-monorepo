@@ -12,6 +12,8 @@ jobs:
     name: 🔧 Setup & Cache
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
       - name: Setup Workspace
         uses: ./.github/actions/setup-workspace
   

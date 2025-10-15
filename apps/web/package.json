@@ -16,7 +16,7 @@
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "@vitejs/plugin-react": "catalog:vite",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:vite",
     "vitest": "catalog:vite",

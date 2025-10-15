@@ -4,14 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "add:api": "pnpm add --filter=api",
-    "add:web": "pnpm add --filter=web",
     "build": "turbo build",
     "changeset": "changeset",
     "clear:modules": "npx npkill",
     "dev": "turbo dev",
-    "dev:api": "pnpm dev --filter=api",
-    "dev:web": "pnpm dev --filter=web",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "init": "pnpm install && find . -name '.env.example' -exec sh -c 'cp \"$1\" \"${1%.example}\"' sh {} \\;",
@@ -45,6 +41,6 @@
   },
   "packageManager": "pnpm@10.12.4",
   "engines": {
-    "node": ">=22"
+    "node": "22.14.0"
   }
 }

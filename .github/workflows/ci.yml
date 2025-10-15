@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    name: 🔧 Setup & Cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Workspace
+        uses: ./.github/actions/setup-workspace
+
+  lint:
+    name: ✨ Lint
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Restore Workspace
+        uses: ./.github/actions/restore-workspace
+      - name: Run lint
+        run: pnpm turbo run lint
+
+  format:
+    name: 🎨 Format
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Restore Workspace
+        uses: ./.github/actions/restore-workspace
+      - name: Run format
+        run: pnpm turbo run format
+
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Restore Workspace
+        uses: ./.github/actions/restore-workspace
+      - name: Run tests
+        run: pnpm turbo run test
+

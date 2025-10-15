@@ -1,9 +1,9 @@
 {
-  "name": "@flemme/ts-config",
-  "version": "1.0.0",
-  "private": true,
   "license": "MIT",
+  "name": "@flemme/ts-config",
+  "private": true,
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "version": "1.0.0"
 }

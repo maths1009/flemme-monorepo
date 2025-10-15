@@ -1,10 +1,14 @@
-import { Env } from '@/common/utils';
-import { swagger } from '@/swagger';
-import { RequestMethod } from '@nestjs/common';
+import { HttpException, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { useContainer } from 'class-validator';
+import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import * as passport from 'passport';
+import { Env } from '@/common/utils';
+import { swagger } from '@/swagger';
+import { AppModule } from './app.module';
 
 /**
  * This function initializes the NestJS application with various middlewares, settings, and configurations.
@@ -21,15 +25,23 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   app.use(helmet());
 
+  app.use(cookieParser());
+
+  app.use(passport.initialize());
+
   app.setGlobalPrefix('api', {
     exclude: [
       {
-        path: '/',
         method: RequestMethod.GET,
+        path: '/',
       },
       {
-        path: '/api-docs',
         method: RequestMethod.GET,
+        path: '/api-docs',
+      },
+      {
+        method: RequestMethod.GET,
+        path: '/health',
       },
     ],
   });
@@ -39,18 +51,43 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
   });
 
   app.enableCors({
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
+    exposedHeaders: ['Content-Length', 'Date'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     origin: configService.get('ALLOW_CORS_URL'),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   });
 
   app.useLogger(logger);
 
-  await swagger(app);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: errors => {
+        const messages = errors.map(error => {
+          const constraints = error.constraints;
+          if (constraints) {
+            return `${error.property}: ${Object.values(constraints).join(', ')}`;
+          }
+          return `${error.property}: Validation failed`;
+        });
+        return new HttpException(messages, 400);
+      },
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+      whitelist: true,
+    }),
+  );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  if (configService.get('NODE_ENV') !== 'production') {
+    await swagger(app);
+  }
 
   await app.listen(configService.get('PORT')!, () => {
-    logger.log(
-      `This application started at ${configService.get('HOST')}:${configService.get('PORT')}`,
-    );
+    logger.log(`This application started at ${configService.get('HOST')}:${configService.get('PORT')}`);
   });
 };

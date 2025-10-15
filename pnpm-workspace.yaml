@@ -3,23 +3,25 @@ packages:
   - packages/*
 
 catalog:
-  typescript: ^5.8.2
-  eslint: ^9.20.0
-  prettier: ^3.5.0
-  "@types/node": ^22.14.0
-  zod: ^3.24.1
+  typescript: ^5.9.3
+  "@types/node": ^22.18.10
+  zod: ^3.25.76
 
 catalogs:
   react19:
-    react: ^19.0.0
-    react-dom: ^19.0.0
-    "@types/react": ^19.0.11
-    "@types/react-dom": ^19.0.4
+    react: ^19.2.0
+    react-dom: ^19.2.0
+    "@types/react": ^19.2.2
+    "@types/react-dom": ^19.2.2
+  vite:
+    vite: ^7.1.10
+    vite-tsconfig-paths: ^5.1.4
+    "@vitejs/plugin-react": ^4.7.0
+    vitest: ^3.2.4
 
 
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@scarf/scarf'
-  - '@swc/core'
   - nestjs-pino
   - sharp

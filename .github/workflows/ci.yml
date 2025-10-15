@@ -11,41 +11,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  setup:
-    name: 🔧 Setup & Cache
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Setup Workspace
-        uses: ./.github/actions/setup-workspace
-
   lint:
     name: ✨ Lint
     runs-on: ubuntu-latest
-    needs: setup
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run lint
         run: pnpm turbo run lint
 
   format:
     name: 🎨 Format
     runs-on: ubuntu-latest
-    needs: setup
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run format
         run: pnpm turbo run format
 
   test:
     name: 🧪 Test
     runs-on: ubuntu-latest
-    needs: setup
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run tests
         run: pnpm turbo run test
 

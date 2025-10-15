@@ -1,16 +1,11 @@
 name: 'Setup Workspace'
-description: 'Set up the Node.js environment, pnpm, and install dependencies with cache'
+description: 'Set up Node.js, pnpm and install dependencies with cache'
 
 inputs:
   frozen-lockfile:
     description: 'Use --frozen-lockfile for installation'
     required: false
     default: 'true'
-
-outputs:
-  cache-key:
-    description: 'Workspace cache key'
-    value: repo-${{ github.sha }}
 
 runs:
   using: 'composite'
@@ -32,10 +27,4 @@ runs:
         else
           pnpm install
         fi
-
-    - name: Cache full workspace
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}
-        key: repo-${{ github.sha }}
 

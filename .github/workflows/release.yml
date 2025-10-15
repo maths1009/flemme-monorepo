@@ -8,21 +8,12 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  setup:
-    name: 🔧 Setup & Cache
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Setup Workspace
-        uses: ./.github/actions/setup-workspace
-  
   build:
     name: 🏗️ Build
     runs-on: ubuntu-latest
-    needs: setup
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run build
         run: pnpm turbo run build
 
@@ -32,16 +23,16 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run versionning
         run: echo "Versionning"
 
   tags:
     name: 🎨 Tags
     runs-on: ubuntu-latest
-    needs: versionning
+    needs: build
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/restore-workspace
+      - uses: ./.github/actions/setup-workspace
       - name: Run tags
         run: echo "Tags"

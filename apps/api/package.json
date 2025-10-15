@@ -15,7 +15,7 @@
     "ua-parser-js": "^2.0.6"
   },
   "devDependencies": {
-    "@flemme/ts-config": "workspace:*",
+    "@flemme/ts-config": "workspace:1.0.0",
     "@nestjs/cli": "^11.0.10",
     "@nestjs/config": "^4.0.2",
     "@nestjs/jwt": "^11.0.1",
@@ -42,7 +42,7 @@
     "typeorm": "^0.3.27"
   },
   "name": "api",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "nest build",
     "dev": "npm run start:db && nest start -w",

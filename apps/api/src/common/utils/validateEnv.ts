@@ -8,11 +8,11 @@ export const EnvSchema = z.object({
   DB_PORT: z.string(),
   DB_USER: z.string(),
   HOST: z.string(),
-  JWT_EXPIRES_IN: z.string().default('30d'),
+  JWT_EXPIRES_IN: z.string(),
   JWT_SECRET: z.string(),
   MINIO_ROOT_PASSWORD: z.string(),
   MINIO_ROOT_USER: z.string(),
-  NODE_ENV: z.enum(['development', 'production', 'test', 'provision']).default('development'),
+  NODE_ENV: z.enum(['development', 'production', 'test', 'provision']),
   PORT: z
     .string()
     .default('8000')

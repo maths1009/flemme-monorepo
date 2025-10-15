@@ -4,12 +4,12 @@
     "vite": "catalog:vite"
   },
   "name": "landing",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
     "start": "vite"
   },
-  "version": "1.0.0"
+  "version": "0.0.0"
 }

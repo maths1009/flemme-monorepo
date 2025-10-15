@@ -7,22 +7,95 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-jobs:
-  build:
-    name: 🏗️ Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup-workspace
-      - name: Run build
-        run: pnpm run build
+permissions:
+  contents: write
 
-  tags:
-    name: 🎨 Tags
+jobs:
+  release:
+    name: 🚀 Release
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
-      - name: Run tags
-        run: pnpm run changeset tag
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62
+        with:
+          files: |
+            packages/*/package.json
+            apps/*/package.json
+
+      - name: Create GitHub Releases
+        if: steps.changed-files.outputs.all_changed_files != ''
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            pkg=$(dirname "$file")
+            NAME=$(basename "$pkg")
+            VERSION=$(jq -r .version "$pkg/package.json")
+
+            echo "📦 Creating release for $NAME v$VERSION"
+
+            if [ -f "$pkg/CHANGELOG.md" ]; then
+              BODY=$(awk '/^## /{if (p) exit; p=1} p' "$pkg/CHANGELOG.md")
+            else
+              BODY="No changelog available."
+            fi
+
+            gh release create "$NAME-v$VERSION" \
+              --title "$NAME v$VERSION" \
+              --notes "$BODY" \
+              --target main || echo "❌ Error creating release $NAME-v$VERSION"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+  deploy:
+    name: 🚀 Deploy
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-workspace
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62
+        with:
+          files: |
+            packages/*/package.json
+            apps/*/package.json
+      - name: Deploy
+        if: steps.changed-files.outputs.all_changed_files != ''
+        run: |
+          APP_ID_MAPPING='{
+            "landing":"${{ secrets.LANDING_APP_ID }}"
+          }'
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            pkg=$(dirname "$file")
+            APP_NAME=$(basename "$pkg")
+            APP_ID=$(echo "$APP_ID_MAPPING" | jq -r ".$APP_NAME")
+            
+            echo "📦 Application détectée: $APP_NAME"
+            
+            if [ "$APP_ID" = "null" ] || [ -z "$APP_ID" ]; then
+              echo "⚠️  Aucun APP_ID configuré pour $APP_NAME - envoi ignoré"
+              continue
+            fi
+            
+            echo "🚀 Envoi du déploiement de $APP_NAME ..."
+            
+            HTTP_CODE=$(curl -s -w "%{http_code}" -o /tmp/deploy_response.json \
+              -X POST "${{ secrets.DOKPLOY_API_URL }}/api/application.deploy" \
+              -H "accept: application/json" \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ${{ secrets.AUTO_DEPLOY_TOKEN }}" \
+              -d "{\"applicationId\": \"$APP_ID\"}")
+            
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "✅ $APP_NAME envoyé avec succès (HTTP $HTTP_CODE)"
+            else
+              echo "❌ Échec de l'envoi de $APP_NAME (HTTP $HTTP_CODE)"
+              cat /tmp/deploy_response.json
+              exit 1
+            fi
+          done

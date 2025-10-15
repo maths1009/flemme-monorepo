@@ -16,7 +16,7 @@ catalogs:
   vite:
     vite: ^7.1.10
     vite-tsconfig-paths: ^5.1.4
-    "@vitejs/plugin-react": ^4.7.0
+    "@vitejs/plugin-react": ^5.0.4
     vitest: ^3.2.4
 
 

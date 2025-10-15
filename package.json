@@ -32,6 +32,7 @@
     "dev": "turbo dev",
     "init": "pnpm install && find . -name '.env.example' -exec sh -c 'cp \"$1\" \"${1%.example}\"' sh {} \\;",
     "prepare": "husky",
+    "release": "pnpm changeset && pnpm changeset version",
     "start": "turbo start",
     "test": "turbo test",
     "test:format": "biome format .",

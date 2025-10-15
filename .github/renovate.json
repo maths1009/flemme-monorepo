@@ -1,19 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
   "baseBranches": ["development"],
-  "rangeStrategy": "bump",
-  "updateInternalDeps": true,
   "commitMessagePrefix": "📦️ ",
+  "extends": ["config:recommended"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch"],
       "automerge": true,
-      "ignoreTests": true,
-      "groupName": "dependency patches",
+      "automergeStrategy": "squash",
       "automergeType": "pr",
-      "automergeStrategy": "squash"
+      "groupName": "dependency patches",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["patch"]
     }
   ],
-  "timezone": "Europe/Paris"
+  "rangeStrategy": "bump",
+  "timezone": "Europe/Paris",
+  "updateInternalDeps": true
 }

@@ -15,11 +15,11 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "catalog:vite",
     "jsdom": "^26.1.0",
     "typescript": "catalog:",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4",
+    "vite-tsconfig-paths": "catalog:vite",
+    "vitest": "catalog:vite",
     "zod": "catalog:"
   },
   "name": "web",
@@ -31,5 +31,5 @@
     "test": "vitest run --passWithNoTests"
   },
   "type": "module",
-  "version": "1.0.0"
+  "version": "3.0.0"
 }

@@ -1,12 +1,12 @@
+import type { ReactNode } from 'react';
 import { Providers } from '@/components';
-import { ReactNode } from 'react';
 
 const RootLayout = ({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) => (
-  <html suppressHydrationWarning>
+  <html lang="fr" suppressHydrationWarning>
     <body suppressHydrationWarning>
       <Providers>{children}</Providers>
     </body>

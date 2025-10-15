@@ -1,5 +1,5 @@
 // DOM Content Loaded
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   // Initialize all components
   initFAQ();
   initNewsletterForm();
@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 function initFAQ() {
   const faqQuestions = document.querySelectorAll('.faq-question');
 
-  faqQuestions.forEach((question) => {
+  faqQuestions.forEach(question => {
     question.addEventListener('click', function () {
       const isExpanded = this.getAttribute('aria-expanded') === 'true';
       const answerId = this.getAttribute('aria-controls');
       const answer = document.getElementById(answerId);
 
       // Close all other FAQ items
-      faqQuestions.forEach((otherQuestion) => {
+      faqQuestions.forEach(otherQuestion => {
         if (otherQuestion !== this) {
           otherQuestion.setAttribute('aria-expanded', 'false');
           const otherAnswerId = otherQuestion.getAttribute('aria-controls');
@@ -58,7 +58,7 @@ function initNewsletterForm() {
 
   if (!form || !emailInput || !errorMessage) return;
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     const email = emailInput.value.trim();
@@ -91,7 +91,7 @@ function initNewsletterForm() {
     }
   });
 
-  emailInput.addEventListener('input', function () {
+  emailInput.addEventListener('input', () => {
     if (errorMessage.classList.contains('show')) {
       clearError();
     }
@@ -115,7 +115,7 @@ function initNewsletterForm() {
     emailInput.removeAttribute('aria-invalid');
   }
 
-  function submitNewsletter(email) {
+  function submitNewsletter(_email) {
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
@@ -132,8 +132,7 @@ function initNewsletterForm() {
       // Show success message
       const successMessage = document.createElement('div');
       successMessage.className = 'success-message';
-      successMessage.textContent =
-        'Merci ! Vous êtes maintenant inscrit à notre newsletter.';
+      successMessage.textContent = 'Merci ! Vous êtes maintenant inscrit à notre newsletter.';
       successMessage.style.cssText = `
                 color: #10b981;
                 font-size: 0.875rem;
@@ -159,7 +158,7 @@ function initNewsletterForm() {
 function initSmoothScrolling() {
   const navLinks = document.querySelectorAll('a[href^="#"]');
 
-  navLinks.forEach((link) => {
+  navLinks.forEach(link => {
     link.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
 
@@ -176,8 +175,8 @@ function initSmoothScrolling() {
         const targetPosition = targetElement.offsetTop - headerHeight - 20;
 
         window.scrollTo({
-          top: targetPosition,
           behavior: 'smooth',
+          top: targetPosition,
         });
 
         // Update focus for accessibility
@@ -190,23 +189,20 @@ function initSmoothScrolling() {
 // Accessibility Enhancements
 function initAccessibility() {
   // Add focus indicators for keyboard navigation
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Tab') {
       document.body.classList.add('keyboard-navigation');
     }
   });
 
-  document.addEventListener('mousedown', function () {
+  document.addEventListener('mousedown', () => {
     document.body.classList.remove('keyboard-navigation');
   });
 
   // Announce page changes to screen readers
-  const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      if (
-        mutation.type === 'attributes' &&
-        mutation.attributeName === 'aria-expanded'
-      ) {
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'aria-expanded') {
         const element = mutation.target;
         const isExpanded = element.getAttribute('aria-expanded') === 'true';
 
@@ -221,7 +217,7 @@ function initAccessibility() {
   });
 
   // Observe FAQ questions for aria-expanded changes
-  document.querySelectorAll('.faq-question').forEach((question) => {
+  document.querySelectorAll('.faq-question').forEach(question => {
     observer.observe(question, { attributes: true });
   });
 
@@ -245,7 +241,7 @@ function initPerformanceOptimizations() {
   // Lazy loading for images
   if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
           if (img.dataset.src) {
@@ -257,7 +253,7 @@ function initPerformanceOptimizations() {
       });
     });
 
-    document.querySelectorAll('img[data-src]').forEach((img) => {
+    document.querySelectorAll('img[data-src]').forEach(img => {
       imageObserver.observe(img);
     });
   }
@@ -265,7 +261,7 @@ function initPerformanceOptimizations() {
   // Preload critical resources
   const criticalImages = ['/la-flemme--.svg', '/rectangle-29-1.svg'];
 
-  criticalImages.forEach((src) => {
+  criticalImages.forEach(src => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';
@@ -275,12 +271,12 @@ function initPerformanceOptimizations() {
 
   // Debounced scroll handler for performance
   let scrollTimeout;
-  window.addEventListener('scroll', function () {
+  window.addEventListener('scroll', () => {
     if (scrollTimeout) {
       clearTimeout(scrollTimeout);
     }
 
-    scrollTimeout = setTimeout(function () {
+    scrollTimeout = setTimeout(() => {
       handleScroll();
     }, 16); // ~60fps
   });
@@ -299,7 +295,7 @@ function initPerformanceOptimizations() {
 }
 
 // Error Handling
-window.addEventListener('error', function (e) {
+window.addEventListener('error', e => {
   console.error('JavaScript Error:', e.error);
 
   // Don't show errors to users in production
@@ -321,8 +317,7 @@ window.addEventListener('error', function (e) {
         max-width: 300px;
         font-size: 0.875rem;
     `;
-  errorDiv.textContent =
-    'Une erreur est survenue. Veuillez rafraîchir la page.';
+  errorDiv.textContent = 'Une erreur est survenue. Veuillez rafraîchir la page.';
 
   document.body.appendChild(errorDiv);
 
@@ -335,13 +330,15 @@ window.addEventListener('error', function (e) {
 
 // Service Worker Registration (for PWA capabilities)
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function () {
+  window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
-      .then(function (registration) {
+      .then(_registration => {
+        // biome-ignore lint/suspicious/noConsole: console log
         console.log('ServiceWorker registration successful');
       })
-      .catch(function (err) {
+      .catch(_err => {
+        // biome-ignore lint/suspicious/noConsole: console log
         console.log('ServiceWorker registration failed');
       });
   });

@@ -1,5 +1,5 @@
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 type ProvidersProps = {
   children: ReactNode;

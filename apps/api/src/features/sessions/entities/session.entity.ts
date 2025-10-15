@@ -1,12 +1,5 @@
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '@/features/users/entities/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity('sessions')
 export class Session {
@@ -14,8 +7,8 @@ export class Session {
   id: number;
 
   @CreateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   created_at: Date;
 
@@ -26,14 +19,14 @@ export class Session {
   last_used_at: Date;
 
   @Column({
-    type: 'varchar',
     default: 'unknown',
+    type: 'varchar',
   })
   browser_type: string;
 
   @Column({
-    type: 'varchar',
     default: 'unknown',
+    type: 'varchar',
   })
   os_type: string;
 

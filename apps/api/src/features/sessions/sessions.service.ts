@@ -18,14 +18,12 @@ export class SessionsService {
     const { browser, os } = UAParser(userAgent);
 
     const session = this.sessionsRepository.create({
-      user_id: userId,
-      last_used_at: dayjs().toISOString(),
-      expired_at: dayjs()
-        .add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond')
-        .toISOString(),
-      created_at: dayjs().toISOString(),
       browser_type: browser.name,
+      created_at: dayjs().toISOString(),
+      expired_at: dayjs().add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond').toISOString(),
+      last_used_at: dayjs().toISOString(),
       os_type: os.name,
+      user_id: userId,
     });
 
     return this.sessionsRepository.save(session);
@@ -38,10 +36,7 @@ export class SessionsService {
   }
 
   async updateLastUsed(sessionId: number): Promise<void> {
-    await this.sessionsRepository.update(
-      { id: sessionId },
-      { last_used_at: dayjs().toISOString() },
-    );
+    await this.sessionsRepository.update({ id: sessionId }, { last_used_at: dayjs().toISOString() });
   }
 
   async delete(id: number): Promise<void> {

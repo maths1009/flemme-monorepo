@@ -1,12 +1,11 @@
-import { SessionsService } from '@/features/sessions/sessions.service';
-import { UsersService } from '@/features/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
 import { comparePasswords } from '@/common/utils/password';
+import { SessionsService } from '@/features/sessions/sessions.service';
 import { UserDto } from '@/features/users/dto/user.dto';
 import { User } from '@/features/users/entities/user.entity';
-import { UserMapper } from '@/features/users/mappers/user.mapper';
+import { userToDto } from '@/features/users/mappers/user.mapper';
+import { UsersService } from '@/features/users/users.service';
 import { LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
 
@@ -27,13 +26,10 @@ export class AuthService {
 
     if (!isPasswordValid) return null;
 
-    return UserMapper.toDto(user);
+    return userToDto(user);
   }
 
-  async register(
-    registerDto: RegisterDto,
-    userAgent: string,
-  ): Promise<RegisterResponseDto> {
+  async register(registerDto: RegisterDto, userAgent: string): Promise<RegisterResponseDto> {
     const user = await this.usersService.create(registerDto);
 
     const session = await this.sessionsService.create(user.id, userAgent);
@@ -41,7 +37,7 @@ export class AuthService {
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
 
-    return { user: UserMapper.toDto(user), access_token };
+    return { access_token, user: userToDto(user) };
   }
 
   async login(user: User, userAgent: string): Promise<LoginResponseDto> {
@@ -50,7 +46,7 @@ export class AuthService {
     const payload: JwtPayload = { sessionId: session.id };
     const access_token = this.jwtService.sign(payload);
 
-    return { user: UserMapper.toDto(user), access_token };
+    return { access_token, user: userToDto(user) };
   }
 
   async logout(sessionId: number): Promise<void> {

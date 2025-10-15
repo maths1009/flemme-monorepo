@@ -1,4 +1,3 @@
-import { Public } from '@/common/decorators/public.decorator';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   Body,
@@ -13,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { Public } from '@/common/decorators/public.decorator';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
@@ -31,16 +31,13 @@ export class AuthController {
   @ApiOperation({ summary: 'Connecter un utilisateur' })
   @ApiBody({ type: LoginDto })
   @ApiResponse({
-    status: HttpStatus.OK,
     description: 'Connexion réussie',
+    status: HttpStatus.OK,
     type: LoginResponseDto,
   })
   @ApiException(() => UnauthorizedException)
   async login(@Req() req: Request) {
-    return this.authService.login(
-      req.user as any,
-      req.headers['user-agent'] || 'unknown',
-    );
+    return this.authService.login(req.user as any, req.headers['user-agent'] || 'unknown');
   }
 
   @Public()
@@ -52,23 +49,20 @@ export class AuthController {
     description: UserErrorMessages.USER_ALREADY_EXISTS,
   })
   @ApiResponse({
-    status: HttpStatus.CREATED,
     description: 'Utilisateur créé avec succès',
+    status: HttpStatus.CREATED,
     type: RegisterResponseDto,
   })
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
-    return await this.authService.register(
-      registerDto,
-      req.headers['user-agent'] || 'unknown',
-    );
+    return await this.authService.register(registerDto, req.headers['user-agent'] || 'unknown');
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Déconnecter un utilisateur' })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Déconnexion réussie',
+    status: HttpStatus.ACCEPTED,
   })
   async logout(@Req() req: Request) {
     const user = req.user!;
@@ -81,8 +75,8 @@ export class AuthController {
     summary: 'Déconnecter un utilisateur de toutes ses sessions',
   })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Déconnexion réussie de toutes les sessions',
+    status: HttpStatus.ACCEPTED,
   })
   async logoutAll(@Req() req: Request) {
     const user = req.user!;

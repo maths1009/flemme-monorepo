@@ -1,16 +1,4 @@
 {
-  "name": "web",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "next build",
-    "check-types": "tsc --noEmit",
-    "dev": "next dev --turbopack",
-    "lint": "next lint --max-warnings 0",
-    "start": "next start",
-    "test": "vitest run"
-  },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.8",
     "next": "^15.5.5",
@@ -20,7 +8,6 @@
     "react-dom": "catalog:react19"
   },
   "devDependencies": {
-    "@flemme/eslint-config": "workspace:*",
     "@flemme/ts-config": "workspace:*",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -29,11 +16,20 @@
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "@vitejs/plugin-react": "^4.7.0",
-    "eslint": "catalog:",
     "jsdom": "^26.1.0",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
     "zod": "catalog:"
-  }
+  },
+  "name": "web",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbopack",
+    "start": "next start",
+    "test": "vitest run --passWithNoTests"
+  },
+  "type": "module",
+  "version": "1.0.0"
 }

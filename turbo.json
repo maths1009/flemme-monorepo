@@ -1,17 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["API_URL"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["API_URL"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"],
-      "cache": false,
-      "outputLogs": "full"
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "dev": {
       "cache": false,
@@ -22,8 +16,8 @@
       "dependsOn": ["^start"]
     },
     "test": {
-      "cache": false,
       "dependsOn": ["^test"]
     }
-  }
+  },
+  "ui": "tui"
 }

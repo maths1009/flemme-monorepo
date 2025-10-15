@@ -1,12 +1,5 @@
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '@/features/roles/entities/role.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -34,19 +27,19 @@ export class User {
   @Column({ length: 6, nullable: true })
   email_verification_code?: string;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ nullable: true, type: 'datetime' })
   email_verification_expired_at?: Date;
 
   @Column({ length: 255, nullable: true })
   profile_picture_url?: string;
 
   @CreateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   created_at: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ nullable: true, type: 'datetime' })
   suspended_at?: Date;
 
   @Column({ default: true })

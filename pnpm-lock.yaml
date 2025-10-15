@@ -33,7 +33,7 @@ catalogs:
       specifier: ^4.7.0
       version: 4.7.0
     vite:
-      specifier: ^7.1.0
+      specifier: ^7.1.10
       version: 7.1.10
     vite-tsconfig-paths:
       specifier: ^5.1.4
@@ -204,7 +204,7 @@ importers:
   apps/landing:
     devDependencies:
       terser:
-        specifier: ^5.36.0
+        specifier: ^5.44.0
         version: 5.44.0
       vite:
         specifier: catalog:vite

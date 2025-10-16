@@ -126,7 +126,7 @@ importers:
         version: 2.0.6
     devDependencies:
       '@flemme/ts-config':
-        specifier: workspace:*
+        specifier: workspace:1.0.0
         version: link:../../packages/ts-config
       '@nestjs/cli':
         specifier: ^11.0.10
@@ -232,7 +232,7 @@ importers:
         version: 19.2.0(react@19.2.0)
     devDependencies:
       '@flemme/ts-config':
-        specifier: workspace:*
+        specifier: workspace:1.0.0
         version: link:../../packages/ts-config
       '@testing-library/dom':
         specifier: ^10.4.1

@@ -1,6 +1,6 @@
 'use client';
 
-import { CircularButton } from '@/components/auth/circularButton';
+import { CircularButton } from '@/components/auth/CircularButton';
 import { Button } from '@/components/common';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ const WelcomePage = () => {
             <span className="block text-[56px]">Repos</span>
           </h1>
 
-          <div className="mt-10" onClick={() => router.push('/login')}>
+          <div className="mt-10" onClick={() => router.push('/auth/login')}>
             <CircularButton />
           </div>
         </div>
@@ -30,7 +30,7 @@ const WelcomePage = () => {
               variant="white"
               size="lg"
               className="w-full text-lg"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push('/auth/login')}
             >
               Se connecter
             </Button>
@@ -38,7 +38,7 @@ const WelcomePage = () => {
               variant="white"
               size="lg"
               className="w-full text-lg"
-              onClick={() => router.push('/register')}
+              onClick={() => router.push('/auth/register')}
             >
               S'inscrire
             </Button>

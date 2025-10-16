@@ -27,14 +27,14 @@ const RegisterPage = () => {
       return;
     }
 
-    router.push('/register/success');
+    router.push('/auth/register/a2f');
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md rounded-xl p-6">
-        <h1 className="mb-6 text-4xl font-extrabold text-foreground">
-          Se connecter
+        <h1 className="mb-6 text-4xl font-extrabold text-foreground text-center">
+          S'inscrire
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">

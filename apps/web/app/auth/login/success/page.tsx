@@ -1,6 +1,6 @@
 'use client';
 
-import { CircularButton } from '@/components/auth/circularButton';
+import { CircularButton } from '@/components/auth/CircularButton';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -8,7 +8,7 @@ const LoginSuccessPage = () => {
   const router = useRouter();
 
   return (
-    <div className="relative mx-auto flex h-screen max-w-[390px] flex-col items-center bg-primary/5 px-6 py-10 space-y-10 mt-[96px]">
+    <div className="relative mx-auto flex h-screen max-w-[390px] flex-col items-center bg-primary/5 px-6 py-10 space-y-10 mt-[48px]">
       {/* Illustration en haut */}
       <div className="mt-6">
         <Image

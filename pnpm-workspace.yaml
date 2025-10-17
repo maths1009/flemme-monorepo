@@ -4,7 +4,7 @@ packages:
 
 catalog:
   typescript: ^5.9.3
-  "@types/node": ^22.18.10
+  "@types/node": ^22.18.11
   zod: ^3.25.76
 
 catalogs:

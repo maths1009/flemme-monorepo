@@ -1,20 +1,15 @@
 import { FileServiceInterface } from '@/common/services/file.service';
-import { UserMapper } from '@/features/users/mappers/user.mapper';
+import { userToDto } from '@/features/users/mappers/user.mapper';
 import { FeedbackDto } from '../dto/feedback.dto';
 import { Feedback } from '../entities/feedback.entity';
 
-export class FeedbackMapper {
-  static async toDto(
-    feedback: Feedback,
-    fileService?: FileServiceInterface,
-  ): Promise<FeedbackDto> {
-    return {
-      id: feedback.id,
-      rating: feedback.rating,
-      message: feedback.message,
-      created_at: feedback.created_at,
-      receiver: await UserMapper.toDto(feedback.receiver, fileService),
-      sender: await UserMapper.toDto(feedback.sender, fileService),
-    };
-  }
-}
+export const feedbackToDto = async (feedback: Feedback, fileService?: FileServiceInterface): Promise<FeedbackDto> => {
+  return {
+    created_at: feedback.created_at,
+    id: feedback.id,
+    message: feedback.message,
+    rating: feedback.rating,
+    receiver: await userToDto(feedback.receiver, fileService),
+    sender: await userToDto(feedback.sender, fileService),
+  };
+};

@@ -1,4 +1,3 @@
-import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   BadRequestException,
@@ -14,14 +13,9 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
 import { CreateLikeDto, LikeDto, LikeParamsDto } from './dto/like.dto';
 import { LikeErrorMessages } from './errors/like-error-messages.enum';
 import { LikesService } from './likes.service';
@@ -36,8 +30,8 @@ export class LikesController {
   @ApiOperation({ summary: 'Create a new like' })
   @ApiBody({ type: CreateLikeDto })
   @ApiResponse({
-    status: HttpStatus.CREATED,
     description: 'Like created successfully',
+    status: HttpStatus.CREATED,
     type: LikeDto,
   })
   @ApiException(() => BadRequestException, {
@@ -49,18 +43,15 @@ export class LikesController {
   @ApiException(() => NotFoundException, {
     description: LikeErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async create(
-    @Body() createLikeDto: CreateLikeDto,
-    @Req() req: Request,
-  ): Promise<void> {
+  async create(@Body() createLikeDto: CreateLikeDto, @Req() req: Request): Promise<void> {
     await this.likesService.create(createLikeDto, req.user!.id);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all likes with pagination and filters' })
   @ApiResponse({
-    status: HttpStatus.OK,
     description: 'List of likes paginated',
+    status: HttpStatus.OK,
     type: () => PaginatedResponseDto<LikeDto>,
   })
   async findAll(@Query() params: LikeParamsDto, @Req() req: Request) {
@@ -70,10 +61,10 @@ export class LikesController {
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Delete a like' })
-  @ApiParam({ name: 'id', description: 'Like id' })
+  @ApiParam({ description: 'Like id', name: 'id' })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Like deleted successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @ApiException(() => NotFoundException, {
     description: LikeErrorMessages.LIKE_NOT_FOUND,

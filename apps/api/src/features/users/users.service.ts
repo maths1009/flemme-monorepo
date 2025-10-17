@@ -1,18 +1,10 @@
-import {
-  FILE_SERVICE,
-  FileServiceInterface,
-} from '@/common/services/file.service';
-import { BucketEnum } from '@/common/enums';
-import { hashPassword } from '@/common/utils';
-import {
-  BadRequestException,
-  ConflictException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logger } from 'nestjs-pino';
 import { Repository } from 'typeorm';
+import { BucketEnum } from '@/common/enums';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
+import { hashPassword } from '@/common/utils';
 import { User } from './entities/user.entity';
 import { UserErrorMessages } from './errors/user-error-message';
 
@@ -41,8 +33,8 @@ export class UsersService {
     const savedUser = await this.usersRepository.save(user);
 
     const userWithRole = await this.usersRepository.findOne({
-      where: { id: savedUser.id },
       relations: ['role'],
+      where: { id: savedUser.id },
     });
 
     if (!userWithRole) {
@@ -57,15 +49,15 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User | null> {
     return await this.usersRepository.findOne({
-      where: { email },
       relations: ['role'],
+      where: { email },
     });
   }
 
   async findOne(id: string): Promise<User | null> {
     return await this.usersRepository.findOne({
-      where: { id },
       relations: ['role'],
+      where: { id },
     });
   }
 
@@ -81,10 +73,7 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async uploadProfilePicture(
-    userId: string,
-    file: Express.Multer.File,
-  ): Promise<void> {
+  async uploadProfilePicture(userId: string, file: Express.Multer.File): Promise<void> {
     const filename = `${userId}.png`;
     const bucket = BucketEnum.PROFILE_PICTURE;
 
@@ -96,20 +85,16 @@ export class UsersService {
 
       await this.fileService.upload(file, {
         bucket,
-        filename,
         contentType: 'image/png',
+        filename,
         metadata: {
-          userId: userId.toString(),
           uploadedAt: new Date().toISOString(),
+          userId: userId.toString(),
         },
       });
     } catch (error) {
-      this.logger.error(
-        `Error uploading profile picture for user ${userId}: ${error}`,
-      );
-      throw new BadRequestException(
-        UserErrorMessages.ERROR_UPLOADING_PROFILE_PICTURE,
-      );
+      this.logger.error(`Error uploading profile picture for user ${userId}: ${error}`);
+      throw new BadRequestException(UserErrorMessages.ERROR_UPLOADING_PROFILE_PICTURE);
     }
   }
 }

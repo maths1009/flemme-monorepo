@@ -15,14 +15,12 @@ export class SessionsService {
 
   async create(userId: string, userAgent?: string, ip?: string): Promise<Session> {
     const session = this.sessionsRepository.create({
-      user_id: userId,
-      last_used_at: dayjs().toISOString(),
-      expired_at: dayjs()
-        .add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond')
-        .toISOString(),
       created_at: dayjs().toISOString(),
-      user_agent: userAgent,
+      expired_at: dayjs().add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond').toISOString(),
       ip,
+      last_used_at: dayjs().toISOString(),
+      user_agent: userAgent,
+      user_id: userId,
     });
 
     return this.sessionsRepository.save(session);
@@ -35,10 +33,7 @@ export class SessionsService {
   }
 
   async updateLastUsed(sessionId: string): Promise<void> {
-    await this.sessionsRepository.update(
-      { id: sessionId },
-      { last_used_at: dayjs().toISOString() },
-    );
+    await this.sessionsRepository.update({ id: sessionId }, { last_used_at: dayjs().toISOString() });
   }
 
   async delete(id: string): Promise<void> {

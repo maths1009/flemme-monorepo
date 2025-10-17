@@ -14,21 +14,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
+import { FileValidationPipe } from '@/common/pipes';
 import { UploadProfilePictureDto } from './dto/upload-profile-picture.dto';
+import { UpdateUserDto } from './dto/user.dto';
 import { UserErrorMessages } from './errors/user-error-message';
 import { UsersService } from './users.service';
-import { FileValidationPipe } from '@/common/pipes';
-import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
-import { UpdateUserDto } from './dto/user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -38,29 +31,25 @@ export class UsersController {
   @Patch(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Update user' })
-  @ApiParam({ name: 'id', description: 'User id' })
+  @ApiParam({ description: 'User id', name: 'id' })
   @ApiBody({ type: UpdateUserDto })
   async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Req() req: Request) {
     //TODO: send email to user if email is changed
     const currentUser = req.user!;
     if (currentUser.id !== id) {
-      throw new BadRequestException(
-        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
-      );
+      throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
     return this.usersService.update(id, updateUserDto);
   }
 
-
   @Put(':id/profile-picture')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Upload profile picture' })
-  @ApiParam({ name: 'id', description: 'User id' })
+  @ApiParam({ description: 'User id', name: 'id' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UploadProfilePictureDto })
   @ApiException(() => BadRequestException, {
-    description:
-      UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+    description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
   })
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_NOT_FOUND,
@@ -77,18 +66,19 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadProfilePicture(
     @Param('id') id: string,
-    @UploadedFile(new FileValidationPipe({
-      maxSize: 5 * 1024 * 1024,
-      allowedMimeTypes: ['image/jpeg', 'image/png'],
-      required: true,
-    })) file: Express.Multer.File,
+    @UploadedFile(
+      new FileValidationPipe({
+        allowedMimeTypes: ['image/jpeg', 'image/png'],
+        maxSize: 5 * 1024 * 1024,
+        required: true,
+      }),
+    )
+    file: Express.Multer.File,
     @Req() req: Request,
   ): Promise<void> {
     const currentUser = req.user!;
     if (currentUser.id !== id) {
-      throw new BadRequestException(
-        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
-      );
+      throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
     await this.usersService.uploadProfilePicture(id, file);
   }
@@ -96,16 +86,14 @@ export class UsersController {
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Delete user' })
-  @ApiParam({ name: 'id', description: 'User id' })
+  @ApiParam({ description: 'User id', name: 'id' })
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
   })
   async deleteUser(@Param('id') id: string, @Req() req: Request) {
     const currentUser = req.user!;
     if (currentUser.id !== id) {
-      throw new BadRequestException(
-        UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
-      );
+      throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
     await this.usersService.delete(id);
   }

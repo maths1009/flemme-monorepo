@@ -1,4 +1,3 @@
-import { User } from '@/features/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,28 +7,29 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '@/features/users/entities/user.entity';
 
 @Entity('sessions')
 export class Session {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @CreateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   created_at: Date;
 
   @Column({ type: 'datetime' })
   expired_at: Date;
 
-  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
   last_used_at: Date;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   user_agent?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   ip?: string;
 
   @Column()

@@ -1,29 +1,20 @@
-import { SessionsService } from '@/features/sessions/sessions.service';
-import { UsersService } from '@/features/users/users.service';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-
+import * as dayjs from 'dayjs';
 import { EmailService } from '@/common/services/email.service';
-import {
-  FILE_SERVICE,
-  FileServiceInterface,
-} from '@/common/services/file.service';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { generateOtpCode } from '@/common/utils/2fa.util';
 import { comparePasswords, hashPassword } from '@/common/utils/password.util';
+import { SessionsService } from '@/features/sessions/sessions.service';
 import { UserDto } from '@/features/users/dto/user.dto';
 import { User } from '@/features/users/entities/user.entity';
-import { UserMapper } from '@/features/users/mappers/user.mapper';
-import * as dayjs from 'dayjs';
+import { userToDto } from '@/features/users/mappers/user.mapper';
+import { UsersService } from '@/features/users/users.service';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
-import { RequestResetPasswordDto, ConfirmResetPasswordDto } from './dto/reset-password.dto';
+import { ConfirmResetPasswordDto, RequestResetPasswordDto } from './dto/reset-password.dto';
 import { AuthErrorMessages } from './errors/auth-error-messages.enum';
 
 @Injectable()
@@ -47,7 +38,7 @@ export class AuthService {
 
     if (!isPasswordValid) return null;
 
-    return UserMapper.toDto(user);
+    return userToDto(user);
   }
 
   async sendEmailVerificationEmail(user: User): Promise<void> {
@@ -56,21 +47,13 @@ export class AuthService {
     }
 
     const verificationCode = generateOtpCode(6);
-    await this.emailService.sendEmailVerificationEmail(
-      user.email,
-      user.firstname,
-      verificationCode,
-    );
+    await this.emailService.sendEmailVerificationEmail(user.email, user.firstname, verificationCode);
     user.email_verification_code = verificationCode;
     user.email_verification_expired_at = dayjs().add(15, 'minutes').toDate();
     await this.usersService.update(user.id, user);
   }
 
-  async register(
-    registerDto: RegisterDto,
-    userAgent?: string,
-    ip?: string,
-  ): Promise<RegisterResponseDto> {
+  async register(registerDto: RegisterDto, userAgent?: string, ip?: string): Promise<RegisterResponseDto> {
     const user = await this.usersService.create(registerDto);
 
     const session = await this.sessionsService.create(user.id, userAgent, ip);
@@ -81,8 +64,8 @@ export class AuthService {
     await this.sendEmailVerificationEmail(user);
 
     return {
-      user: await UserMapper.toDto(user, this.fileService),
       access_token,
+      user: await userToDto(user, this.fileService),
     };
   }
 
@@ -93,8 +76,8 @@ export class AuthService {
     const access_token = this.jwtService.sign(payload);
 
     return {
-      user: await UserMapper.toDto(user, this.fileService),
       access_token,
+      user: await userToDto(user, this.fileService),
     };
   }
 
@@ -114,13 +97,9 @@ export class AuthService {
       case user?.email_verified:
         throw new BadRequestException(AuthErrorMessages.EMAIL_ALREADY_VERIFIED);
       case user?.email_verification_code !== code:
-        throw new BadRequestException(
-          AuthErrorMessages.INVALID_VERIFICATION_CODE,
-        );
+        throw new BadRequestException(AuthErrorMessages.INVALID_VERIFICATION_CODE);
       case dayjs().isAfter(dayjs(user?.email_verification_expired_at)):
-        throw new BadRequestException(
-          AuthErrorMessages.VERIFICATION_CODE_EXPIRED,
-        );
+        throw new BadRequestException(AuthErrorMessages.VERIFICATION_CODE_EXPIRED);
     }
 
     await this.emailService.sendWelcomeEmail(user.email, user.firstname);
@@ -133,17 +112,17 @@ export class AuthService {
 
   async requestPasswordReset(requestResetPasswordDto: RequestResetPasswordDto): Promise<void> {
     const { email } = requestResetPasswordDto;
-    
+
     const user = await this.usersService.findByEmail(email);
-    
+
     //! SECURITY: If user not found, do nothing and return
     if (!user) return;
-    
+
     const resetPayload: ResetPasswordJwtPayload = {
       email: user.email,
       type: 'password_reset',
     };
-    
+
     const resetToken = this.jwtService.sign(resetPayload, {
       expiresIn: '1h',
     });
@@ -155,18 +134,14 @@ export class AuthService {
 
     const resetUrl = `${this.configService.get('FRONTEND_URL')}/reset-password?token=${resetToken}`;
 
-    await this.emailService.sendResetPasswordEmail(
-      user.email,
-      user.firstname,
-      resetUrl,
-    );
+    await this.emailService.sendResetPasswordEmail(user.email, user.firstname, resetUrl);
   }
 
   async confirmPasswordReset(confirmResetPasswordDto: ConfirmResetPasswordDto): Promise<void> {
     const { token, newPassword } = confirmResetPasswordDto;
 
     const payload = this.jwtService.verify<ResetPasswordJwtPayload>(token);
-    
+
     if (payload.type !== 'password_reset') {
       throw new BadRequestException(AuthErrorMessages.INVALID_RESET_TOKEN);
     }
@@ -193,5 +168,4 @@ export class AuthService {
     await this.usersService.update(user.id, user);
     await this.sessionsService.deleteUserSessions(user.id);
   }
-
 }

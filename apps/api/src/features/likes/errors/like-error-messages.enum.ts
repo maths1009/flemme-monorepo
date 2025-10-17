@@ -6,4 +6,3 @@ export enum LikeErrorMessages {
   ANNONCE_NOT_FOUND = 'Annonce not found',
   CANNOT_VIEW_OTHER_LIKES = 'You cannot view likes from other users',
 }
-

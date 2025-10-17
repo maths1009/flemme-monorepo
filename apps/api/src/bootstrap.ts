@@ -1,5 +1,3 @@
-import { Env } from '@/common/utils';
-import { swagger } from '@/swagger';
 import { HttpException, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -7,6 +5,8 @@ import { useContainer } from 'class-validator';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import * as passport from 'passport';
+import { Env } from '@/common/utils';
+import { swagger } from '@/swagger';
 import { AppModule } from './app.module';
 
 /**
@@ -33,40 +33,34 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
   app.setGlobalPrefix('api/v1', {
     exclude: [
       {
+        method: RequestMethod.GET,
         path: '/',
-        method: RequestMethod.GET,
       },
       {
+        method: RequestMethod.GET,
         path: '/api-docs',
-        method: RequestMethod.GET,
       },
       {
-        path: '/health',
         method: RequestMethod.GET,
+        path: '/health',
       },
     ],
   });
 
   app.enableCors({
-    credentials: true,
-    origin: configService.get('FRONTEND_URL'),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
     exposedHeaders: ['Content-Length', 'Date'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    origin: configService.get('FRONTEND_URL'),
   });
 
   app.useLogger(logger);
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
-      exceptionFactory: (errors) => {
-        const messages = errors.map((error) => {
+      exceptionFactory: errors => {
+        const messages = errors.map(error => {
           const constraints = error.constraints;
           if (constraints) {
             return `${error.property}: ${Object.values(constraints).join(', ')}`;
@@ -75,14 +69,18 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
         });
         return new HttpException(messages, 400);
       },
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+      whitelist: true,
     }),
   );
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   await app.listen(configService.get('PORT')!, () => {
-    logger.log(
-      `This application started at ${configService.get('HOST')}:${configService.get('PORT')}`,
-    );
+    logger.log(`This application started at ${configService.get('HOST')}:${configService.get('PORT')}`);
   });
 };

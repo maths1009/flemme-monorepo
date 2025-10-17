@@ -1,7 +1,7 @@
+import { Readable } from 'node:stream';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Minio from 'minio';
-import { Readable } from 'stream';
 import { BucketEnum } from '../enums';
 import { Env } from '../utils';
 import { BaseFileService, FileInfo, FileUploadOptions } from './file.service';
@@ -15,11 +15,11 @@ export class MinioFileService extends BaseFileService {
     super();
 
     this.minioClient = new Minio.Client({
+      accessKey: this.configService.get('MINIO_ACCESS_KEY'),
       endPoint: this.configService.get('MINIO_ENDPOINT')!,
       port: this.configService.get('MINIO_PORT'),
-      useSSL: this.configService.get('NODE_ENV') === 'production',
-      accessKey: this.configService.get('MINIO_ACCESS_KEY'),
       secretKey: this.configService.get('MINIO_SECRET_KEY'),
+      useSSL: this.configService.get('NODE_ENV') === 'production',
     });
 
     this.initializeBuckets();
@@ -36,17 +36,12 @@ export class MinioFileService extends BaseFileService {
           this.logger.log(`Bucket ${bucket} created successfully`);
         }
       } catch (error) {
-        this.logger.error(
-          `Error initializing bucket ${bucket}: ${error}`,
-        );
+        this.logger.error(`Error initializing bucket ${bucket}: ${error}`);
       }
     }
   }
 
-  async upload(
-    file: Express.Multer.File | Buffer | Readable,
-    options?: FileUploadOptions,
-  ): Promise<FileInfo> {
+  async upload(file: Express.Multer.File | Buffer | Readable, options?: FileUploadOptions): Promise<FileInfo> {
     try {
       let buffer: Buffer;
       let originalName: string;
@@ -70,32 +65,24 @@ export class MinioFileService extends BaseFileService {
       }
 
       const bucket = this.getBucket(options?.bucket);
-      const filename =
-        options?.filename ??
-        this.generateFilename(originalName, options?.folder);
+      const filename = options?.filename ?? this.generateFilename(originalName, options?.folder);
       const metadata = options?.metadata ?? {};
 
-      await this.minioClient.putObject(
-        bucket,
-        filename,
-        buffer,
-        buffer.length,
-        {
-          'Content-Type': mimetype,
-          ...metadata,
-        },
-      );
+      await this.minioClient.putObject(bucket, filename, buffer, buffer.length, {
+        'Content-Type': mimetype,
+        ...metadata,
+      });
 
       const url = await this.getUrl(filename, bucket);
 
       return {
+        bucket,
         filename,
+        key: filename,
+        mimetype,
         originalName,
         size: buffer.length,
-        mimetype,
         url,
-        bucket,
-        key: filename,
       };
     } catch (error) {
       this.logger.error(`Error uploading file: ${error}`);
@@ -109,9 +96,7 @@ export class MinioFileService extends BaseFileService {
       await this.minioClient.removeObject(bucketName, filename);
       this.logger.log(`Fichier ${filename} supprimé avec succès`);
     } catch (error) {
-      this.logger.error(
-        `Error deleting file ${filename}: ${error}`,
-      );
+      this.logger.error(`Error deleting file ${filename}: ${error}`);
       throw new Error(`Error deleting file: ${error}`);
     }
   }
@@ -120,28 +105,17 @@ export class MinioFileService extends BaseFileService {
     const bucketName = this.getBucket(bucket);
     const endpoint = this.configService.get('MINIO_ENDPOINT')!;
     const port = this.configService.get('MINIO_PORT')!;
-    const protocol =
-      this.configService.get('NODE_ENV') === 'production' ? 'https' : 'http';
+    const protocol = this.configService.get('NODE_ENV') === 'production' ? 'https' : 'http';
 
     return `${protocol}://${endpoint}:${port}/${bucketName}/${filename}`;
   }
 
-  async getSignedUrl(
-    filename: string,
-    bucket?: string,
-    expiresIn: number = 3600,
-  ): Promise<string> {
+  async getSignedUrl(filename: string, bucket?: string, expiresIn: number = 3600): Promise<string> {
     try {
       const bucketName = this.getBucket(bucket);
-      return await this.minioClient.presignedGetObject(
-        bucketName,
-        filename,
-        expiresIn,
-      );
+      return await this.minioClient.presignedGetObject(bucketName, filename, expiresIn);
     } catch (error) {
-      this.logger.error(
-        `Error generating signed URL: ${error}`,
-      );
+      this.logger.error(`Error generating signed URL: ${error}`);
       throw new Error(`Error generating signed URL: ${error}`);
     }
   }
@@ -151,7 +125,7 @@ export class MinioFileService extends BaseFileService {
       const bucketName = this.getBucket(bucket);
       await this.minioClient.statObject(bucketName, filename);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -162,18 +136,12 @@ export class MinioFileService extends BaseFileService {
       const stream = await this.minioClient.getObject(bucketName, filename);
       return await this.streamToBuffer(stream);
     } catch (error) {
-      this.logger.error(
-        `Error retrieving file ${filename}: ${error}`,
-      );
+      this.logger.error(`Error retrieving file ${filename}: ${error}`);
       throw new Error(`Error retrieving file: ${error}`);
     }
   }
 
-  async listFiles(
-    bucket?: string,
-    prefix?: string,
-    maxKeys: number = 1000,
-  ): Promise<string[]> {
+  async listFiles(bucket?: string, prefix?: string, maxKeys: number = 1000): Promise<string[]> {
     try {
       const bucketName = this.getBucket(bucket);
       const files: string[] = [];
@@ -181,7 +149,7 @@ export class MinioFileService extends BaseFileService {
       const stream = this.minioClient.listObjects(bucketName, prefix, true);
 
       return new Promise((resolve, reject) => {
-        stream.on('data', (obj) => {
+        stream.on('data', obj => {
           files.push(obj.name ?? '');
           if (files.length >= maxKeys) {
             stream.destroy();
@@ -192,7 +160,7 @@ export class MinioFileService extends BaseFileService {
           resolve(files);
         });
 
-        stream.on('error', (error) => {
+        stream.on('error', error => {
           reject(error);
         });
       });
@@ -206,7 +174,7 @@ export class MinioFileService extends BaseFileService {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
 
-      stream.on('data', (chunk) => {
+      stream.on('data', chunk => {
         chunks.push(Buffer.from(chunk));
       });
 
@@ -214,7 +182,7 @@ export class MinioFileService extends BaseFileService {
         resolve(Buffer.concat(chunks));
       });
 
-      stream.on('error', (error) => {
+      stream.on('error', error => {
         reject(error);
       });
     });

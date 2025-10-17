@@ -1,5 +1,5 @@
-import { UserDto } from '@/features/users/dto/user.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserDto } from '@/features/users/dto/user.dto';
 
 export class AnnonceDto {
   @ApiProperty()

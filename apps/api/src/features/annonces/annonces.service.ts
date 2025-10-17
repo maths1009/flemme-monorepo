@@ -1,17 +1,14 @@
-import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
-import {
-  FILE_SERVICE,
-  FileServiceInterface,
-} from '@/common/services/file.service';
-import { PaginationService } from '@/common/services/pagination.service';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AnnonceParamsDto } from './dto/annonce-params.dto';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
+import { PaginationService } from '@/common/services/pagination.service';
 import { AnnonceDto, UpdateAnnonceDto } from './dto/annonce.dto';
+import { AnnonceParamsDto } from './dto/annonce-params.dto';
 import { Annonce } from './entities/annonce.entity';
-import { AnnonceMapper } from './mappers/annonce.mapper';
 import { AnnonceErrorMessages } from './errors/annonce-error-message';
+import { annonceToDto } from './mappers/annonce.mapper';
 
 @Injectable()
 export class AnnoncesService {
@@ -23,10 +20,7 @@ export class AnnoncesService {
     private readonly fileService: FileServiceInterface,
   ) {}
 
-  async findAll(
-    paginationDto: AnnonceParamsDto,
-    user_id: string,
-  ): Promise<PaginatedResponseDto<AnnonceDto>> {
+  async findAll(paginationDto: AnnonceParamsDto, user_id: string): Promise<PaginatedResponseDto<AnnonceDto>> {
     const queryBuilder = this.annoncesRepository
       .createQueryBuilder('annonce')
       .leftJoinAndSelect('annonce.user', 'user')
@@ -57,12 +51,7 @@ export class AnnoncesService {
       this.annoncesRepository,
       paginationDto,
       queryBuilder,
-      async (annonces) =>
-        Promise.all(
-          annonces.map((annonce) =>
-            AnnonceMapper.toDto(annonce, this.fileService),
-          ),
-        ),
+      async annonces => Promise.all(annonces.map(annonce => annonceToDto(annonce, this.fileService))),
     );
   }
 
@@ -76,8 +65,8 @@ export class AnnoncesService {
 
   async findOne(id: string): Promise<Annonce | null> {
     return await this.annoncesRepository.findOne({
-      where: { id },
       relations: ['user', 'user.role'],
+      where: { id },
     });
   }
 

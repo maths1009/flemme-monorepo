@@ -1,4 +1,4 @@
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 import { BucketEnum } from '../enums';
 
 export interface FileUploadOptions {
@@ -22,30 +22,19 @@ export interface FileInfo {
 export const FILE_SERVICE = 'FILE_SERVICE';
 
 export interface FileServiceInterface {
-  upload(
-    file: Express.Multer.File | Buffer | Readable,
-    options?: FileUploadOptions,
-  ): Promise<FileInfo>;
+  upload(file: Express.Multer.File | Buffer | Readable, options?: FileUploadOptions): Promise<FileInfo>;
 
   delete(filename: string, bucket?: string): Promise<void>;
 
   getUrl(filename: string, bucket?: string): Promise<string>;
 
-  getSignedUrl(
-    filename: string,
-    bucket?: string,
-    expiresIn?: number,
-  ): Promise<string>;
+  getSignedUrl(filename: string, bucket?: string, expiresIn?: number): Promise<string>;
 
   exists(filename: string, bucket?: string): Promise<boolean>;
 
   getFile(filename: string, bucket?: string): Promise<Buffer>;
 
-  listFiles(
-    bucket?: string,
-    prefix?: string,
-    maxKeys?: number,
-  ): Promise<string[]>;
+  listFiles(bucket?: string, prefix?: string, maxKeys?: number): Promise<string[]>;
 }
 
 export abstract class BaseFileService implements FileServiceInterface {
@@ -68,28 +57,17 @@ export abstract class BaseFileService implements FileServiceInterface {
     return bucket || this.defaultBucket;
   }
 
-  abstract upload(
-    file: Express.Multer.File | Buffer | Readable,
-    options?: FileUploadOptions,
-  ): Promise<FileInfo>;
+  abstract upload(file: Express.Multer.File | Buffer | Readable, options?: FileUploadOptions): Promise<FileInfo>;
 
   abstract delete(filename: string, bucket?: string): Promise<void>;
 
   abstract getUrl(filename: string, bucket?: string): Promise<string>;
 
-  abstract getSignedUrl(
-    filename: string,
-    bucket?: string,
-    expiresIn?: number,
-  ): Promise<string>;
+  abstract getSignedUrl(filename: string, bucket?: string, expiresIn?: number): Promise<string>;
 
   abstract exists(filename: string, bucket?: string): Promise<boolean>;
 
   abstract getFile(filename: string, bucket?: string): Promise<Buffer>;
 
-  abstract listFiles(
-    bucket?: string,
-    prefix?: string,
-    maxKeys?: number,
-  ): Promise<string[]>;
+  abstract listFiles(bucket?: string, prefix?: string, maxKeys?: number): Promise<string[]>;
 }

@@ -1,4 +1,3 @@
-import { Public } from '@/common/decorators/public.decorator';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   BadRequestException,
@@ -15,12 +14,13 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { Public } from '@/common/decorators/public.decorator';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { RegisterDto, RegisterResponseDto } from './dto/register.dto';
+import { ConfirmResetPasswordDto, RequestResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
-import { RequestResetPasswordDto, ConfirmResetPasswordDto } from './dto/reset-password.dto';
 import { AuthErrorMessages } from './errors/auth-error-messages.enum';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
@@ -36,16 +36,13 @@ export class AuthController {
   @ApiOperation({ summary: 'Connect user' })
   @ApiBody({ type: LoginDto })
   @ApiResponse({
-    status: HttpStatus.OK,
     description: 'Connection successful',
+    status: HttpStatus.OK,
     type: LoginResponseDto,
   })
   @ApiException(() => UnauthorizedException)
   async login(@Req() req: Request) {
-    return this.authService.login(
-      req.user as any,
-      req.headers['user-agent'] || 'unknown',
-    );
+    return this.authService.login(req.user as any, req.headers['user-agent'] || 'unknown');
   }
 
   @Public()
@@ -57,24 +54,20 @@ export class AuthController {
     description: UserErrorMessages.USER_ALREADY_EXISTS,
   })
   @ApiResponse({
-    status: HttpStatus.CREATED,
     description: 'User created successfully',
+    status: HttpStatus.CREATED,
     type: RegisterResponseDto,
   })
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
-    return await this.authService.register(
-      registerDto,
-      req.headers['user-agent'],
-      req.ip,
-    );
+    return await this.authService.register(registerDto, req.headers['user-agent'], req.ip);
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Disconnect user' })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Disconnection successful',
+    status: HttpStatus.ACCEPTED,
   })
   async logout(@Req() req: Request) {
     const user = req.user!;
@@ -87,8 +80,8 @@ export class AuthController {
     summary: 'Disconnect user from all sessions',
   })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Disconnection successful from all sessions',
+    status: HttpStatus.ACCEPTED,
   })
   async logoutAll(@Req() req: Request) {
     const user = req.user!;
@@ -100,8 +93,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Verify email' })
   @ApiBody({ type: VerifyEmailDto })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Email verified successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @ApiException(() => NotFoundException, {
     description: UserErrorMessages.USER_NOT_FOUND,
@@ -115,10 +108,7 @@ export class AuthController {
   @ApiException(() => BadRequestException, {
     description: AuthErrorMessages.EMAIL_ALREADY_VERIFIED,
   })
-  async verifyEmail(
-    @Req() req: Request,
-    @Body() verifyEmailDto: VerifyEmailDto,
-  ) {
+  async verifyEmail(@Req() req: Request, @Body() verifyEmailDto: VerifyEmailDto) {
     const user = req.user!;
     await this.authService.verifyEmail(user.id, verifyEmailDto.code);
   }
@@ -127,8 +117,8 @@ export class AuthController {
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Resend email verification' })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Email verification resend successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @ApiException(() => BadRequestException, {
     description: AuthErrorMessages.EMAIL_ALREADY_VERIFIED,
@@ -144,8 +134,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Request password reset' })
   @ApiBody({ type: RequestResetPasswordDto })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Password reset email sent if user exists',
+    status: HttpStatus.ACCEPTED,
   })
   async requestPasswordReset(@Body() requestResetPasswordDto: RequestResetPasswordDto) {
     await this.authService.requestPasswordReset(requestResetPasswordDto);
@@ -157,8 +147,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Confirm password reset' })
   @ApiBody({ type: ConfirmResetPasswordDto })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Password reset successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @ApiException(() => BadRequestException, {
     description: AuthErrorMessages.INVALID_RESET_TOKEN,

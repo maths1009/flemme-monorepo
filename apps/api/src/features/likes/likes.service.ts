@@ -1,22 +1,14 @@
-import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
-import {
-  FILE_SERVICE,
-  FileServiceInterface,
-} from '@/common/services/file.service';
-import { PaginationService } from '@/common/services/pagination.service';
-import { AnnoncesService } from '@/features/annonces/annonces.service';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
+import { PaginationService } from '@/common/services/pagination.service';
+import { AnnoncesService } from '@/features/annonces/annonces.service';
 import { CreateLikeDto, LikeDto, LikeParamsDto } from './dto/like.dto';
 import { Like } from './entities/like.entity';
 import { LikeErrorMessages } from './errors/like-error-messages.enum';
-import { LikeMapper } from './mappers/like.mapper';
+import { likeToDto } from './mappers/like.mapper';
 
 @Injectable()
 export class LikesService {
@@ -29,14 +21,11 @@ export class LikesService {
     private readonly fileService: FileServiceInterface,
   ) {}
 
-  async create(
-    createLikeDto: CreateLikeDto,
-    userId: string,
-  ): Promise<Like> {
+  async create(createLikeDto: CreateLikeDto, userId: string): Promise<Like> {
     const { annonce_id } = createLikeDto;
 
     const annonce = await this.annoncesService.findOne(annonce_id);
-    
+
     if (!annonce) {
       throw new NotFoundException(LikeErrorMessages.ANNONCE_NOT_FOUND);
     }
@@ -47,8 +36,8 @@ export class LikesService {
 
     const existingLike = await this.likesRepository.findOne({
       where: {
-        user_id: userId,
         annonce_id,
+        user_id: userId,
       },
     });
 
@@ -57,45 +46,32 @@ export class LikesService {
     }
 
     const like = this.likesRepository.create({
-      user_id: userId,
       annonce_id,
+      user_id: userId,
     });
 
     return this.likesRepository.save(like);
   }
 
-  async findAll(
-    params: LikeParamsDto,
-    userId: string,
-  ): Promise<PaginatedResponseDto<LikeDto>> {
-    if(userId !== params.user_id) {
+  async findAll(params: LikeParamsDto, userId: string): Promise<PaginatedResponseDto<LikeDto>> {
+    if (userId !== params.user_id) {
       throw new BadRequestException(LikeErrorMessages.CANNOT_VIEW_OTHER_LIKES);
     }
     const options: FindManyOptions<Like> = {
-      where: { user_id: params.user_id },
-      relations: [
-        'user',
-        'annonce',
-        'user.role',
-        'annonce.user',
-        'annonce.user.role',
-      ],
       order: { created_at: 'DESC' },
+      relations: ['user', 'annonce', 'user.role', 'annonce.user', 'annonce.user.role'],
+      where: { user_id: params.user_id },
     };
 
-    return this.paginationService.paginate<Like, LikeDto>(
-      this.likesRepository,
-      params,
-      options,
-      async (likes) =>
-        Promise.all(likes.map((like) => LikeMapper.toDto(like, this.fileService))),
+    return this.paginationService.paginate<Like, LikeDto>(this.likesRepository, params, options, async likes =>
+      Promise.all(likes.map(like => likeToDto(like, this.fileService))),
     );
   }
 
   async findOne(id: string): Promise<Like> {
     const like = await this.likesRepository.findOne({
-      where: { id },
       relations: ['user', 'annonce', 'user.role', 'annonce.user', 'annonce.user.role'],
+      where: { id },
     });
 
     if (!like) {

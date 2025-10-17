@@ -1,4 +1,3 @@
-import { User } from '@/features/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,31 +7,32 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '@/features/users/entities/user.entity';
 
 @Entity('annonces')
 export class Annonce {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ length: 255 })
   title: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
   created_at: Date;
 
-  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
   updated_at: Date;
 
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ precision: 10, scale: 2, type: 'decimal' })
   price: number;
 
-  @Column({ type: 'decimal', precision: 9, scale: 6 })
+  @Column({ precision: 9, scale: 6, type: 'decimal' })
   latitude: number;
 
-  @Column({ type: 'decimal', precision: 9, scale: 6 })
+  @Column({ precision: 9, scale: 6, type: 'decimal' })
   longitude: number;
 
   @Column()

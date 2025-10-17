@@ -3,7 +3,7 @@ import { RoleEnum } from '../enum/role.enum';
 
 @Entity('roles')
 export class Role {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ length: 50 })

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "files": {
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/coverage"],
+    "ignoreUnknown": true
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "html": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 4,
+      "lineWidth": 120
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    },
+    "globals": ["afterAll", "afterEach", "beforeAll", "beforeEach", "describe", "expect", "it", "jest", "test"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noNodejsModules": "off",
+        "useImportExtensions": "off"
+      },
+      "style": {
+        "noImplicitBoolean": "off",
+        "noNamespace": "off",
+        "noNonNullAssertion": "off",
+        "useFilenamingConvention": "off"
+      },
+      "suspicious": {
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["info", "warn", "error"]
+          }
+        },
+        "noReactSpecificProps": "off"
+      }
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "overrides": [
+    {
+      "includes": ["**/apps/web/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useAltText": "warn",
+            "useAnchorContent": "warn",
+            "useAriaPropsForRole": "warn",
+            "useButtonType": "warn",
+            "useKeyWithClickEvents": "warn",
+            "useValidAnchor": "warn"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "warn",
+            "useHookAtTopLevel": "error"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "warn"
+          }
+        }
+      },
+      "javascript": {
+        "globals": ["React", "JSX"]
+      }
+    },
+    {
+      "includes": ["**/apps/api/**"],
+      "javascript": {
+        "parser": {
+          "unsafeParameterDecoratorsEnabled": true
+        }
+      },
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          },
+          "style": {
+            "useImportType": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/constants/**", "**/constants.ts", "**/types.ts", "**/*.types.ts", "**/typings/**/*.d.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["biome.json"],
+      "assist": {
+        "enabled": false
+      }
+    }
+  ]
+}

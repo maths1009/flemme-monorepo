@@ -1,12 +1,8 @@
-import {
-  BadRequestException,
-  PipeTransform,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { FileValidationMessages } from '../errors/file-validation-messages.enum';
 
 export interface FileValidationOptions {
-  maxSize?: number; 
+  maxSize?: number;
   allowedMimeTypes?: string[];
   required?: boolean;
 }
@@ -15,8 +11,8 @@ export interface FileValidationOptions {
 export class FileValidationPipe implements PipeTransform {
   constructor(private readonly options: FileValidationOptions = {}) {
     this.options = {
-      maxSize: 5 * 1024 * 1024,
       allowedMimeTypes: ['image/jpeg', 'image/png'],
+      maxSize: 5 * 1024 * 1024,
       required: true,
       ...options,
     };
@@ -33,16 +29,10 @@ export class FileValidationPipe implements PipeTransform {
 
     if (file && this.options.maxSize && file.size > this.options.maxSize) {
       const maxSizeMB = this.options.maxSize / (1024 * 1024);
-      throw new BadRequestException(
-        `${FileValidationMessages.FILE_TOO_LARGE} ${maxSizeMB}MB`,
-      );
+      throw new BadRequestException(`${FileValidationMessages.FILE_TOO_LARGE} ${maxSizeMB}MB`);
     }
 
-    if (
-      file &&
-      this.options.allowedMimeTypes &&
-      !this.options.allowedMimeTypes.includes(file.mimetype)
-    ) {
+    if (file && this.options.allowedMimeTypes && !this.options.allowedMimeTypes.includes(file.mimetype)) {
       throw new BadRequestException(
         `${FileValidationMessages.FILE_TYPE_NOT_ALLOWED} ${this.options.allowedMimeTypes.join(', ')}`,
       );

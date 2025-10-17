@@ -1,22 +1,14 @@
-import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
-import {
-  FILE_SERVICE,
-  FileServiceInterface,
-} from '@/common/services/file.service';
-import { PaginationService } from '@/common/services/pagination.service';
-import { UsersService } from '@/features/users/users.service';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
+import { PaginationService } from '@/common/services/pagination.service';
+import { UsersService } from '@/features/users/users.service';
 import { CreateFeedbackDto, FeedbackDto, FeedbackParamsDto, UpdateFeedbackDto } from './dto/feedback.dto';
 import { Feedback } from './entities/feedback.entity';
 import { FeedbackErrorMessages } from './errors/feedback-error-messages.enum';
-import { FeedbackMapper } from './mappers/feedback.mapper';
+import { feedbackToDto } from './mappers/feedback.mapper';
 
 @Injectable()
 export class FeedbackService {
@@ -29,16 +21,11 @@ export class FeedbackService {
     private readonly fileService: FileServiceInterface,
   ) {}
 
-  async create(
-    createFeedbackDto: CreateFeedbackDto,
-    senderId: string,
-  ): Promise<Feedback> {
+  async create(createFeedbackDto: CreateFeedbackDto, senderId: string): Promise<Feedback> {
     const { receiver_id, rating, message } = createFeedbackDto;
 
     if (senderId === receiver_id) {
-      throw new BadRequestException(
-        FeedbackErrorMessages.CANNOT_FEEDBACK_YOURSELF,
-      );
+      throw new BadRequestException(FeedbackErrorMessages.CANNOT_FEEDBACK_YOURSELF);
     }
 
     const receiver = await this.usersService.findOne(receiver_id);
@@ -48,61 +35,50 @@ export class FeedbackService {
 
     const existingFeedback = await this.feedbackRepository.findOne({
       where: {
-        sender_id: senderId,
         receiver_id,
+        sender_id: senderId,
       },
     });
 
     if (existingFeedback) {
-      throw new BadRequestException(
-        FeedbackErrorMessages.FEEDBACK_ALREADY_EXISTS,
-      );
+      throw new BadRequestException(FeedbackErrorMessages.FEEDBACK_ALREADY_EXISTS);
     }
 
     const feedback = this.feedbackRepository.create({
-      rating,
       message,
-      sender_id: senderId,
+      rating,
       receiver_id,
+      sender_id: senderId,
     });
 
     return this.feedbackRepository.save(feedback);
   }
 
-  async findAll(
-    params: FeedbackParamsDto,
-    userId: string,
-  ): Promise<PaginatedResponseDto<FeedbackDto>> {
-    if(userId !== params.receiver_id && userId !== params.sender_id) {
+  async findAll(params: FeedbackParamsDto, userId: string): Promise<PaginatedResponseDto<FeedbackDto>> {
+    if (userId !== params.receiver_id && userId !== params.sender_id) {
       throw new BadRequestException(FeedbackErrorMessages.CANNOT_VIEW_OTHER_FEEDBACKS);
     }
     const options: FindManyOptions<Feedback> = {
+      order: { created_at: 'DESC' },
+      relations: ['receiver', 'sender', 'receiver.role', 'sender.role'],
       where: {
         ...(params.receiver_id && { receiver_id: params.receiver_id }),
         ...(params.sender_id && { sender_id: params.sender_id }),
       },
-      relations: [
-        'receiver',
-        'sender',
-        'receiver.role',
-        'sender.role',
-      ],
-      order: { created_at: 'DESC' },
-    }
+    };
 
     return this.paginationService.paginate<Feedback, FeedbackDto>(
       this.feedbackRepository,
       params,
       options,
-      async (feedbacks) =>
-        Promise.all(feedbacks.map((feedback) => FeedbackMapper.toDto(feedback, this.fileService))),
+      async feedbacks => Promise.all(feedbacks.map(feedback => feedbackToDto(feedback, this.fileService))),
     );
   }
 
   async findOne(id: string): Promise<Feedback> {
     const feedback = await this.feedbackRepository.findOne({
-      where: { id },
       relations: ['receiver', 'sender', 'receiver.role', 'sender.role'],
+      where: { id },
     });
 
     if (!feedback) {
@@ -112,17 +88,11 @@ export class FeedbackService {
     return feedback;
   }
 
-  async update(
-    id: string,
-    updateFeedbackDto: UpdateFeedbackDto,
-    userId: string,
-  ): Promise<Feedback> {
+  async update(id: string, updateFeedbackDto: UpdateFeedbackDto, userId: string): Promise<Feedback> {
     const feedback = await this.findOne(id);
 
     if (feedback.sender_id !== userId) {
-      throw new BadRequestException(
-        FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK,
-      );
+      throw new BadRequestException(FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK);
     }
 
     await this.feedbackRepository.update(id, updateFeedbackDto);
@@ -133,9 +103,7 @@ export class FeedbackService {
     const feedback = await this.findOne(id);
 
     if (feedback.sender_id !== userId) {
-      throw new BadRequestException(
-        FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK,
-      );
+      throw new BadRequestException(FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK);
     }
 
     await this.feedbackRepository.delete(id);

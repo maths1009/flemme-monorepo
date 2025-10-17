@@ -1,12 +1,5 @@
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '@/features/users/entities/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity('feedbacks')
 export class Feedback {
@@ -19,7 +12,7 @@ export class Feedback {
   @Column({ type: 'text' })
   message: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
   created_at: Date;
 
   @Column()

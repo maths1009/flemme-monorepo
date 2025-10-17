@@ -1,14 +1,6 @@
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Annonce } from '@/features/annonces/entities/annonce.entity';
 import { User } from '@/features/users/entities/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
 
 @Entity('likes')
 @Unique(['user_id', 'annonce_id'])
@@ -17,8 +9,8 @@ export class Like {
   id: string;
 
   @CreateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   created_at: Date;
 

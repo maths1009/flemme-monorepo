@@ -4,6 +4,7 @@ import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 import { Env } from '../utils';
 
 @Module({
+  exports: [NestJwtModule],
   imports: [
     NestJwtModule.registerAsync({
       imports: [ConfigModule],
@@ -11,11 +12,10 @@ import { Env } from '../utils';
       useFactory: (configService: ConfigService<Env>) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+          expiresIn: configService.get<number>('JWT_EXPIRES_IN'),
         },
       }),
     }),
   ],
-  exports: [NestJwtModule],
 })
 export class JwtModule {}

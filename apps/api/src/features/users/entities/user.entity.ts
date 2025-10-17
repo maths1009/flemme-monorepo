@@ -1,4 +1,3 @@
-import { Role } from '@/features/roles/entities/role.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,10 +7,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '@/features/roles/entities/role.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ length: 100 })
@@ -29,34 +29,34 @@ export class User {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ default: false, type: 'boolean' })
   email_verified: boolean;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ nullable: true, type: 'int' })
   email_verification_code?: number | null;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ nullable: true, type: 'datetime' })
   email_verification_expired_at?: Date | null;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   password_reset_token?: string | null;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ nullable: true, type: 'datetime' })
   password_reset_expired_at?: Date | null;
 
   @CreateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   created_at: Date;
 
   @UpdateDateColumn({
-    type: 'datetime',
     default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
   })
   updated_at: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ nullable: true, type: 'datetime' })
   suspended_at?: Date;
 
   @Column({ default: true })

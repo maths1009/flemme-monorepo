@@ -1,7 +1,7 @@
+import * as fs from 'node:fs';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as fs from 'fs';
 import { GlobalErrorMessages } from './common/errors/global-error-messages.enum';
 import { Env } from './common/utils';
 
@@ -12,12 +12,10 @@ export const swagger = async (app: NestExpressApplication) => {
     .setTitle('Flemme api')
     .addBearerAuth()
     .addGlobalResponse({
-      status: 500,
       description: GlobalErrorMessages.INTERNAL_SERVER_ERROR,
+      status: 500,
     })
-    .addServer(
-      `${configService.get('HOST')}:${configService.get('PORT')}/api/v1`,
-    )
+    .addServer(`${configService.get('HOST')}:${configService.get('PORT')}/api/v1`)
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   fs.writeFileSync('swagger-spec.json', JSON.stringify(document, null, 2));

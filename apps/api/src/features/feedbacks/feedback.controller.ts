@@ -1,4 +1,3 @@
-import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import {
   BadRequestException,
@@ -15,18 +14,13 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
 import { CreateFeedbackDto, FeedbackDto, FeedbackParamsDto, UpdateFeedbackDto } from './dto/feedback.dto';
 import { FeedbackErrorMessages } from './errors/feedback-error-messages.enum';
 import { FeedbackService } from './feedback.service';
-import { FeedbackMapper } from './mappers/feedback.mapper';
+import { feedbackToDto } from './mappers/feedback.mapper';
 
 @ApiTags('feedbacks')
 @Controller('feedbacks')
@@ -38,8 +32,8 @@ export class FeedbackController {
   @ApiOperation({ summary: 'Create a new feedback' })
   @ApiBody({ type: CreateFeedbackDto })
   @ApiResponse({
-    status: HttpStatus.CREATED,
     description: 'Feedback created successfully',
+    status: HttpStatus.CREATED,
     type: FeedbackDto,
   })
   @ApiException(() => BadRequestException, {
@@ -51,21 +45,15 @@ export class FeedbackController {
   @ApiException(() => NotFoundException, {
     description: FeedbackErrorMessages.RECEIVER_NOT_FOUND,
   })
-  async create(
-    @Body() createFeedbackDto: CreateFeedbackDto,
-    @Req() req: Request,
-  ): Promise<void> {
-    await this.feedbackService.create(
-      createFeedbackDto,
-      req.user!.id,
-    );
+  async create(@Body() createFeedbackDto: CreateFeedbackDto, @Req() req: Request): Promise<void> {
+    await this.feedbackService.create(createFeedbackDto, req.user!.id);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all feedbacks with pagination and filters' })
   @ApiResponse({
-    status: HttpStatus.OK,
     description: 'List of feedbacks paginated',
+    status: HttpStatus.OK,
     type: () => PaginatedResponseDto<FeedbackDto>,
   })
   async findAll(@Query() paginationDto: FeedbackParamsDto, @Req() req: Request) {
@@ -75,11 +63,11 @@ export class FeedbackController {
   @Patch(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Update a feedback' })
-  @ApiParam({ name: 'id', description: 'Feedback id' })
+  @ApiParam({ description: 'Feedback id', name: 'id' })
   @ApiBody({ type: UpdateFeedbackDto })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Feedback updated successfully',
+    status: HttpStatus.ACCEPTED,
     type: FeedbackDto,
   })
   @ApiException(() => NotFoundException, {
@@ -93,21 +81,17 @@ export class FeedbackController {
     @Body() updateFeedbackDto: UpdateFeedbackDto,
     @Req() req: Request,
   ): Promise<FeedbackDto> {
-    const feedback = await this.feedbackService.update(
-      id,
-      updateFeedbackDto,
-      req.user!.id,
-    );
-    return FeedbackMapper.toDto(feedback);
+    const feedback = await this.feedbackService.update(id, updateFeedbackDto, req.user!.id);
+    return feedbackToDto(feedback);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Delete a feedback' })
-  @ApiParam({ name: 'id', description: 'Feedback id' })
+  @ApiParam({ description: 'Feedback id', name: 'id' })
   @ApiResponse({
-    status: HttpStatus.ACCEPTED,
     description: 'Feedback deleted successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @ApiException(() => NotFoundException, {
     description: FeedbackErrorMessages.FEEDBACK_NOT_FOUND,

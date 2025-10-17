@@ -47,7 +47,6 @@ const LoginPage = () => {
           <h2 className="text-4xl font-extrabold tracking-tight text-black">
             Se connecter
           </h2>
-
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="space-y-2">
               <label className="text-sm text-foreground/80">Ton mail</label>

@@ -154,10 +154,10 @@ importers:
         version: 11.0.0(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.27(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@22.18.12)(typescript@5.9.3)))
       '@types/cookie-parser':
         specifier: ^1.4.10
-        version: 1.4.10(@types/express@5.0.4)
+        version: 1.4.10(@types/express@5.0.5)
       '@types/express':
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       '@types/glob':
         specifier: ^8.1.0
         version: 8.1.0
@@ -1617,8 +1617,8 @@ packages:
   '@types/express-serve-static-core@5.1.0':
     resolution: {integrity: sha512-jnHMsrd0Mwa9Cf4IdOzbz543y4XJepXrbia2T4b6+spXC2We3t1y6K44D3mR8XMFSXMCf3/l7rCgddfx7UNVBA==}
 
-  '@types/express@5.0.4':
-    resolution: {integrity: sha512-g64dbryHk7loCIrsa0R3shBnEu5p6LPJ09bu9NG58+jz+cRUjFrc3Bz0kNQ7j9bXeCsrRDvNET1G54P/GJkAyA==}
+  '@types/express@5.0.5':
+    resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
 
   '@types/glob@8.1.0':
     resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
@@ -5847,9 +5847,9 @@ snapshots:
     dependencies:
       '@types/node': 24.7.2
 
-  '@types/cookie-parser@1.4.10(@types/express@5.0.4)':
+  '@types/cookie-parser@1.4.10(@types/express@5.0.5)':
     dependencies:
-      '@types/express': 5.0.4
+      '@types/express': 5.0.5
 
   '@types/deep-eql@4.0.2': {}
 
@@ -5872,7 +5872,7 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.0
 
-  '@types/express@5.0.4':
+  '@types/express@5.0.5':
     dependencies:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
@@ -5900,7 +5900,7 @@ snapshots:
 
   '@types/multer@1.4.13':
     dependencies:
-      '@types/express': 5.0.4
+      '@types/express': 5.0.5
 
   '@types/node@12.20.55': {}
 
@@ -5919,12 +5919,12 @@ snapshots:
 
   '@types/passport-strategy@0.2.38':
     dependencies:
-      '@types/express': 5.0.4
+      '@types/express': 5.0.5
       '@types/passport': 1.0.17
 
   '@types/passport@1.0.17':
     dependencies:
-      '@types/express': 5.0.4
+      '@types/express': 5.0.5
 
   '@types/qs@6.14.0': {}
 

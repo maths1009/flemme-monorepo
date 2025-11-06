@@ -1,10 +1,10 @@
-import { EmailModule, FileModule, LoggerModule } from '@/common/modules';
-import { validateEnv } from '@/common/utils';
-import { DatabaseModule } from '@/database';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
+import { EmailModule, FileModule, LoggerModule } from '@/common/modules';
+import { validateEnv } from '@/common/utils';
+import { DatabaseModule } from '@/database';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { PaginationModule } from './common/modules/pagination.module';
@@ -15,20 +15,10 @@ import { FeedbackModule } from './features/feedbacks/feedback.module';
 import { LikesModule } from './features/likes/likes.module';
 import { RolesModule } from './features/roles/roles.module';
 import { SessionsModule } from './features/sessions/sessions.module';
+import { TrackingsModule } from './features/trackings/trackings.module';
 import { UsersModule } from './features/users/users.module';
 
 @Module({
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-    JwtStrategy,
-  ],
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     LoggerModule,
@@ -46,7 +36,19 @@ import { UsersModule } from './features/users/users.module';
     AnnoncesModule,
     FeedbackModule,
     LikesModule,
+    TrackingsModule,
     PaginationModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    JwtStrategy,
   ],
 })
 export class AppModule {}

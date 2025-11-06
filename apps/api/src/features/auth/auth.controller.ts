@@ -42,7 +42,7 @@ export class AuthController {
   })
   @ApiException(() => UnauthorizedException)
   async login(@Req() req: Request) {
-    return this.authService.login(req.user as any, req.headers['user-agent'] || 'unknown');
+    return this.authService.login(req.user as any, req.headers['user-agent'], req.ip);
   }
 
   @Public()

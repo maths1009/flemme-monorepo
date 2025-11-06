@@ -1,7 +1,7 @@
-import { PaginationDto } from '@/common/dto/pagination.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, Min } from 'class-validator';
+import { PaginationDto } from '@/common/dto/pagination.dto';
 
 export class AnnonceParamsDto extends PaginationDto {
   @ApiProperty({ required: false })
@@ -17,9 +17,9 @@ export class AnnonceParamsDto extends PaginationDto {
   longitude?: number;
 
   @ApiProperty({
-    required: false,
     default: 5,
     description: 'Distance in kilometers',
+    required: false,
   })
   @Type(() => Number)
   @IsNumber()

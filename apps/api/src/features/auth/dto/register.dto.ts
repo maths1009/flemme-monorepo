@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import { UserDto } from '@/features/users/dto/user.dto';
 import { PASSWORD_REGEX } from '../auth.helper';
 import { AuthErrorMessages } from '../errors/auth-error-messages.enum';
 

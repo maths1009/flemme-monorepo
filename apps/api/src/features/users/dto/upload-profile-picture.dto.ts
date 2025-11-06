@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UploadProfilePictureDto {
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
     description: 'Profile picture, max 5MB',
+    format: 'binary',
+    type: 'string',
   })
   file: Express.Multer.File;
 }

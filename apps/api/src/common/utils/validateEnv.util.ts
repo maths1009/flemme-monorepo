@@ -27,6 +27,9 @@ export const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.string().transform(data => +data),
   SESSION_EXPIRATION_TIME: z.string().transform(data => +data),
+  TRACKING_ACCEPTANCE_DEADLINE_HOURS: z.string().transform(data => +data),
+  TRACKING_COMPLETION_DEADLINE_HOURS: z.string().transform(data => +data),
+  TRACKING_CONFIRMATION_DEADLINE_HOURS: z.string().transform(data => +data),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

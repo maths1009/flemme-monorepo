@@ -92,7 +92,4 @@ pnpm build
 
 # Mode développement avec watch
 pnpm dev
-
-# Vérification des types
-pnpm type-check
 ```

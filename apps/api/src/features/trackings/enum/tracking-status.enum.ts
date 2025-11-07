@@ -1,0 +1,6 @@
+export enum TrackingStatusEnum {
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  DISPUTE = 'DISPUTE',
+  CANCELLED = 'CANCELLED',
+}

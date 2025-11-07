@@ -1,7 +1,7 @@
-import { Env } from '@/common/utils';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Env } from '@/common/utils';
 
 @Module({
   imports: [
@@ -9,15 +9,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService<Env>) => ({
-        type: 'mariadb',
-        host: config.get('DB_HOST'),
-        port: config.get('DB_PORT'),
-        username: config.get('DB_USER'),
-        password: config.get('DB_PASSWORD'),
-        database: config.get('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: config.get('NODE_ENV') !== 'production',
+        database: config.get('DB_NAME'),
+        host: config.get('DB_HOST'),
         logging: config.get('NODE_ENV') !== 'production',
+        password: config.get('DB_PASSWORD'),
+        port: config.get('DB_PORT'),
+        synchronize: config.get('NODE_ENV') !== 'production',
+        type: 'mariadb',
+        username: config.get('DB_USER'),
       }),
     }),
   ],

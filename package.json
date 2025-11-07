@@ -5,7 +5,7 @@
     }
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.6",
+    "@biomejs/biome": "^2.2.7",
     "@changesets/cli": "^2.29.7",
     "@types/node": "catalog:",
     "commitizen": "^4.3.1",
@@ -13,17 +13,17 @@
     "commitlint-config-gitmoji": "^2.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.4",
+    "lint-staged": "^16.2.6",
     "turbo": "^2.5.8",
     "typescript": "catalog:",
     "zod": "catalog:"
   },
   "engines": {
-    "node": "22.14.0"
+    "node": "22.20.0"
   },
   "license": "MIT",
   "name": "flemme-monorepo",
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.18.3",
   "private": true,
   "scripts": {
     "build": "turbo build",

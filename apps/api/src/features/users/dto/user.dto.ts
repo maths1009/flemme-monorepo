@@ -1,9 +1,10 @@
-import { RoleEnum } from '@/features/roles/enum/role.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { RoleEnum } from '@/features/roles/enum/role.enum';
 
 export class UserDto {
-  @ApiProperty()
-  id: number;
+  @ApiProperty({ format: 'uuid' })
+  id: string;
 
   @ApiProperty()
   firstname: string;
@@ -21,10 +22,10 @@ export class UserDto {
   email_verified: boolean;
 
   @ApiPropertyOptional()
-  profile_picture_url?: string;
-
-  @ApiPropertyOptional()
   suspended_at?: Date;
+
+  @ApiProperty()
+  updated_at: Date;
 
   @ApiProperty()
   notif_enabled: boolean;
@@ -32,6 +33,34 @@ export class UserDto {
   @ApiProperty()
   score: number;
 
+  @ApiProperty()
+  average_response_time: number;
+
   @ApiProperty({ enum: RoleEnum })
-  role: RoleEnum;
+  role?: RoleEnum;
+
+  @ApiPropertyOptional()
+  profile_picture_url?: string;
+}
+
+export class UpdateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  firstname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  lastname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  username: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty()
+  email: string;
 }

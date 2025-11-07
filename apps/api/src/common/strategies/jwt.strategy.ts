@@ -6,6 +6,7 @@ import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthErrorMessages } from '@/features/auth/errors/auth-error-messages.enum';
 import { SessionsService } from '@/features/sessions/sessions.service';
+import { UserErrorMessages } from '@/features/users/errors/user-error-message';
 import { UsersService } from '@/features/users/users.service';
 
 @Injectable()
@@ -36,14 +37,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException(AuthErrorMessages.SESSION_EXPIRED);
     }
 
-    await this.sessionsService.updateLastUsed(sessionId);
-
     const user = await this.usersService.findOne(session.user_id);
 
-    if (!user) throw new UnauthorizedException(AuthErrorMessages.USER_NOT_FOUND);
+    if (!user) throw new UnauthorizedException(UserErrorMessages.USER_NOT_FOUND);
+
+    await this.sessionsService.updateLastUsed(sessionId);
 
     const { password: _, ...userWithoutPassword } = user;
 
-    return { ...userWithoutPassword, role: user.role.name, sessionId };
+    return { ...userWithoutPassword, role: user.role?.name, sessionId };
   }
 }

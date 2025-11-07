@@ -1,7 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logger } from 'nestjs-pino';
 import { Repository } from 'typeorm';
+import { BucketEnum } from '@/common/enums';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { hashPassword } from '@/common/utils';
 import { User } from './entities/user.entity';
 import { UserErrorMessages } from './errors/user-error-message';
@@ -12,6 +14,8 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly logger: Logger,
+    @Inject(FILE_SERVICE)
+    private readonly fileService: FileServiceInterface,
   ) {}
 
   async create(userData: Partial<User>): Promise<User> {
@@ -19,7 +23,9 @@ export class UsersService {
       where: [{ email: userData.email }, { username: userData.username }],
     });
 
-    if (existingUser) throw new ConflictException(UserErrorMessages.USER_ALREADY_EXISTS);
+    if (existingUser) {
+      throw new ConflictException(UserErrorMessages.USER_ALREADY_EXISTS);
+    }
 
     userData.password = await hashPassword(userData.password!);
 
@@ -48,10 +54,47 @@ export class UsersService {
     });
   }
 
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     return await this.usersRepository.findOne({
       relations: ['role'],
       where: { id },
     });
+  }
+
+  async update(id: string, userData: Partial<User>): Promise<User> {
+    await this.usersRepository.update(id, userData);
+    const user = (await this.usersRepository.findOne({
+      where: { id },
+    }))!;
+    return user;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
+
+  async uploadProfilePicture(userId: string, file: Express.Multer.File): Promise<void> {
+    const filename = `${userId}.png`;
+    const bucket = BucketEnum.PROFILE_PICTURE;
+
+    try {
+      const oldFileExists = await this.fileService.exists(filename, bucket);
+      if (oldFileExists) {
+        await this.fileService.delete(filename, bucket);
+      }
+
+      await this.fileService.upload(file, {
+        bucket,
+        contentType: 'image/png',
+        filename,
+        metadata: {
+          uploadedAt: new Date().toISOString(),
+          userId: userId.toString(),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Error uploading profile picture for user ${userId}: ${error}`);
+      throw new BadRequestException(UserErrorMessages.ERROR_UPLOADING_PROFILE_PICTURE);
+    }
   }
 }

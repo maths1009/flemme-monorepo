@@ -1,39 +1,9 @@
-services:
-  mariadb:
-    image: mariadb:latest
-    container_name: flemme_mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '3306:3306'
-    volumes:
-      - mariadb_data:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: flemme_phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '8080:80'
-  minio:
-    image: minio/minio:latest
-    container_name: flemme_minio
-    restart: always
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
+include:
+  - docker-compose.d/mariadb.yml
+  - docker-compose.d/phpmyadmin.yml
+  - docker-compose.d/minio.yml
+  - docker-compose.d/mailhog.yml
+
 volumes:
   mariadb_data:
   minio_data:

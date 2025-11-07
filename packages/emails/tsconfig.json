@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./emails",
+    "composite": false,
+    "noEmit": true,
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true
+  },
+  "exclude": ["node_modules", ".react-email"],
+  "extends": "@flemme/ts-config/react-library.json",
+  "include": ["emails/**/*"]
+}

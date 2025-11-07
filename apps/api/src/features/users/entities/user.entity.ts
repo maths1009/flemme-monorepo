@@ -1,10 +1,18 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Role } from '@/features/roles/entities/role.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 100 })
   firstname: string;
@@ -21,23 +29,32 @@ export class User {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ default: false })
+  @Column({ default: false, type: 'boolean' })
   email_verified: boolean;
 
-  @Column({ length: 6, nullable: true })
-  email_verification_code?: string;
+  @Column({ nullable: true, type: 'int' })
+  email_verification_code?: number | null;
 
   @Column({ nullable: true, type: 'datetime' })
-  email_verification_expired_at?: Date;
+  email_verification_expired_at?: Date | null;
 
-  @Column({ length: 255, nullable: true })
-  profile_picture_url?: string;
+  @Column({ nullable: true, type: 'varchar' })
+  password_reset_token?: string | null;
+
+  @Column({ nullable: true, type: 'datetime' })
+  password_reset_expired_at?: Date | null;
 
   @CreateDateColumn({
     default: () => 'CURRENT_TIMESTAMP',
     type: 'datetime',
   })
   created_at: Date;
+
+  @UpdateDateColumn({
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'datetime',
+  })
+  updated_at: Date;
 
   @Column({ nullable: true, type: 'datetime' })
   suspended_at?: Date;
@@ -48,10 +65,13 @@ export class User {
   @Column({ default: 0 })
   score: number;
 
-  @Column({ default: 2 })
-  role_id: number;
+  @Column({ default: 0 })
+  average_response_time: number;
+
+  @Column({ nullable: true })
+  role_id?: number;
 
   @ManyToOne(() => Role, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
-  role: Role;
+  role?: Role;
 }

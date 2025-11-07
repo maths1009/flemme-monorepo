@@ -1,22 +1,45 @@
-FROM node:22.14.0-slim AS builder
+ARG NODE_VERSION=22.20.0-slim
+ARG PROJECT=landing
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM node:${NODE_VERSION} AS slim
+
+# Setup pnpm and turbo on the alpine base
+FROM slim as base
+RUN npm install pnpm turbo --global
+RUN pnpm config set store-dir ~/.pnpm-store
+
+# Prune projects
+FROM base AS pruner
+ARG PROJECT
+
+WORKDIR /app
+COPY . .
+RUN turbo prune --scope=${PROJECT} --docker
+
+# Build the project
+FROM base AS builder
+ARG PROJECT
 
 WORKDIR /app
 
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
+# Copy lockfile and package.json's of isolated subworkspace
+COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=pruner /app/out/json/ .
 
-COPY apps/landing ./apps/landing
+# First install the dependencies (as they change less often)
+RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfile
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --filter landing --frozen-lockfile
+# Copy source code of isolated subworkspace
+COPY --from=pruner /app/out/full/ .
 
-RUN pnpm run build --filter landing
+RUN turbo build --filter=${PROJECT}
+RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
+RUN rm -rf ./**/*/src
 
+# Serve the build output
 FROM nginx:alpine
-COPY --from=builder /app/apps/landing/dist /usr/share/nginx/html
-
+ARG PROJECT
+COPY --from=builder /app/apps/${PROJECT}/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

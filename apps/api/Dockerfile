@@ -1,10 +1,10 @@
 ARG NODE_VERSION=22.20.0-slim
-ARG PROJECT=landing
+ARG PROJECT=api
 
 FROM node:${NODE_VERSION} AS slim
 
 # Setup pnpm and turbo on the alpine base
-FROM slim as base
+FROM slim AS base
 RUN npm install pnpm turbo --global
 RUN pnpm config set store-dir ~/.pnpm-store
 
@@ -37,9 +37,16 @@ RUN turbo build --filter=${PROJECT}
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm prune --prod --no-optional
 RUN rm -rf ./**/*/src
 
-# Serve the build output
-FROM nginx:alpine
+# Prepare the runtime image
+FROM slim AS runner
 ARG PROJECT
-COPY --from=builder /app/apps/${PROJECT}/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+ARG PORT=8000
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+COPY --from=builder --chown=nodejs:nodejs /app .
+WORKDIR /app/apps/${PROJECT}
+
+EXPOSE ${PORT}
+CMD ["node", "dist/src/main.js"]

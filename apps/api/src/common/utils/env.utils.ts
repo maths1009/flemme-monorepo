@@ -7,7 +7,6 @@ export const EnvSchema = z.object({
   DB_PORT: z.string(),
   DB_USER: z.string(),
   FRONTEND_URL: z.string().url(),
-  HOST: z.string(),
   JWT_EXPIRES_IN: z.string(),
   JWT_SECRET: z.string(),
   MAIL_FROM: z.string(),

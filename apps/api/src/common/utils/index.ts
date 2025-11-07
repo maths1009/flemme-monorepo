@@ -1,2 +1,2 @@
+export * from './env.utils';
 export * from './password.util';
-export * from './validateEnv.util';

@@ -80,7 +80,6 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  await app.listen(configService.get('PORT')!, () => {
-    logger.log(`This application started at ${configService.get('HOST')}:${configService.get('PORT')}`);
-  });
+  await app.listen(configService.get('PORT')!);
+  logger.log(`This application started at ${await app.getUrl()}`);
 };

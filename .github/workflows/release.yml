@@ -67,7 +67,8 @@ jobs:
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           APP_ID_MAPPING='{
-            "landing":"${{ secrets.LANDING_APP_ID }}"
+            "landing":"${{ secrets.LANDING_APP_ID }}",
+            "api":"${{ secrets.API_APP_ID }}"
           }'
           
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do

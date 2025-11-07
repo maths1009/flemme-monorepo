@@ -1,0 +1,9 @@
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: flemme_mailhog
+    restart: always
+    ports:
+      - '${MAIL_PORT}:1025'
+      - '8025:8025'
+

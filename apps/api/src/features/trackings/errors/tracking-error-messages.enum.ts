@@ -1,0 +1,16 @@
+export enum TrackingErrorMessages {
+  TRACKING_NOT_FOUND = 'Tracking not found',
+  TRACKING_ALREADY_EXISTS = 'A tracking already exists for this annonce',
+  TRACKING_DEADLINE_EXPIRED = 'Tracking deadline has expired',
+  TRACKING_IN_LITIGE = 'Tracking is in dispute status and cannot be modified',
+  TRACKING_CANCELLED = 'Tracking has been cancelled and cannot be modified',
+  TRACKING_ALREADY_COMPLETED = 'Tracking is already completed',
+  TRACKING_ALREADY_CONFIRMED = 'Tracking is already confirmed',
+  UNAUTHORIZED_TRACKING_ACCESS = 'You are not authorized to access this tracking',
+  CANNOT_MODIFY_COMPLETED_TRACKING = 'Cannot modify a completed tracking',
+  CANNOT_CREATE_TRACKING_FOR_OWN_ANNONCE = 'Cannot create tracking for your own annonce',
+  ANNONCE_NOT_FOUND = 'Annonce not found',
+  USER_NOT_FOUND = 'User not found',
+  TRACKING_NOT_ACCEPTED = 'Tracking must be accepted by both parties before completion',
+  CANNOT_CANCEL_COMPLETED_TRACKING = 'Cannot cancel a completed tracking',
+}

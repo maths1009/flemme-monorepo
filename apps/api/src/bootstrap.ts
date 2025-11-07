@@ -2,7 +2,6 @@ import { HttpException, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
-import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import * as passport from 'passport';
@@ -25,11 +24,13 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   app.use(helmet());
 
-  app.use(cookieParser());
-
   app.use(passport.initialize());
 
-  app.setGlobalPrefix('api', {
+  if (configService.get('NODE_ENV') !== 'production') {
+    await swagger(app);
+  }
+
+  app.setGlobalPrefix('api/v1', {
     exclude: [
       {
         method: RequestMethod.GET,
@@ -46,16 +47,12 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
     ],
   });
 
-  app.useStaticAssets('./uploads', {
-    prefix: '/assets',
-  });
-
   app.enableCors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     exposedHeaders: ['Content-Length', 'Date'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    origin: configService.get('ALLOW_CORS_URL'),
+    origin: configService.get('FRONTEND_URL'),
   });
 
   app.useLogger(logger);
@@ -83,11 +80,6 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  if (configService.get('NODE_ENV') !== 'production') {
-    await swagger(app);
-  }
-
-  await app.listen(configService.get('PORT')!, () => {
-    logger.log(`This application started at ${configService.get('HOST')}:${configService.get('PORT')}`);
-  });
+  await app.listen(configService.get('PORT')!);
+  logger.log(`This application started at ${await app.getUrl()}`);
 };

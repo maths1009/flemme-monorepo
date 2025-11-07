@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
 import { Repository } from 'typeorm';
-import { UAParser } from 'ua-parser-js';
 import { Session } from './entities/session.entity';
 
 @Injectable()
@@ -14,36 +13,34 @@ export class SessionsService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(userId: number, userAgent: string): Promise<Session> {
-    const { browser, os } = UAParser(userAgent);
-
+  async create(userId: string, userAgent?: string, ip?: string): Promise<Session> {
     const session = this.sessionsRepository.create({
-      browser_type: browser.name,
       created_at: dayjs().toISOString(),
       expired_at: dayjs().add(this.configService.get('SESSION_EXPIRATION_TIME')!, 'millisecond').toISOString(),
+      ip,
       last_used_at: dayjs().toISOString(),
-      os_type: os.name,
+      user_agent: userAgent,
       user_id: userId,
     });
 
     return this.sessionsRepository.save(session);
   }
 
-  async findOne(id: number): Promise<Session | null> {
+  async findOne(id: string): Promise<Session | null> {
     return await this.sessionsRepository.findOne({
       where: { id },
     });
   }
 
-  async updateLastUsed(sessionId: number): Promise<void> {
+  async updateLastUsed(sessionId: string): Promise<void> {
     await this.sessionsRepository.update({ id: sessionId }, { last_used_at: dayjs().toISOString() });
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.sessionsRepository.delete(id);
   }
 
-  async deleteUserSessions(userId: number): Promise<void> {
+  async deleteUserSessions(userId: string): Promise<void> {
     await this.sessionsRepository.delete({ user_id: userId });
   }
 }

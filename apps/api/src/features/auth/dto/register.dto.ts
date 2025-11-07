@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 import { UserDto } from '@/features/users/dto/user.dto';
+import { PASSWORD_REGEX } from '../auth.helper';
+import { AuthErrorMessages } from '../errors/auth-error-messages.enum';
 
 export class RegisterDto {
   @ApiProperty({ example: 'John' })
@@ -27,8 +29,8 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Le mot de passe est trop faible',
+  @Matches(PASSWORD_REGEX, {
+    message: AuthErrorMessages.WEAK_PASSWORD,
   })
   password: string;
 }

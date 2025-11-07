@@ -1,0 +1,12 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: flemme_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - '8080:80'
+

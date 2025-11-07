@@ -1,10 +1,18 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '@/features/users/entities/user.entity';
 
 @Entity('sessions')
 export class Session {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn({
     default: () => 'CURRENT_TIMESTAMP',
@@ -15,23 +23,17 @@ export class Session {
   @Column({ type: 'datetime' })
   expired_at: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
   last_used_at: Date;
 
-  @Column({
-    default: 'unknown',
-    type: 'varchar',
-  })
-  browser_type: string;
+  @Column({ nullable: true, type: 'varchar' })
+  user_agent?: string;
 
-  @Column({
-    default: 'unknown',
-    type: 'varchar',
-  })
-  os_type: string;
+  @Column({ nullable: true, type: 'varchar' })
+  ip?: string;
 
   @Column()
-  user_id: number;
+  user_id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })

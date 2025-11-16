@@ -22,7 +22,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/schematics": "^11.0.9",
-    "@nestjs/swagger": "^11.2.1",
+    "@nestjs/swagger": "^11.2.2",
     "@nestjs/terminus": "^11.0.0",
     "@nestjs/testing": "^11.1.9",
     "@nestjs/typeorm": "^11.0.0",

@@ -28,7 +28,8 @@ const Page = () => {
       {/* Barre de recherche */}
       <div className="px-6 mb-8">
         <div className="flex items-center justify-between">
-          <div
+          <button
+            onClick={() => router.push('/search')}
             className="flex items-center bg-foreground rounded-full px-4 py-3 mr-6 text-foreground"
             style={{ width: '70%' }}
           >
@@ -39,12 +40,10 @@ const Page = () => {
               height={18}
               className="w-5 h-5 mr-3"
             />
-            <input
-              type="text"
-              placeholder="Trouver des tâches"
-              className="flex-1 bg-transparent text-white placeholder-gray-300 outline-none"
-            />
-          </div>
+            <span className="flex-1 text-left text-white opacity-75">
+              Trouver des tâches
+            </span>
+          </button>
           <button className="text-gray-600 text-sm underline whitespace-nowrap">
             Historique
           </button>

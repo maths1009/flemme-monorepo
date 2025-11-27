@@ -35,7 +35,7 @@
     "@types/react": "^19.2.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
-    "glob": "^11.0.3",
+    "glob": "^11.1.0",
     "mysql": "^2.18.1",
     "nestjs-pino": "^4.4.1",
     "pino-pretty": "^13.1.2",

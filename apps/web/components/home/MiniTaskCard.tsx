@@ -1,5 +1,7 @@
 'use client';
 
+import { PriceTag } from '@/components/common';
+import Image from 'next/image';
 import * as React from 'react';
 
 interface MiniTaskCardProps {
@@ -20,19 +22,17 @@ export const MiniTaskCard: React.FC<MiniTaskCardProps> = ({
   return (
     <div
       className="rounded-lg overflow-hidden cursor-pointer px-2"
-      style={{ width: '31%' }}
       onClick={onClick}
     >
       {/* Image */}
-      <div className="h-16 w-full rounded-lg overflow-hidden">
-        <img
+      <div className="w-33.75 h-40.75 rounded-lg overflow-hidden">
+        <Image
           src={image}
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-33.75 h-40.75 object-cover"
+          width={135}
+          height={163}
           style={{ borderRadius: '8px' }}
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-          }}
         />
       </div>
 
@@ -48,16 +48,7 @@ export const MiniTaskCard: React.FC<MiniTaskCardProps> = ({
 
         {/* Prix */}
         <div className="flex justify-start">
-          <span
-            className="px-1.5 py-0.5 text-xs font-medium text-white"
-            style={{
-              backgroundColor: '#4E77CF',
-              border: '1px solid #739BF2',
-              borderRadius: '4px',
-            }}
-          >
-            {price}€
-          </span>
+          <PriceTag price={price} size="small" />
         </div>
       </div>
     </div>

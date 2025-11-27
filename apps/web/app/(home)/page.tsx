@@ -2,9 +2,14 @@
 
 import { Navbar } from '@/components/common';
 import { ApplicationPanel, Carousel, MiniTaskCard } from '@/components/home';
+import { getAllAdverts } from '@/lib/mockData';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+  const router = useRouter();
+  const adverts = getAllAdverts();
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -58,50 +63,20 @@ const Page = () => {
           Dernières tâches proche de chez moi
         </h2>
 
-        {/* Grille de mini cards */}
-        <div className="flex flex-wrap gap-2">
-          <MiniTaskCard
-            title="Acheter du beurre"
-            location="Angers (49000)"
-            price={5}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Acheter du beurre')}
-          />
-          <MiniTaskCard
-            title="Nettoyer ma voiture"
-            location="Angers (49000)"
-            price={20}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Nettoyer ma voiture')}
-          />
-          <MiniTaskCard
-            title="Déjeuner avec moi"
-            location="Angers (49000)"
-            price={8}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Déjeuner avec moi')}
-          />
-          <MiniTaskCard
-            title="Acheter du beurre"
-            location="Angers (49000)"
-            price={5}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Acheter du beurre 2')}
-          />
-          <MiniTaskCard
-            title="Nettoyer ma voiture"
-            location="Angers (49000)"
-            price={20}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Nettoyer ma voiture 2')}
-          />
-          <MiniTaskCard
-            title="Déjeuner avec moi"
-            location="Angers (49000)"
-            price={8}
-            image="/images/home/mock/image.png"
-            onClick={() => console.log('Clic sur: Déjeuner avec moi 2')}
-          />
+        {/* Carousel horizontal de mini cards */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
+            {adverts.slice(0, 10).map((advert) => (
+              <MiniTaskCard
+                key={advert.id}
+                title={advert.title}
+                location={advert.location}
+                price={advert.price}
+                image={advert.image}
+                onClick={() => router.push(`/adverts/${advert.id}`)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

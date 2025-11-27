@@ -1,81 +1,33 @@
 'use client';
 
+import { getAllAdverts } from '@/lib/mockData';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { TaskCard } from './TaskCard';
 
-interface CarouselItem {
-  id: number;
-  title: string;
-  image: string;
-  avatar: string;
-  date: string;
-  price: number;
-}
-
-const mockData: CarouselItem[] = [
-  {
-    id: 1,
-    title: 'Nettoyer ma voiture',
-    image: '/images/carousel/car.jpg',
-    avatar: '/images/carousel/avatar1.jpg',
-    date: 'le 15/04/2025',
-    price: 20,
-  },
-  {
-    id: 2,
-    title: 'Acheter du beurre',
-    image: '/images/carousel/shopping.jpg',
-    avatar: '/images/carousel/avatar2.jpg',
-    date: 'le 14/04/2025',
-    price: 5,
-  },
-  {
-    id: 3,
-    title: 'Promener mon chien Croquette',
-    image: '/images/carousel/dog.jpg',
-    avatar: '/images/carousel/avatar3.jpg',
-    date: 'le 16/04/2025',
-    price: 12,
-  },
-  {
-    id: 4,
-    title: 'Déjeuner ensemble',
-    image: '/images/carousel/food.jpg',
-    avatar: '/images/carousel/avatar4.jpg',
-    date: 'le 17/04/2025',
-    price: 25,
-  },
-  {
-    id: 5,
-    title: 'Réparer ma bicyclette',
-    image: '/images/carousel/bike.jpg',
-    avatar: '/images/carousel/avatar5.jpg',
-    date: 'le 18/04/2025',
-    price: 15,
-  },
-];
-
 export const Carousel: React.FC = () => {
+  const router = useRouter();
+  const adverts = getAllAdverts();
   const [currentIndex, setCurrentIndex] = React.useState(2); // Commence sur la 3ème (index 2)
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? mockData.length - 1 : prevIndex - 1,
+      prevIndex === 0 ? adverts.length - 1 : prevIndex - 1,
     );
   };
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === mockData.length - 1 ? 0 : prevIndex + 1,
+      prevIndex === adverts.length - 1 ? 0 : prevIndex + 1,
     );
   };
 
-  const currentItem = mockData[currentIndex];
+  const currentItem = adverts[currentIndex];
 
   const handleTaskClick = () => {
     // Navigation vers la page de détail de la tâche
-    console.log('Clic sur la tâche:', currentItem.title);
+    router.push(`/adverts/${currentItem.id}`);
   };
 
   return (
@@ -85,8 +37,8 @@ export const Carousel: React.FC = () => {
         <TaskCard
           title={currentItem.title}
           image={currentItem.image}
-          avatar={currentItem.avatar}
-          date={currentItem.date}
+          avatar={currentItem.user.avatar}
+          date={`le ${currentItem.date}`}
           price={currentItem.price}
           onClick={handleTaskClick}
         />
@@ -118,7 +70,7 @@ export const Carousel: React.FC = () => {
 
       {/* Indicateurs de slides */}
       <div className="flex justify-center mt-4 space-x-2">
-        {mockData.map((_, index) => (
+        {adverts.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}

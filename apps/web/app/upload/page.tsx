@@ -8,6 +8,7 @@ import {
   PriceStep,
   TitleStep,
 } from '@/components/upload';
+import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -123,31 +124,23 @@ const UploadPage = () => {
   return (
     <div className="relative mx-auto h-screen max-w-[390px] bg-primary/5">
       <div className="flex h-full flex-col">
-        {/* Header avec bouton fermer et titre */}
-        <div className="relative flex items-center px-6 pt-12 pb-8 bg-primary/5">
+        {/* Header avec titre */}
+        <div className="relative flex items-center px-6 pt-5 pb-8 bg-primary/5">
+          {/* Bouton fermer aligné */}
           <button
             onClick={handleClose}
-            className="absolute left-6 flex h-8 w-8 items-center justify-center text-foreground hover:opacity-70 transition-opacity z-10"
+            className="flex h-8 w-8 items-center justify-center text-foreground hover:opacity-70 transition-opacity cursor-pointer"
             aria-label="Fermer"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            <X className="w-6 h-6" />
           </button>
 
-          <h1 className="w-full text-center text-xl font-semibold text-foreground z-10 relative">
+          <h1 className="flex-1 text-center text-xl font-semibold text-foreground">
             Proposer une annonce
           </h1>
+
+          {/* Espace pour équilibrer (même largeur que le bouton) */}
+          <div className="w-8 h-8"></div>
         </div>
 
         {/* Barre de séparation */}

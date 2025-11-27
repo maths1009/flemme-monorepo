@@ -27,7 +27,7 @@ export const mockUsers: Record<string, User> = {
     name: 'camille.cpla',
     rating: 5,
     reviews: 102,
-    avatar: '/images/avatars/camille.jpg',
+    avatar: '',
   },
   user2: {
     id: 'user2',
@@ -41,14 +41,14 @@ export const mockUsers: Record<string, User> = {
     name: 'marie.dubois',
     rating: 4.9,
     reviews: 156,
-    avatar: '/images/avatars/marie.jpg',
+    avatar: '',
   },
   user4: {
     id: 'user4',
     name: 'alex.rousseau',
     rating: 4.7,
     reviews: 43,
-    avatar: '/images/avatars/alex.jpg',
+    avatar: '',
   },
 };
 

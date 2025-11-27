@@ -110,7 +110,7 @@ export default function AdvertDetailPage() {
         {/* Profil utilisateur */}
         <ProfileBanner
           user={advert.user}
-          onMessageClick={() => console.log('Message clicked')}
+          onMessageClick={() => router.push(`/messages/${advert.id}`)}
         />
 
         {/* Localisation */}
@@ -129,7 +129,10 @@ export default function AdvertDetailPage() {
             </span>
           </div>
 
-          <button className="w-full bg-gray-800 text-white py-3 rounded-full font-medium">
+          <button
+            onClick={() => router.push(`/payment/${advert.id}`)}
+            className="w-full bg-gray-800 text-white py-3 rounded-full font-medium hover:bg-gray-900 transition-colors"
+          >
             Réserver
           </button>
         </div>

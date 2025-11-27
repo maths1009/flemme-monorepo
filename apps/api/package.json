@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "@nanogiants/nestjs-swagger-api-exception-decorator": "^1.7.2",
-    "@nestjs/common": "^11.1.8",
-    "@nestjs/core": "^11.1.8",
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/core": "^11.1.9",
     "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-express": "^11.1.8",
-    "bcryptjs": "^3.0.2",
-    "dayjs": "^1.11.18",
+    "@nestjs/platform-express": "^11.1.9",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dayjs": "^1.11.19",
     "helmet": "^8.1.0",
     "minio": "^8.0.5",
     "multer": "^2.0.2",
@@ -21,9 +22,9 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/schematics": "^11.0.9",
-    "@nestjs/swagger": "^11.2.1",
+    "@nestjs/swagger": "^11.2.2",
     "@nestjs/terminus": "^11.0.0",
-    "@nestjs/testing": "^11.1.8",
+    "@nestjs/testing": "^11.1.9",
     "@nestjs/typeorm": "^11.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.5",
@@ -53,5 +54,5 @@
     "start:db": "docker-compose up -d",
     "start:debug": "nest start --debug --watch"
   },
-  "version": "0.0.0"
+  "version": "1.0.0"
 }

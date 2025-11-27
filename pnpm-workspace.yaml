@@ -11,8 +11,8 @@ catalogs:
   react19:
     react: ^19.2.0
     react-dom: ^19.2.0
-    "@types/react": ^19.2.2
-    "@types/react-dom": ^19.2.2
+    "@types/react": ^19.2.6
+    "@types/react-dom": ^19.2.3
   vite:
     vite: ^7.1.12
     vite-tsconfig-paths: ^5.1.4

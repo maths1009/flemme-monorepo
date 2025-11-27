@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "terser": "^5.44.0",
+    "terser": "^5.44.1",
     "vite": "catalog:vite"
   },
   "name": "landing",
@@ -11,5 +11,5 @@
     "preview": "vite preview",
     "start": "vite"
   },
-  "version": "0.0.0"
+  "version": "0.1.0"
 }

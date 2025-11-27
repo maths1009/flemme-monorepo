@@ -22,6 +22,7 @@ ARG PROJECT
 
 WORKDIR /app
 ENV CI=true
+ENV HUSKY=0
 
 # Copy lockfile and package.json's of isolated subworkspace
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml

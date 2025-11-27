@@ -21,6 +21,7 @@ FROM base AS builder
 ARG PROJECT
 
 WORKDIR /app
+ENV CI=true
 
 # Copy lockfile and package.json's of isolated subworkspace
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml

@@ -19,7 +19,7 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
   onMessageClick,
 }) => {
   return (
-    <div className="flex items-center justify-between mb-6 p-4">
+    <div className="flex items-center justify-between mb-6 py-4">
       <div className="flex items-center space-x-3">
         {user.avatar ? (
           <Image

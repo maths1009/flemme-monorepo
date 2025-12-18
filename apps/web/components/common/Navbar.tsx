@@ -1,17 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import * as React from 'react';
 import { Button } from './Button';
 
 export const Navbar: React.FC = () => {
-  const router = useRouter();
-
-  const handleProposerTache = () => {
-    router.push('/upload');
-  };
-
   return (
     <div className="w-full bg-white px-6 py-4">
       {/* Navigation icons et bouton */}
@@ -19,7 +13,7 @@ export const Navbar: React.FC = () => {
         {/* Icônes de navigation */}
         <div className="flex items-center space-x-4">
           {/* Icône profil */}
-          <button className="p-2">
+          <Link href="/profil" className="p-2">
             <Image
               src="/images/home/account.svg"
               alt="Profil"
@@ -27,10 +21,10 @@ export const Navbar: React.FC = () => {
               height={24}
               className="w-6 h-6"
             />
-          </button>
+          </Link>
 
           {/* Icône chat */}
-          <button className="p-2">
+          <Link href="/messages" className="p-2">
             <Image
               src="/images/home/discuss.svg"
               alt="Discussion"
@@ -38,10 +32,10 @@ export const Navbar: React.FC = () => {
               height={24}
               className="w-6 h-6"
             />
-          </button>
+          </Link>
 
           {/* Icône recherche */}
-          <button className="p-2">
+          <Link href="/search" className="p-2">
             <Image
               src="/images/home/search.svg"
               alt="Recherche"
@@ -49,17 +43,15 @@ export const Navbar: React.FC = () => {
               height={24}
               className="w-6 h-6"
             />
-          </button>
+          </Link>
         </div>
 
         {/* Bouton Proposer une tâche */}
-        <Button
-          onClick={handleProposerTache}
-          variant="secondary"
-          className="text-sm"
-        >
-          Proposer une tâche
-        </Button>
+        <Link href="/upload">
+          <Button variant="secondary" className="text-sm">
+            Proposer une tâche
+          </Button>
+        </Link>
       </div>
     </div>
   );

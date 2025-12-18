@@ -149,10 +149,66 @@ export default function SearchPage() {
         {/* Titre "Filtres" - seulement si des annonces sont trouvées */}
         {filteredAdverts.length > 0 && (
           <div className="mb-6">
-            <div className="flex items-center">
+            <button
+              onClick={() => {
+                const filters = searchParams.get('filters');
+                router.push(
+                  `/search/filtres${filters ? `?filters=${filters}` : ''}`,
+                );
+              }}
+              className="flex items-center hover:opacity-80 transition-opacity"
+            >
               <Filter className="w-5 h-5 text-gray-600 mr-2" />
               <h2 className="text-lg font-medium text-gray-600">Filtres</h2>
-            </div>
+            </button>
+
+            {/* Afficher les filtres sélectionnés sous forme de tags */}
+            {searchParams.get('filters') && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {(() => {
+                  try {
+                    const filters = JSON.parse(
+                      decodeURIComponent(searchParams.get('filters')!),
+                    );
+                    const tags: string[] = [];
+
+                    // Collecte tous les filtres sélectionnés
+                    Object.entries(filters).forEach(([key, value]) => {
+                      if (key !== 'priceRange' && Array.isArray(value)) {
+                        tags.push(...value);
+                      }
+                    });
+
+                    // Ajouter la plage de prix si présente
+                    if (filters.priceRange) {
+                      if (
+                        filters.priceRange.min &&
+                        filters.priceRange.min !== '0'
+                      ) {
+                        tags.push(`Min: ${filters.priceRange.min}€`);
+                      }
+                      if (
+                        filters.priceRange.max &&
+                        filters.priceRange.max !== '0'
+                      ) {
+                        tags.push(`Max: ${filters.priceRange.max}€`);
+                      }
+                    }
+
+                    return tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ));
+                  } catch {
+                    return null;
+                  }
+                })()}
+              </div>
+            )}
           </div>
         )}
 

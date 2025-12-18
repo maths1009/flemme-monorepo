@@ -11,7 +11,7 @@ const Page = () => {
   const adverts = getAllAdverts();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Navbar />
 
       {/* Salutation */}
@@ -65,7 +65,7 @@ const Page = () => {
         {/* Carousel horizontal de mini cards */}
         <div className="overflow-x-auto">
           <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
-            {adverts.slice(0, 10).map((advert) => (
+            {adverts.slice(0, 5).map((advert) => (
               <MiniTaskCard
                 key={advert.id}
                 title={advert.title}

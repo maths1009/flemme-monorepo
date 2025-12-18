@@ -16,6 +16,7 @@ export interface Advert {
   date: string;
   location: string;
   image: string;
+  images: string[];
   user: User;
   category: string;
 }
@@ -63,6 +64,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '15/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user2,
     category: 'courses',
   },
@@ -75,6 +81,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '16/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user3,
     category: 'ménage',
   },
@@ -87,6 +98,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '17/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user4,
     category: 'social',
   },
@@ -99,6 +115,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '24/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user1,
     category: 'animaux',
   },
@@ -111,6 +132,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '18/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user1,
     category: 'jardinage',
   },
@@ -123,6 +149,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '20/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user1,
     category: 'animaux',
   },
@@ -135,6 +166,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '19/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user2,
     category: 'courses',
   },
@@ -147,6 +183,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '21/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user2,
     category: 'ménage',
   },
@@ -159,6 +200,11 @@ export const mockAdverts: Record<string, Advert> = {
     date: '22/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     user: mockUsers.user3,
     category: 'courses',
   },
@@ -167,7 +213,12 @@ export const mockAdverts: Record<string, Advert> = {
     title: 'Nettoyer mes vitres',
     description:
       "Mes vitres ont besoin d'un bon nettoyage. J'ai tous les produits nécessaires, il faut juste quelqu'un de motivé !",
-    price: 18,
+    image: '/images/home/mock/image.png',
+    images: [
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+      '/images/home/mock/image.png',
+    ],
     date: '23/04/2025',
     location: 'Angers (49000)',
     image: '/images/home/mock/image.png',

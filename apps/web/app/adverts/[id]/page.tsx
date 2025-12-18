@@ -17,11 +17,38 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 
 export default function AdvertDetailPage() {
   const params = useParams();
   const router = useRouter();
   const advertId = params.id as string;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      scrollTimeoutRef.current = setTimeout(() => {
+        if (scrollContainerRef.current) {
+          const scrollLeft = scrollContainerRef.current.scrollLeft;
+          const itemWidth = scrollContainerRef.current.clientWidth;
+          const index = Math.round(scrollLeft / itemWidth);
+
+          // Force le scroll à aller exactement à l'image
+          scrollContainerRef.current.scrollTo({
+            left: index * itemWidth,
+            behavior: 'smooth',
+          });
+          setCurrentImageIndex(index);
+        }
+      }, 50);
+    }
+  };
 
   // Récupération des données de l'annonce
   const advert = getAdvertById(advertId);
@@ -49,14 +76,24 @@ export default function AdvertDetailPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header avec image */}
+      {/* Header avec carousel d'images */}
       <div className="relative px-6 pt-6">
         <div className="relative h-64 w-full rounded-2xl overflow-hidden">
-          <img
-            src={advert.image}
-            alt={advert.title}
-            className="w-full h-full object-cover"
-          />
+          {/* Conteneur scrollable */}
+          <div
+            ref={scrollContainerRef}
+            className="flex h-full w-full overflow-x-auto scroll-smooth scrollbar-hide"
+            onScroll={handleScroll}
+          >
+            {advert.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`${advert.title} - Photo ${index + 1}`}
+                className="w-full h-full object-cover flex-shrink-0"
+              />
+            ))}
+          </div>
 
           {/* Boutons overlay */}
           <button
@@ -85,7 +122,7 @@ export default function AdvertDetailPage() {
               background: 'rgba(40, 41, 36, 0.50)',
             }}
           >
-            1/3
+            {currentImageIndex + 1}/{advert.images.length}
           </div>
         </div>
       </div>

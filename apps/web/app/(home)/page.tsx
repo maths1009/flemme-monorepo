@@ -77,6 +77,21 @@ const Page = () => {
             ))}
           </div>
         </div>
+
+        <div className="overflow-x-auto">
+          <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
+            {adverts.slice(6, 10).map((advert) => (
+              <MiniTaskCard
+                key={advert.id}
+                title={advert.title}
+                location={advert.location}
+                price={advert.price}
+                image={advert.image}
+                onClick={() => router.push(`/adverts/${advert.id}`)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="px-6 py-4">

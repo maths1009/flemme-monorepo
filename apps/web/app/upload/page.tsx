@@ -122,7 +122,7 @@ const UploadPage = () => {
   };
 
   return (
-    <div className="relative mx-auto h-screen max-w-[390px] bg-primary/5">
+    <div className="relative w-full h-screen bg-primary/5">
       <div className="flex h-full flex-col">
         {/* Header avec titre */}
         <div className="relative flex items-center px-6 pt-5 pb-8 bg-primary/5">

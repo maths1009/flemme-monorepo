@@ -2,7 +2,7 @@
 
 import { OfferMessage } from '@/components/messages';
 import { getAdvertById } from '@/lib/mockData';
-import { Plus, Send, X } from 'lucide-react';
+import { MoreHorizontal, Plus, Send, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -90,46 +90,51 @@ export default function MessagePage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            {advert.user.avatar ? (
-              <img
-                src={advert.user.avatar}
-                alt={`Avatar de ${advert.user.name}`}
-                className="w-10 h-10 rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                <span className="text-sm font-semibold text-gray-600">
-                  {advert.user.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            )}
-            <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="font-semibold text-gray-800">
-                  {advert.user.name}
-                </h1>
+            <button
+              onClick={() => router.back()}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center space-x-3">
+              {advert.user.avatar ? (
                 <img
-                  src="/images/messages/stars.svg"
-                  alt="Star"
-                  className="w-5 h-5"
+                  src={advert.user.avatar}
+                  alt={`Avatar de ${advert.user.name}`}
+                  className="w-10 h-10 rounded-full object-cover"
                 />
-                <span className="text-sm font-medium text-gray-800">
-                  ({advert.user.reviews})
-                </span>
+              ) : (
+                <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-600">
+                    {advert.user.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              <div>
+                <div className="flex items-center space-x-2">
+                  <h1 className="font-semibold text-gray-800">
+                    {advert.user.name}
+                  </h1>
+                  <img
+                    src="/images/messages/stars.svg"
+                    alt="Star"
+                    className="w-5 h-5"
+                  />
+                  <span className="text-sm font-medium text-gray-800">
+                    ({advert.user.reviews})
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Dernière connexion: il y a 2h
+                </p>
               </div>
-              <p className="text-sm text-gray-500">
-                À propos de "{advert.title}"
-              </p>
             </div>
           </div>
+          <button className="p-2 hover:bg-gray-100 rounded-full">
+            <MoreHorizontal className="w-5 h-5 text-gray-600" />
+          </button>
         </div>
       </div>
 

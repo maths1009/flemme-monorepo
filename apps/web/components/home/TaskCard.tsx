@@ -39,7 +39,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
               <span className="text-xs text-gray-600">Avatar</span>
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
               <p className="text-sm text-gray-500">{date}</p>
             </div>

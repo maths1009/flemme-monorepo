@@ -2,7 +2,7 @@
 
 import { OfferMessage } from '@/components/messages';
 import { getAdvertById } from '@/lib/mockData';
-import { ArrowLeft, Plus, Send } from 'lucide-react';
+import { Plus, Send, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -95,7 +95,7 @@ export default function MessagePage() {
             onClick={() => router.back()}
             className="p-2 hover:bg-gray-100 rounded-full"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <X className="w-5 h-5" />
           </button>
           <div className="flex items-center space-x-3">
             {advert.user.avatar ? (
@@ -112,9 +112,19 @@ export default function MessagePage() {
               </div>
             )}
             <div>
-              <h1 className="font-semibold text-gray-800">
-                {advert.user.name}
-              </h1>
+              <div className="flex items-center space-x-2">
+                <h1 className="font-semibold text-gray-800">
+                  {advert.user.name}
+                </h1>
+                <img
+                  src="/images/messages/stars.svg"
+                  alt="Star"
+                  className="w-5 h-5"
+                />
+                <span className="text-sm font-medium text-gray-800">
+                  ({advert.user.reviews})
+                </span>
+              </div>
               <p className="text-sm text-gray-500">
                 À propos de "{advert.title}"
               </p>

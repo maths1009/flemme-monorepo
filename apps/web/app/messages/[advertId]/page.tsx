@@ -203,12 +203,15 @@ export default function MessagePage() {
                 </div>
               );
             } else {
-              // Messages de l'utilisateur (à droite sans avatar)
+              // Messages de l'utilisateur (à droite avec avatar)
               return (
-                <div key={msg.id} className="w-full flex justify-end">
+                <div
+                  key={msg.id}
+                  className="w-full flex justify-end items-start space-x-3"
+                >
                   {msg.type === 'text' ? (
                     <div
-                      className="border border-gray-800 text-gray-800 max-w-xs ml-auto"
+                      className="border border-gray-800 text-gray-800 max-w-xs"
                       style={{
                         borderRadius: '4px',
                         padding: '12px 18px',
@@ -226,6 +229,11 @@ export default function MessagePage() {
                       onMakeOffer={() => console.log('Faire une contre-offre')}
                     />
                   )}
+                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-semibold text-gray-600">
+                      U
+                    </span>
+                  </div>
                 </div>
               );
             }

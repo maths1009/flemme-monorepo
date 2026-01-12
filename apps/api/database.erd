@@ -4,8 +4,8 @@
   "settings": {
     "width": 3000,
     "height": 3000,
-    "scrollTop": -499.5,
-    "scrollLeft": -422,
+    "scrollTop": -771.5,
+    "scrollLeft": -756,
     "zoomLevel": 0.9,
     "show": 495,
     "database": 1,
@@ -273,25 +273,6 @@
         "meta": {
           "updateAt": 1762245605840,
           "createAt": 1760426177671
-        }
-      },
-      "DHyBvUsP6TrxwBeBXw-pW": {
-        "id": "DHyBvUsP6TrxwBeBXw-pW",
-        "name": "",
-        "comment": "",
-        "columnIds": [],
-        "seqColumnIds": [],
-        "ui": {
-          "x": 488.8888888888889,
-          "y": 426.1377777777778,
-          "zIndex": 3,
-          "widthName": 60,
-          "widthComment": 60,
-          "color": ""
-        },
-        "meta": {
-          "updateAt": 1762416732676,
-          "createAt": 1762416732676
         }
       }
     },

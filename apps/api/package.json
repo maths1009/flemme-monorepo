@@ -50,6 +50,8 @@
   "scripts": {
     "build": "nest build ",
     "dev": "npm run start:db && nest start -w",
+    "format": "biome format .",
+    "lint": "biome lint .",
     "start": "node dist/main",
     "start:db": "docker-compose up -d",
     "start:debug": "nest start --debug --watch"

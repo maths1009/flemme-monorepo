@@ -1,0 +1,70 @@
+<svg width="215" height="209" viewBox="0 0 215 209" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_1_2215)">
+<g clip-path="url(#clip0_1_2215)">
+<path d="M68.7173 70.6124C68.7173 31.6143 100.332 0 139.33 0C178.328 0 209.942 31.6142 209.942 70.6123V200.804H137.463H68.7173V70.6124Z" fill="#4E77CF"/>
+<g clip-path="url(#clip1_1_2215)">
+<rect x="119.521" y="42.3748" width="57.3725" height="57.3725" rx="28.6863" fill="white"/>
+<circle cx="148.441" cy="80.0824" r="19.193" fill="#282924"/>
+<circle cx="143.218" cy="81.7335" r="7.01678" fill="white"/>
+<circle cx="158.489" cy="78.6378" r="4.3339" fill="white"/>
+<rect width="61.1018" height="22.9077" transform="translate(121.154 28.8582) rotate(7.08997)" fill="#4E77CF"/>
+</g>
+<g clip-path="url(#clip2_1_2215)">
+<rect x="63.3872" y="42.3748" width="57.3725" height="57.3725" rx="28.6863" fill="white"/>
+<circle cx="92.1351" cy="80.0824" r="19.193" fill="#282924"/>
+<circle cx="86.9118" cy="81.7336" r="7.01678" fill="white"/>
+<circle cx="102.184" cy="78.638" r="4.3339" fill="white"/>
+<rect width="61.1018" height="22.9077" transform="matrix(-0.992354 0.123428 0.123428 0.992354 117.863 29.3193)" fill="#4E77CF"/>
+</g>
+<rect width="57.3725" height="22.9077" transform="translate(177.729 111.926) rotate(175.338)" fill="#4E77CF"/>
+<rect width="57.3725" height="22.9077" transform="translate(117.289 117.013) rotate(-174.457)" fill="#4E77CF"/>
+</g>
+<g clip-path="url(#clip3_1_2215)">
+<circle cx="68.6429" cy="180.643" r="64.6429" fill="#F5DA02"/>
+<g clip-path="url(#clip4_1_2215)">
+<rect x="88.5156" y="136.375" width="45.5574" height="45.5574" rx="22.7787" fill="white"/>
+<circle cx="111.48" cy="166.317" r="15.2404" fill="#282924"/>
+<circle cx="107.332" cy="167.628" r="5.57177" fill="white"/>
+<circle cx="119.458" cy="165.17" r="3.44139" fill="white"/>
+<rect width="48.5187" height="18.1902" transform="matrix(0.992354 -0.123428 -0.123428 -0.992354 88.761 189.673)" fill="#F5DA02"/>
+</g>
+<g clip-path="url(#clip5_1_2215)">
+<rect x="43.9414" y="136.375" width="45.5574" height="45.5574" rx="22.7787" fill="white"/>
+<circle cx="66.769" cy="166.317" r="15.2404" fill="#282924"/>
+<circle cx="62.6216" cy="167.629" r="5.57177" fill="white"/>
+<circle cx="74.7483" cy="165.17" r="3.44139" fill="white"/>
+<rect width="48.5187" height="18.1902" transform="translate(86.1477 190.04) rotate(-172.91)" fill="#F5DA02"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_1_2215" x="0" y="0" width="214.538" height="209" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2215"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2215" result="shape"/>
+</filter>
+<clipPath id="clip0_1_2215">
+<rect width="142.075" height="201" fill="white" transform="translate(68.4626)"/>
+</clipPath>
+<clipPath id="clip1_1_2215">
+<rect x="119.521" y="42.3748" width="57.3725" height="57.3725" rx="28.6863" fill="white"/>
+</clipPath>
+<clipPath id="clip2_1_2215">
+<rect x="63.3872" y="42.3748" width="57.3725" height="57.3725" rx="28.6863" fill="white"/>
+</clipPath>
+<clipPath id="clip3_1_2215">
+<rect width="129.286" height="85" fill="white" transform="translate(4 116)"/>
+</clipPath>
+<clipPath id="clip4_1_2215">
+<rect x="88.5156" y="136.375" width="45.5574" height="45.5574" rx="22.7787" fill="white"/>
+</clipPath>
+<clipPath id="clip5_1_2215">
+<rect x="43.9414" y="136.375" width="45.5574" height="45.5574" rx="22.7787" fill="white"/>
+</clipPath>
+</defs>
+</svg>

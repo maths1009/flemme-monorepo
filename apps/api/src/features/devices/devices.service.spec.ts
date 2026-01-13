@@ -2,23 +2,22 @@ import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import * as dayjs from 'dayjs';
 import { Repository } from 'typeorm';
 import { createMockRepository } from '@/common/testing/test-utils';
-import { Session } from './entities/session.entity';
-import { SessionsService } from './sessions.service';
+import { DevicesService } from './devices.service';
+import { Device } from './entities/device.entity';
 
-describe('SessionsService', () => {
-  let service: SessionsService;
-  let repository: DeepMocked<Repository<Session>>;
+describe('DevicesService', () => {
+  let service: DevicesService;
+  let repository: DeepMocked<Repository<Device>>;
   let configService: DeepMocked<ConfigService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SessionsService,
+        DevicesService,
         {
-          provide: getRepositoryToken(Session),
+          provide: getRepositoryToken(Device),
           useValue: createMockRepository(),
         },
         {
@@ -28,8 +27,8 @@ describe('SessionsService', () => {
       ],
     }).compile();
 
-    service = module.get<SessionsService>(SessionsService);
-    repository = module.get(getRepositoryToken(Session));
+    service = module.get<DevicesService>(DevicesService);
+    repository = module.get(getRepositoryToken(Device));
     configService = module.get(ConfigService);
   });
 
@@ -49,11 +48,12 @@ describe('SessionsService', () => {
       repository.create.mockReturnValue({ id: 'session-1' } as any);
       repository.save.mockResolvedValue({ id: 'session-1' } as any);
 
-      const result = await service.create(userId, 'Mozilla/5.0', '127.0.0.1');
+      const result = await service.create('session-1', userId, 'Mozilla/5.0', '127.0.0.1');
 
       expect(result).toBeDefined();
       expect(repository.create).toHaveBeenCalledWith(
         expect.objectContaining({
+          id: 'session-1',
           ip: '127.0.0.1',
           user_agent: 'Mozilla/5.0',
           user_id: userId,
@@ -78,19 +78,6 @@ describe('SessionsService', () => {
       repository.findOne.mockResolvedValue(null);
       const result = await service.findOne('session-1');
       expect(result).toBeNull();
-    });
-  });
-
-  describe('updateLastUsed', () => {
-    it('should update last_used_at', async () => {
-      repository.update.mockResolvedValue({ affected: 1 } as any);
-
-      await service.updateLastUsed('session-1');
-
-      expect(repository.update).toHaveBeenCalledWith(
-        { id: 'session-1' },
-        expect.objectContaining({ last_used_at: expect.any(String) }),
-      );
     });
   });
 

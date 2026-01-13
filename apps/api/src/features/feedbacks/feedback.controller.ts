@@ -12,11 +12,11 @@ import {
   Patch,
   Post,
   Query,
-  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { CurrentUser } from '@/common/decorators/user.decorator';
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { User } from '../users/entities/user.entity';
 import { CreateFeedbackDto, FeedbackDto, FeedbackParamsDto, UpdateFeedbackDto } from './dto/feedback.dto';
 import { FeedbackErrorMessages } from './errors/feedback-error-messages.enum';
 import { FeedbackService } from './feedback.service';
@@ -45,8 +45,8 @@ export class FeedbackController {
   @ApiException(() => NotFoundException, {
     description: FeedbackErrorMessages.RECEIVER_NOT_FOUND,
   })
-  async create(@Body() createFeedbackDto: CreateFeedbackDto, @Req() req: Request): Promise<void> {
-    await this.feedbackService.create(createFeedbackDto, req.user!.id);
+  async create(@Body() createFeedbackDto: CreateFeedbackDto, @CurrentUser() user: User): Promise<void> {
+    await this.feedbackService.create(createFeedbackDto, user.id);
   }
 
   @Get()
@@ -56,8 +56,8 @@ export class FeedbackController {
     status: HttpStatus.OK,
     type: () => PaginatedResponseDto<FeedbackDto>,
   })
-  async findAll(@Query() paginationDto: FeedbackParamsDto, @Req() req: Request) {
-    return this.feedbackService.findAll(paginationDto, req.user!.id);
+  async findAll(@Query() paginationDto: FeedbackParamsDto, @CurrentUser() user: User) {
+    return this.feedbackService.findAll(paginationDto, user.id);
   }
 
   @Patch(':id')
@@ -79,9 +79,9 @@ export class FeedbackController {
   async update(
     @Param('id') id: string,
     @Body() updateFeedbackDto: UpdateFeedbackDto,
-    @Req() req: Request,
+    @CurrentUser() user: User,
   ): Promise<FeedbackDto> {
-    const feedback = await this.feedbackService.update(id, updateFeedbackDto, req.user!.id);
+    const feedback = await this.feedbackService.update(id, updateFeedbackDto, user.id);
     return feedbackToDto(feedback);
   }
 
@@ -99,7 +99,7 @@ export class FeedbackController {
   @ApiException(() => BadRequestException, {
     description: FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK,
   })
-  async delete(@Param('id') id: string, @Req() req: Request): Promise<void> {
-    await this.feedbackService.delete(id, req.user!.id);
+  async delete(@Param('id') id: string, @CurrentUser() user: User): Promise<void> {
+    await this.feedbackService.delete(id, user.id);
   }
 }

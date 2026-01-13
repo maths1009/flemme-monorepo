@@ -11,11 +11,11 @@ import {
   Param,
   Post,
   Query,
-  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { CurrentUser } from '@/common/decorators/user.decorator';
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { User } from '../users/entities/user.entity';
 import { CreateLikeDto, LikeDto, LikeParamsDto } from './dto/like.dto';
 import { LikeErrorMessages } from './errors/like-error-messages.enum';
 import { LikesService } from './likes.service';
@@ -43,8 +43,8 @@ export class LikesController {
   @ApiException(() => NotFoundException, {
     description: LikeErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async create(@Body() createLikeDto: CreateLikeDto, @Req() req: Request): Promise<void> {
-    await this.likesService.create(createLikeDto, req.user!.id);
+  async create(@Body() createLikeDto: CreateLikeDto, @CurrentUser() user: User): Promise<void> {
+    await this.likesService.create(createLikeDto, user.id);
   }
 
   @Get()
@@ -54,8 +54,8 @@ export class LikesController {
     status: HttpStatus.OK,
     type: () => PaginatedResponseDto<LikeDto>,
   })
-  async findAll(@Query() params: LikeParamsDto, @Req() req: Request) {
-    return this.likesService.findAll(params, req.user!.id);
+  async findAll(@Query() params: LikeParamsDto, @CurrentUser() user: User) {
+    return this.likesService.findAll(params, user.id);
   }
 
   @Delete(':id')
@@ -72,7 +72,7 @@ export class LikesController {
   @ApiException(() => BadRequestException, {
     description: LikeErrorMessages.CANNOT_DELETE_OTHER_LIKE,
   })
-  async delete(@Param('id') id: string, @Req() req: Request): Promise<void> {
-    await this.likesService.delete(id, req.user!.id);
+  async delete(@Param('id') id: string, @CurrentUser() user: User): Promise<void> {
+    await this.likesService.delete(id, user.id);
   }
 }

@@ -10,11 +10,11 @@ import {
   Param,
   Patch,
   Query,
-  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { CurrentUser } from '@/common/decorators/user.decorator';
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { User } from '../users/entities/user.entity';
 import { AnnoncesService } from './annonces.service';
 import { AnnonceDto, UpdateAnnonceDto } from './dto/annonce.dto';
 import { AnnonceParamsDto } from './dto/annonce-params.dto';
@@ -32,8 +32,8 @@ export class AnnoncesController {
     status: HttpStatus.OK,
     type: () => PaginatedResponseDto<AnnonceDto>,
   })
-  async findAll(@Query() paginationDto: AnnonceParamsDto, @Req() req: Request) {
-    return this.annoncesService.findAll(paginationDto, req.user!.id);
+  async findAll(@Query() paginationDto: AnnonceParamsDto, @CurrentUser() user: User) {
+    return this.annoncesService.findAll(paginationDto, user.id);
   }
 
   @Patch(':id')
@@ -48,8 +48,8 @@ export class AnnoncesController {
   @ApiException(() => NotFoundException, {
     description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async updateAnnonce(@Param('id') id: string, @Body() updateAnnonceDto: UpdateAnnonceDto, @Req() req: Request) {
-    this.annoncesService.update(id, updateAnnonceDto, req.user!.id);
+  async updateAnnonce(@Param('id') id: string, @Body() updateAnnonceDto: UpdateAnnonceDto, @CurrentUser() user: User) {
+    this.annoncesService.update(id, updateAnnonceDto, user.id);
     //TODO: send notification to user that his annonce has been updated
   }
 
@@ -64,7 +64,7 @@ export class AnnoncesController {
   @ApiException(() => NotFoundException, {
     description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async deleteAnnonce(@Param('id') id: string, @Req() req: Request) {
-    this.annoncesService.delete(id, req.user!.id);
+  async deleteAnnonce(@Param('id') id: string, @CurrentUser() user: User) {
+    this.annoncesService.delete(id, user.id);
   }
 }

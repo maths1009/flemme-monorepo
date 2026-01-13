@@ -38,6 +38,4 @@ export class RegisterDto {
 export class RegisterResponseDto {
   @ApiProperty({ type: () => UserDto })
   user: UserDto;
-  @ApiProperty()
-  access_token: string;
 }

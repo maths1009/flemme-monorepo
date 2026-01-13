@@ -1,17 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+
 import { User } from '@/features/users/entities/user.entity';
 
-@Entity('sessions')
-export class Session {
-  @PrimaryGeneratedColumn('uuid')
+@Entity('devices')
+export class Device {
+  @PrimaryColumn({ length: 255, type: 'varchar' })
   id: string;
 
   @CreateDateColumn({

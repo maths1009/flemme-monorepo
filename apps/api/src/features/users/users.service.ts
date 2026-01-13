@@ -61,6 +61,13 @@ export class UsersService {
     });
   }
 
+  async findByPasswordResetToken(token: string): Promise<User | null> {
+    return await this.usersRepository.findOne({
+      relations: ['role'],
+      where: { password_reset_token: token },
+    });
+  }
+
   async update(id: string, userData: Partial<User>): Promise<User> {
     await this.usersRepository.update(id, userData);
     const user = (await this.usersRepository.findOne({

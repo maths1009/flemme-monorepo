@@ -9,15 +9,15 @@ import {
   Param,
   Patch,
   Put,
-  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { CurrentUser } from '@/common/decorators/user.decorator';
 import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
 import { FileValidationPipe } from '@/common/pipes';
+import { User } from '../users/entities/user.entity';
 import { UploadProfilePictureDto } from './dto/upload-profile-picture.dto';
 import { UpdateUserDto } from './dto/user.dto';
 import { UserErrorMessages } from './errors/user-error-message';
@@ -33,9 +33,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user' })
   @ApiParam({ description: 'User id', name: 'id' })
   @ApiBody({ type: UpdateUserDto })
-  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Req() req: Request) {
+  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() currentUser: User) {
     //TODO: send email to user if email is changed
-    const currentUser = req.user!;
     if (currentUser.id !== id) {
       throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
@@ -74,9 +73,8 @@ export class UsersController {
       }),
     )
     file: Express.Multer.File,
-    @Req() req: Request,
+    @CurrentUser() currentUser: User,
   ): Promise<void> {
-    const currentUser = req.user!;
     if (currentUser.id !== id) {
       throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
@@ -90,8 +88,7 @@ export class UsersController {
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
   })
-  async deleteUser(@Param('id') id: string, @Req() req: Request) {
-    const currentUser = req.user!;
+  async deleteUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
     if (currentUser.id !== id) {
       throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }

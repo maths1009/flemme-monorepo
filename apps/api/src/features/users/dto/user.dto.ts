@@ -13,7 +13,7 @@ export class UserDto {
   lastname: string;
 
   @ApiProperty()
-  username: string;
+  username?: string;
 
   @ApiProperty()
   email: string;

@@ -13,21 +13,27 @@ import { useAuth } from '@/context/AuthContext';
 
 const TwoFAPage = () => {
   const [otp, setOtp] = React.useState('');
+  const [errors, setErrors] = React.useState<string[]>([]);
   const router = useRouter(); 
   const { verifyEmail, user } = useAuth();
   
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setErrors([]);
+
     if (otp.length !== 6) {
-      alert('Le code doit contenir 6 chiffres');
+      setErrors(['Le code doit contenir 6 chiffres']);
       return;
     }
     
     try {
         await verifyEmail(parseInt(otp)); // Assuming API expects number
         router.push('/auth/register/complete');
-    } catch (error) {
-        alert('Code invalide ou expiré');
+    } catch (error: any) {
+        // Handle API errors
+        import('@/lib/error-formatter').then(({ formatApiErrors }) => {
+          setErrors(formatApiErrors(error));
+        });
     }
   }
 
@@ -67,16 +73,18 @@ const TwoFAPage = () => {
               <InputOTPSlot index={5} />
             </InputOTPGroup>
           </InputOTP>
+          {errors.length > 0 && (
+            <div className="text-sm text-red-500 font-medium mt-2 text-center">
+              {errors.map((err, index) => (
+                <p key={index}>{err}</p>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Bouton de validation */}
         <Button
-          type="button"
-          onClick={() => {
-            // For now, we just redirect without OTP verification
-            // In a real application, you would verify the OTP here
-            router.push('/auth/register/complete');
-          }}
+          type="submit"
           className="w-full rounded-full bg-black text-white py-6 text-base font-medium"
         >
           Valider le code

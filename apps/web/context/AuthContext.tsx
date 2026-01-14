@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       localStorage.setItem('access_token', res.access_token);
       setUser(res.user);
-      router.push('/'); 
+      router.push('/auth/login/success'); 
     } catch (error) {
       console.error('Login failed', error);
       throw error;

@@ -32,7 +32,7 @@ const LoginSuccessPage = () => {
 
       {/* Bouton rond en bas */}
       <div className="mb-8">
-        <div onClick={() => router.push('/dashboard')}>
+        <div onClick={() => router.push('/')}>
           <CircularButton />
         </div>
       </div>

@@ -11,11 +11,11 @@ import {
   Param,
   Patch,
   Post,
-  Req,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { CurrentUser } from '@/common/decorators/user.decorator';
 import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
+import { User } from '../users/entities/user.entity';
 import {
   AcceptTrackingDto,
   CancelTrackingDto,
@@ -54,8 +54,8 @@ export class TrackingsController {
   @ApiException(() => NotFoundException, {
     description: TrackingErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async create(@Body() createTrackingDto: CreateTrackingDto, @Req() req: Request): Promise<TrackingDto> {
-    const tracking = await this.trackingsService.create(createTrackingDto, req.user!.id);
+  async create(@Body() createTrackingDto: CreateTrackingDto, @CurrentUser() user: User): Promise<TrackingDto> {
+    const tracking = await this.trackingsService.create(createTrackingDto, user.id);
     const fullTracking = await this.trackingsService.findOne(tracking.id);
     return trackingToDto(fullTracking, this.fileService);
   }
@@ -71,9 +71,8 @@ export class TrackingsController {
   @ApiException(() => NotFoundException, {
     description: TrackingErrorMessages.TRACKING_NOT_FOUND,
   })
-  async findOne(@Param('id') id: string, @Req() req: Request): Promise<TrackingDto> {
+  async findOne(@Param('id') id: string, @CurrentUser() user: User): Promise<TrackingDto> {
     const tracking = await this.trackingsService.findOne(id);
-    const user = req.user!;
 
     if (tracking.creator_id !== user.id && tracking.accepter_id !== user.id) {
       throw new BadRequestException(TrackingErrorMessages.UNAUTHORIZED_TRACKING_ACCESS);
@@ -107,9 +106,9 @@ export class TrackingsController {
   async accept(
     @Param('id') id: string,
     @Body() _acceptDto: AcceptTrackingDto,
-    @Req() req: Request,
+    @CurrentUser() user: User,
   ): Promise<TrackingDto> {
-    const tracking = await this.trackingsService.accept(id, req.user!.id);
+    const tracking = await this.trackingsService.accept(id, user.id);
     const fullTracking = await this.trackingsService.findOne(tracking.id);
     return trackingToDto(fullTracking, this.fileService);
   }
@@ -139,9 +138,9 @@ export class TrackingsController {
   async complete(
     @Param('id') id: string,
     @Body() _completeDto: CompleteTrackingDto,
-    @Req() req: Request,
+    @CurrentUser() user: User,
   ): Promise<TrackingDto> {
-    const tracking = await this.trackingsService.complete(id, req.user!.id);
+    const tracking = await this.trackingsService.complete(id, user.id);
     const fullTracking = await this.trackingsService.findOne(tracking.id);
     return trackingToDto(fullTracking, this.fileService);
   }
@@ -168,9 +167,9 @@ export class TrackingsController {
   async confirm(
     @Param('id') id: string,
     @Body() _confirmDto: ConfirmTrackingDto,
-    @Req() req: Request,
+    @CurrentUser() user: User,
   ): Promise<TrackingDto> {
-    const tracking = await this.trackingsService.confirm(id, req.user!.id);
+    const tracking = await this.trackingsService.confirm(id, user.id);
     const fullTracking = await this.trackingsService.findOne(tracking.id);
     return trackingToDto(fullTracking, this.fileService);
   }
@@ -200,9 +199,9 @@ export class TrackingsController {
   async cancel(
     @Param('id') id: string,
     @Body() _cancelDto: CancelTrackingDto,
-    @Req() req: Request,
+    @CurrentUser() user: User,
   ): Promise<TrackingDto> {
-    const tracking = await this.trackingsService.cancel(id, req.user!.id);
+    const tracking = await this.trackingsService.cancel(id, user.id);
     const fullTracking = await this.trackingsService.findOne(tracking.id);
     return trackingToDto(fullTracking, this.fileService);
   }

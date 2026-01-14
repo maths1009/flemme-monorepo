@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Input, PasswordInput } from '@/components/common';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -10,34 +11,28 @@ const LoginPage = () => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState<React.ReactNode>('');
 
+  const { login } = useAuth();
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    // Reset error
     setError('');
 
-    // Simple validation (remplacez par votre logique d'authentification)
-    const isError =
-      email.trim().toLowerCase().includes('wrong') || !email || !password;
-
-    if (isError) {
-      setError(
+    try {
+      await login({ email, password });
+    } catch (err: any) {
+       setError(
         <>
-          Adresse mail ou mot de passe incorrect, tu veux{' '}
+          {err.message || 'Une erreur est survenue.'} <br/>
+          Adresse mail ou mot de passe incorrect ?{' '}
           <a
             href="/forgot-password"
             className="underline text-blue-600 hover:text-blue-800"
           >
-            réinitialiser
-          </a>{' '}
-          ou même ça t'as la flemme ?
+            Réinitialiser
+          </a>
         </>,
       );
-      return;
     }
-
-    // Redirection vers la page de succès
-    router.push('/success');
   }
 
   return (

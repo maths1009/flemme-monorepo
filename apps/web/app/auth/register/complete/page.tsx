@@ -2,6 +2,7 @@
 
 import { Button, Input, PhotoUpload } from '@/components/common';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import * as React from 'react';
 
 const CompleteProfilePage = () => {
@@ -19,7 +20,9 @@ const CompleteProfilePage = () => {
     setError(errorMessage);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { updateUser, user } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -33,12 +36,21 @@ const CompleteProfilePage = () => {
       return;
     }
 
-    // Ici vous pourriez envoyer les données au serveur
-    console.log('Pseudo:', pseudo);
-    console.log('Profile Image:', profileImage);
+    if (!user) {
+        router.push('/auth/login');
+        return;
+    }
 
-    // Redirection vers la page de succès ou dashboard
-    router.push('/auth/register/success');
+    try {
+        await updateUser(user.id, {
+            username: pseudo,
+        });
+        
+        router.push('/');
+        
+    } catch (err: any) {
+        setError(err.message || 'Erreur lors de la mise à jour');
+    }
   };
 
   return (

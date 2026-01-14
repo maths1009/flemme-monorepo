@@ -8,19 +8,27 @@ import {
 } from '@/components/common/input-otp';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { useAuth } from '@/context/AuthContext';
 ``;
 
 const TwoFAPage = () => {
   const [otp, setOtp] = React.useState('');
-  const router = useRouter();
-  function handleSubmit(e: React.FormEvent) {
+  const router = useRouter(); 
+  const { verifyEmail, user } = useAuth();
+  
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (otp.length !== 6) {
       alert('Le code doit contenir 6 chiffres');
       return;
     }
-    // logique de vérification à brancher ici
-    console.log('Code OTP soumis :', otp);
+    
+    try {
+        await verifyEmail(parseInt(otp)); // Assuming API expects number
+        router.push('/auth/register/complete');
+    } catch (error) {
+        alert('Code invalide ou expiré');
+    }
   }
 
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Input, PasswordInput } from '@/components/common';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -11,23 +12,42 @@ const RegisterPage = () => {
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [error, setError] = React.useState('');
+  const [errors, setErrors] = React.useState<string[]>([]);
+
+  const { register } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    setErrors([]);
 
+    // Local minimal validation
     if (!firstName || !lastName || !email || !phone || !password) {
-      setError('Tous les champs sont obligatoires');
+      setErrors(['Tous les champs sont obligatoires']);
       return;
     }
 
     if (password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères');
+      setErrors(['Le mot de passe doit contenir au moins 6 caractères']);
       return;
     }
 
-    router.push('/auth/register/a2f');
+    try {
+      // Mapping fields to match API RegisterDto
+      // Generating username from email for now as it is required but not asked in form
+      await register({
+        firstname: firstName,
+        lastname: lastName,
+        email,
+        password,
+      });
+      // Register function in context handles redirection and token storage
+    } catch (err: any) {
+      console.error(err);
+      // Handle API errors
+      import('@/lib/error-formatter').then(({ formatApiErrors }) => {
+        setErrors(formatApiErrors(err));
+      });
+    }
   }
 
   return (
@@ -102,8 +122,14 @@ const RegisterPage = () => {
             />
           </div>
 
-          {/* Erreur */}
-          {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+          {/* Erreur(s) */}
+          {errors.length > 0 && (
+            <div className="text-sm text-red-500 font-medium">
+              {errors.map((err, index) => (
+                <p key={index}>{err}</p>
+              ))}
+            </div>
+          )}
 
           {/* Cases à cocher */}
           <div className="space-y-3 pt-2">

@@ -95,12 +95,16 @@ export class FeedbackService {
       throw new BadRequestException(FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK);
     }
 
-    await this.feedbackRepository.update(id, updateFeedbackDto);
-    return this.findOne(id);
+    this.feedbackRepository.merge(feedback, updateFeedbackDto);
+    return await this.feedbackRepository.save(feedback);
   }
 
   async delete(id: string, userId: string): Promise<void> {
-    const feedback = await this.findOne(id);
+    const feedback = await this.feedbackRepository.findOne({ where: { id } });
+
+    if (!feedback) {
+      throw new NotFoundException(FeedbackErrorMessages.FEEDBACK_NOT_FOUND);
+    }
 
     if (feedback.sender_id !== userId) {
       throw new BadRequestException(FeedbackErrorMessages.CANNOT_MODIFY_OTHER_FEEDBACK);

@@ -49,7 +49,7 @@ export class AnnoncesController {
     description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
   })
   async updateAnnonce(@Param('id') id: string, @Body() updateAnnonceDto: UpdateAnnonceDto, @CurrentUser() user: User) {
-    this.annoncesService.update(id, updateAnnonceDto, user.id);
+    await this.annoncesService.update(id, updateAnnonceDto, user.id);
     //TODO: send notification to user that his annonce has been updated
   }
 
@@ -65,6 +65,6 @@ export class AnnoncesController {
     description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
   })
   async deleteAnnonce(@Param('id') id: string, @CurrentUser() user: User) {
-    this.annoncesService.delete(id, user.id);
+    await this.annoncesService.delete(id, user.id);
   }
 }

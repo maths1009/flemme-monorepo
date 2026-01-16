@@ -109,8 +109,7 @@ export class TrackingsController {
     @CurrentUser() user: User,
   ): Promise<TrackingDto> {
     const tracking = await this.trackingsService.accept(id, user.id);
-    const fullTracking = await this.trackingsService.findOne(tracking.id);
-    return trackingToDto(fullTracking, this.fileService);
+    return trackingToDto(tracking, this.fileService);
   }
 
   @Patch(':id/complete')
@@ -141,8 +140,7 @@ export class TrackingsController {
     @CurrentUser() user: User,
   ): Promise<TrackingDto> {
     const tracking = await this.trackingsService.complete(id, user.id);
-    const fullTracking = await this.trackingsService.findOne(tracking.id);
-    return trackingToDto(fullTracking, this.fileService);
+    return trackingToDto(tracking, this.fileService);
   }
 
   @Patch(':id/confirm')
@@ -170,8 +168,7 @@ export class TrackingsController {
     @CurrentUser() user: User,
   ): Promise<TrackingDto> {
     const tracking = await this.trackingsService.confirm(id, user.id);
-    const fullTracking = await this.trackingsService.findOne(tracking.id);
-    return trackingToDto(fullTracking, this.fileService);
+    return trackingToDto(tracking, this.fileService);
   }
 
   @Patch(':id/cancel')
@@ -202,7 +199,6 @@ export class TrackingsController {
     @CurrentUser() user: User,
   ): Promise<TrackingDto> {
     const tracking = await this.trackingsService.cancel(id, user.id);
-    const fullTracking = await this.trackingsService.findOne(tracking.id);
-    return trackingToDto(fullTracking, this.fileService);
+    return trackingToDto(tracking, this.fileService);
   }
 }

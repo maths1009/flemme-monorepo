@@ -29,10 +29,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Patch(':id')
-  @HttpCode(HttpStatus.ACCEPTED)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update user' })
   @ApiParam({ description: 'User id', name: 'id' })
   @ApiBody({ type: UpdateUserDto })
+  @ApiException(() => BadRequestException, {
+    description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+  })
   async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() currentUser: User) {
     //TODO: send email to user if email is changed
     if (currentUser.id !== id) {

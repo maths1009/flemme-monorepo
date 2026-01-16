@@ -38,7 +38,7 @@ export class User {
   @Column({ nullable: true, type: 'datetime' })
   email_verification_expired_at?: Date | null;
 
-  @Column({ nullable: true, type: 'varchar' })
+  @Column({ nullable: true, type: 'varchar', unique: true })
   password_reset_token?: string | null;
 
   @Column({ nullable: true, type: 'datetime' })

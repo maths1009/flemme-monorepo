@@ -3,7 +3,10 @@ include:
   - docker-compose.d/phpmyadmin.yml
   - docker-compose.d/minio.yml
   - docker-compose.d/mailhog.yml
+  - docker-compose.d/redis.yml
+  - docker-compose.d/redis-commander.yml
 
 volumes:
   mariadb_data:
   minio_data:
+  redis_data:

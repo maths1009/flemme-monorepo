@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { RoleEnum } from '@/features/roles/enum/role.enum';
 
 export class UserDto {
@@ -44,23 +44,31 @@ export class UserDto {
 }
 
 export class UpdateUserDto {
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
-  firstname: string;
+  @ApiPropertyOptional()
+  firstname?: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
-  lastname: string;
+  @ApiPropertyOptional()
+  lastname?: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
-  username: string;
+  @ApiPropertyOptional()
+  username?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
-  @ApiProperty()
-  email: string;
+  @ApiPropertyOptional()
+  email?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiPropertyOptional()
+  notif_enabled?: boolean;
 }

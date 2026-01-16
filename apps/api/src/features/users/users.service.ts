@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logger } from 'nestjs-pino';
 import { Repository } from 'typeorm';
@@ -61,12 +61,24 @@ export class UsersService {
     });
   }
 
+  async findByPasswordResetToken(token: string): Promise<User | null> {
+    return await this.usersRepository.findOne({
+      relations: ['role'],
+      where: { password_reset_token: token },
+    });
+  }
+
   async update(id: string, userData: Partial<User>): Promise<User> {
-    await this.usersRepository.update(id, userData);
-    const user = (await this.usersRepository.findOne({
-      where: { id },
-    }))!;
-    return user;
+    const user = await this.usersRepository.preload({
+      id,
+      ...userData,
+    });
+
+    if (!user) {
+      throw new NotFoundException(UserErrorMessages.USER_NOT_FOUND);
+    }
+
+    return await this.usersRepository.save(user);
   }
 
   async delete(id: string): Promise<void> {

@@ -56,11 +56,16 @@ export class AnnoncesService {
   }
 
   async update(id: string, updateAnnonceDto: UpdateAnnonceDto, user_id: string): Promise<void> {
-    const annonce = await this.annoncesRepository.findOne({ where: { id, user_id } });
-    if (!annonce) {
+    const annonce = await this.annoncesRepository.preload({
+      id,
+      ...updateAnnonceDto,
+    });
+
+    if (!annonce || annonce.user_id !== user_id) {
       throw new NotFoundException(AnnonceErrorMessages.ANNONCE_NOT_FOUND);
     }
-    await this.annoncesRepository.update(id, updateAnnonceDto);
+
+    await this.annoncesRepository.save(annonce);
   }
 
   async findOne(id: string): Promise<Annonce | null> {

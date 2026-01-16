@@ -15,6 +15,8 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Public } from '@/common/decorators/public.decorator';
+import { CurrentUser } from '@/common/decorators/user.decorator';
+import { User } from '../users/entities/user.entity';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
@@ -41,8 +43,12 @@ export class AuthController {
     type: LoginResponseDto,
   })
   @ApiException(() => UnauthorizedException)
-  async login(@Req() req: Request) {
-    return this.authService.login(req.user as any, req.headers['user-agent'], req.ip);
+  async login(@Req() req: Request, @CurrentUser() user: User) {
+    await this.requestLogin(req, user);
+
+    const response = await this.authService.login(user, req.sessionID, req.headers['user-agent'], req.ip);
+
+    return response;
   }
 
   @Public()
@@ -59,7 +65,12 @@ export class AuthController {
     type: RegisterResponseDto,
   })
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
-    return await this.authService.register(registerDto, req.headers['user-agent'], req.ip);
+    const user = await this.authService.register(registerDto);
+
+    await this.requestLogin(req, user);
+    const response = await this.authService.login(user, req.sessionID, req.headers['user-agent'], req.ip);
+
+    return response;
   }
 
   @Post('logout')
@@ -70,8 +81,8 @@ export class AuthController {
     status: HttpStatus.ACCEPTED,
   })
   async logout(@Req() req: Request) {
-    const user = req.user!;
-    await this.authService.logout(user.sessionId);
+    await this.authService.logout(req.sessionID);
+    await this.destroySession(req);
   }
 
   @Post('logout-all')
@@ -83,9 +94,9 @@ export class AuthController {
     description: 'Disconnection successful from all sessions',
     status: HttpStatus.ACCEPTED,
   })
-  async logoutAll(@Req() req: Request) {
-    const user = req.user!;
-    await this.authService.logoutAll(user?.id);
+  async logoutAll(@Req() req: Request, @CurrentUser() user: User) {
+    await this.authService.logoutAll(user.id);
+    await this.destroySession(req);
   }
 
   @Post('verify-email')
@@ -108,8 +119,7 @@ export class AuthController {
   @ApiException(() => BadRequestException, {
     description: AuthErrorMessages.EMAIL_ALREADY_VERIFIED,
   })
-  async verifyEmail(@Req() req: Request, @Body() verifyEmailDto: VerifyEmailDto) {
-    const user = req.user!;
+  async verifyEmail(@CurrentUser() user: User, @Body() verifyEmailDto: VerifyEmailDto) {
     await this.authService.verifyEmail(user.id, verifyEmailDto.code);
   }
 
@@ -123,9 +133,8 @@ export class AuthController {
   @ApiException(() => BadRequestException, {
     description: AuthErrorMessages.EMAIL_ALREADY_VERIFIED,
   })
-  async resendEmailVerification(@Req() req: Request) {
-    const user = req.user!;
-    await this.authService.sendEmailVerificationEmail(user as any);
+  async resendEmailVerification(@CurrentUser() user: User) {
+    await this.authService.sendEmailVerificationEmail(user);
   }
 
   @Public()
@@ -158,5 +167,26 @@ export class AuthController {
   })
   async confirmPasswordReset(@Body() confirmResetPasswordDto: ConfirmResetPasswordDto) {
     await this.authService.confirmPasswordReset(confirmResetPasswordDto);
+  }
+
+  private async requestLogin(req: Request, user: User) {
+    await new Promise<void>((resolve, reject) => {
+      req.login(user, err => {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
+  }
+
+  private async destroySession(req: Request): Promise<void> {
+    await new Promise<void>((resolve, reject) => {
+      req.logout(err => {
+        if (err) return reject(err);
+        req.session.destroy(err => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+    });
   }
 }

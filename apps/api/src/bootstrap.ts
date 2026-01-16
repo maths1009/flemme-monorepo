@@ -2,9 +2,13 @@ import { HttpException, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer } from 'class-validator';
+import { RedisStore } from 'connect-redis';
+import * as session from 'express-session';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import * as passport from 'passport';
+import { createClient } from 'redis';
+import { REDIS_SESSION_PREFIX } from '@/common/constants/redis.constants';
 import { Env } from '@/common/utils';
 import { swagger } from '@/swagger';
 import { AppModule } from './app.module';
@@ -22,9 +26,7 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   const configService = app.get(ConfigService<Env>);
 
-  app.use(helmet());
-
-  app.use(passport.initialize());
+  app.useLogger(logger);
 
   if (configService.get('NODE_ENV') !== 'production') {
     await swagger(app);
@@ -55,7 +57,34 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
     origin: configService.get('FRONTEND_URL'),
   });
 
-  app.useLogger(logger);
+  app.use(helmet());
+
+  const redisClient = createClient({
+    password: configService.get('REDIS_PASSWORD'),
+    url: `redis://${configService.get('REDIS_HOST')}:${configService.get('REDIS_PORT')}`,
+  });
+
+  await redisClient.connect().catch(console.error);
+
+  app.use(
+    session({
+      cookie: {
+        httpOnly: true,
+        maxAge: configService.get('SESSION_EXPIRATION_TIME'),
+        secure: configService.get('NODE_ENV') === 'production',
+      },
+      resave: false,
+      saveUninitialized: false,
+      secret: configService.get<string>('SESSION_SECRET')!,
+      store: new RedisStore({
+        client: redisClient,
+        prefix: REDIS_SESSION_PREFIX,
+      }),
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.useGlobalPipes(
     new ValidationPipe({

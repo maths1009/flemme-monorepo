@@ -6,6 +6,8 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Inject,
+  NotFoundException,
   Param,
   Patch,
   Put,
@@ -13,20 +15,25 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@/common/decorators/user.decorator';
 import { FileValidationMessages } from '@/common/errors/file-validation-messages.enum';
 import { FileValidationPipe } from '@/common/pipes';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { User } from '../users/entities/user.entity';
 import { UploadProfilePictureDto } from './dto/upload-profile-picture.dto';
-import { UpdateUserDto } from './dto/user.dto';
+import { UpdateUserDto, UserDto } from './dto/user.dto';
 import { UserErrorMessages } from './errors/user-error-message';
+import { userToDto } from './mappers/user.mapper';
 import { UsersService } from './users.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @Inject(FILE_SERVICE) private readonly fileService: FileServiceInterface,
+  ) {}
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
@@ -36,12 +43,21 @@ export class UsersController {
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
   })
+  @ApiException(() => NotFoundException, {
+    description: UserErrorMessages.USER_NOT_FOUND,
+  })
+  @ApiResponse({
+    description: 'User updated successfully',
+    status: HttpStatus.OK,
+    type: UserDto,
+  })
   async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() currentUser: User) {
     //TODO: send email to user if email is changed
     if (currentUser.id !== id) {
       throw new BadRequestException(UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER);
     }
-    return this.usersService.update(id, updateUserDto);
+    const updatedUser = await this.usersService.update(id, updateUserDto);
+    return userToDto(updatedUser, this.fileService);
   }
 
   @Put(':id/profile-picture')
@@ -64,6 +80,10 @@ export class UsersController {
   })
   @ApiException(() => BadRequestException, {
     description: FileValidationMessages.FILE_TYPE_NOT_ALLOWED,
+  })
+  @ApiResponse({
+    description: 'Profile picture uploaded successfully',
+    status: HttpStatus.ACCEPTED,
   })
   @UseInterceptors(FileInterceptor('file'))
   async uploadProfilePicture(
@@ -90,6 +110,10 @@ export class UsersController {
   @ApiParam({ description: 'User id', name: 'id' })
   @ApiException(() => BadRequestException, {
     description: UserErrorMessages.USER_CANNOT_MODIFY_OTHER_USER,
+  })
+  @ApiResponse({
+    description: 'User deleted successfully',
+    status: HttpStatus.ACCEPTED,
   })
   async deleteUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
     if (currentUser.id !== id) {

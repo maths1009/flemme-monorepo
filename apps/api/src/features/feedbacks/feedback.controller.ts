@@ -7,6 +7,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   NotFoundException,
   Param,
   Patch,
@@ -16,6 +17,7 @@ import {
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@/common/decorators/user.decorator';
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { User } from '../users/entities/user.entity';
 import { CreateFeedbackDto, FeedbackDto, FeedbackParamsDto, UpdateFeedbackDto } from './dto/feedback.dto';
 import { FeedbackErrorMessages } from './errors/feedback-error-messages.enum';
@@ -25,7 +27,10 @@ import { feedbackToDto } from './mappers/feedback.mapper';
 @ApiTags('feedbacks')
 @Controller('feedbacks')
 export class FeedbackController {
-  constructor(private readonly feedbackService: FeedbackService) {}
+  constructor(
+    private readonly feedbackService: FeedbackService,
+    @Inject(FILE_SERVICE) private readonly fileService: FileServiceInterface,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -45,8 +50,9 @@ export class FeedbackController {
   @ApiException(() => NotFoundException, {
     description: FeedbackErrorMessages.RECEIVER_NOT_FOUND,
   })
-  async create(@Body() createFeedbackDto: CreateFeedbackDto, @CurrentUser() user: User): Promise<void> {
-    await this.feedbackService.create(createFeedbackDto, user.id);
+  async create(@Body() createFeedbackDto: CreateFeedbackDto, @CurrentUser() user: User): Promise<FeedbackDto> {
+    const feedback = await this.feedbackService.create(createFeedbackDto, user.id);
+    return feedbackToDto(feedback, this.fileService);
   }
 
   @Get()
@@ -82,7 +88,7 @@ export class FeedbackController {
     @CurrentUser() user: User,
   ): Promise<FeedbackDto> {
     const feedback = await this.feedbackService.update(id, updateFeedbackDto, user.id);
-    return feedbackToDto(feedback);
+    return feedbackToDto(feedback, this.fileService);
   }
 
   @Delete(':id')

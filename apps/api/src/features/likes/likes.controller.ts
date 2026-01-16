@@ -7,6 +7,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   NotFoundException,
   Param,
   Post,
@@ -15,15 +16,20 @@ import {
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@/common/decorators/user.decorator';
 import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
+import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { User } from '../users/entities/user.entity';
 import { CreateLikeDto, LikeDto, LikeParamsDto } from './dto/like.dto';
 import { LikeErrorMessages } from './errors/like-error-messages.enum';
 import { LikesService } from './likes.service';
+import { likeToDto } from './mappers/like.mapper';
 
 @ApiTags('likes')
 @Controller('likes')
 export class LikesController {
-  constructor(private readonly likesService: LikesService) {}
+  constructor(
+    private readonly likesService: LikesService,
+    @Inject(FILE_SERVICE) private readonly fileService: FileServiceInterface,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -43,8 +49,9 @@ export class LikesController {
   @ApiException(() => NotFoundException, {
     description: LikeErrorMessages.ANNONCE_NOT_FOUND,
   })
-  async create(@Body() createLikeDto: CreateLikeDto, @CurrentUser() user: User): Promise<void> {
-    await this.likesService.create(createLikeDto, user.id);
+  async create(@Body() createLikeDto: CreateLikeDto, @CurrentUser() user: User): Promise<LikeDto> {
+    const like = await this.likesService.create(createLikeDto, user.id);
+    return likeToDto(like, this.fileService);
   }
 
   @Get()

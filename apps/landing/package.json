@@ -1,15 +1,34 @@
 {
+  "dependencies": {
+    "@fontsource/dm-serif-display": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@tailwindcss/vite": "catalog:",
+    "@tanstack/react-router": "catalog:tanstack",
+    "@tanstack/react-router-devtools": "catalog:tanstack",
+    "@tanstack/react-start": "catalog:tanstack",
+    "@tanstack/router-plugin": "catalog:tanstack",
+    "@tanstack/start": "catalog:tanstack",
+    "class-variance-authority": "^0.7.1",
+    "framer-motion": "^12.27.1",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.18"
+  },
   "devDependencies": {
-    "terser": "^5.44.1",
-    "vite": "catalog:vite"
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "@vitejs/plugin-react": "catalog:vite",
+    "typescript": "catalog:",
+    "vite": "catalog:vite",
+    "vite-tsconfig-paths": "catalog:vite"
   },
   "name": "landing",
-  "private": false,
+  "private": true,
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
-    "preview": "vite preview",
-    "start": "vite"
+    "dev": "vite dev",
+    "start": "vite start"
   },
-  "version": "0.1.0"
+  "type": "module"
 }

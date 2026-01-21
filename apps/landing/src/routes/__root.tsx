@@ -1,5 +1,6 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
+import { NotFound } from '@/pages/404/page';
 import '../index.css';
 
 export const Route = createRootRoute({
@@ -18,12 +19,16 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  notFoundComponent: NotFound,
 });
+
+import { Footer } from '@/components/Footer';
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
+      <Footer />
     </RootDocument>
   );
 }

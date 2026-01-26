@@ -40,7 +40,17 @@ export function Header() {
         >
           FAQ
         </Link>
-        <Button variant="primary">INSCRIS TOI</Button>
+        <Button
+          onClick={() => {
+            const appUrl = import.meta.env.VITE_APP_URL;
+            if (appUrl) {
+              window.location.href = appUrl;
+            }
+          }}
+          variant="primary"
+        >
+          INSCRIS TOI
+        </Button>
       </div>
     </motion.header>
   );

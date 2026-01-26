@@ -63,7 +63,17 @@ export class AnnoncesService {
     });
 
     const savedAnnonce = await this.annoncesRepository.save(annonce);
-    return annonceToDto(savedAnnonce, this.fileService);
+
+    const reloadedAnnonce = await this.annoncesRepository.findOne({
+      relations: ['user', 'user.role'],
+      where: { id: savedAnnonce.id },
+    });
+
+    if (!reloadedAnnonce) {
+      throw new Error('Failed to create annonce');
+    }
+
+    return annonceToDto(reloadedAnnonce, this.fileService);
   }
 
   async update(id: string, updateAnnonceDto: UpdateAnnonceDto, user_id: string): Promise<void> {

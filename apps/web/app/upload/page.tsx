@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  CategoryStep,
-  DescriptionStep,
-  LocationStep,
-  PhotoStep,
-  PriceStep,
-  TitleStep,
-} from '@/components/upload';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { CategoryStep, DescriptionStep, LocationStep, PhotoStep, PriceStep, TitleStep } from '@/components/upload';
+import { fetchClient } from '@/lib/api';
 
 export type FormData = {
   title: string;
@@ -28,26 +22,47 @@ const UploadPage = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = React.useState(1);
   const [formData, setFormData] = React.useState<FormData>({
-    title: '',
     category: '',
-    photos: [],
     description: '',
-    price: '',
     location: {
       address: '',
     },
+    photos: [],
+    price: '',
+    title: '',
   });
 
   const handleClose = () => {
     router.back(); // Retourne à la page précédente
   };
 
-  const handleNext = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleNext = async () => {
     if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     } else if (currentStep === 6) {
-      // Rediriger vers la page de succès
-      router.push('/upload/success');
+      // Submission logic
+      setIsLoading(true);
+      try {
+        await fetchClient('/annonces', {
+          body: JSON.stringify({
+            description: formData.description,
+            // Default location if missing (or ensure validation prevents this state)
+            latitude: formData.location.coordinates?.lat || 0,
+            longitude: formData.location.coordinates?.lng || 0,
+            price: Number(formData.price),
+            title: formData.title,
+          }),
+          method: 'POST',
+        });
+        router.push('/upload/success');
+      } catch (error) {
+        console.error('Failed to create annonce', error);
+        // TODO: Show toast error
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -58,62 +73,56 @@ const UploadPage = () => {
   };
 
   const updateFormData = (data: Partial<FormData>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
+    setFormData(prev => ({ ...prev, ...data }));
   };
 
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return (
-          <TitleStep
-            value={formData.title}
-            onNext={handleNext}
-            onUpdate={(title) => updateFormData({ title })}
-          />
-        );
+        return <TitleStep onNext={handleNext} onUpdate={title => updateFormData({ title })} value={formData.title} />;
       case 2:
         return (
           <CategoryStep
-            value={formData.category}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            onUpdate={(category) => updateFormData({ category })}
+            onUpdate={category => updateFormData({ category })}
+            value={formData.category}
           />
         );
       case 3:
         return (
           <PhotoStep
-            value={formData.photos}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            onUpdate={(photos) => updateFormData({ photos })}
+            onUpdate={photos => updateFormData({ photos })}
+            value={formData.photos}
           />
         );
       case 4:
         return (
           <DescriptionStep
-            value={formData.description}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            onUpdate={(description) => updateFormData({ description })}
+            onUpdate={description => updateFormData({ description })}
+            value={formData.description}
           />
         );
       case 5:
         return (
           <PriceStep
-            value={formData.price}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            onUpdate={(price) => updateFormData({ price })}
+            onUpdate={price => updateFormData({ price })}
+            value={formData.price}
           />
         );
       case 6:
         return (
           <LocationStep
-            value={formData.location}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            onUpdate={(location) => updateFormData({ location })}
+            onUpdate={location => updateFormData({ location })}
+            value={formData.location}
           />
         );
       default:
@@ -128,16 +137,14 @@ const UploadPage = () => {
         <div className="relative flex items-center px-6 pt-5 pb-8 bg-primary/5">
           {/* Bouton fermer aligné */}
           <button
-            onClick={handleClose}
-            className="flex h-8 w-8 items-center justify-center text-foreground hover:opacity-70 transition-opacity cursor-pointer"
             aria-label="Fermer"
+            className="flex h-8 w-8 items-center justify-center text-foreground hover:opacity-70 transition-opacity cursor-pointer"
+            onClick={handleClose}
           >
             <X className="w-6 h-6" />
           </button>
 
-          <h1 className="flex-1 text-center text-xl font-semibold text-foreground">
-            Proposer une annonce
-          </h1>
+          <h1 className="flex-1 text-center text-xl font-semibold text-foreground">Proposer une annonce</h1>
 
           {/* Espace pour équilibrer (même largeur que le bouton) */}
           <div className="w-8 h-8"></div>

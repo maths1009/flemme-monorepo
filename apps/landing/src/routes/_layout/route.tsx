@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { Footer } from '@/components/sections/Layout/Footer';
-import { Header } from '@/components/sections/Layout/Header';
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { Toaster } from '@/components/Toaster';
 
 export const Route = createFileRoute('/_layout')({
   component: LayoutComponent,
@@ -13,6 +14,7 @@ function LayoutComponent() {
       <main>
         <Outlet />
       </main>
+      <Toaster />
       <Footer />
     </>
   );

@@ -1,7 +1,34 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { NotFound } from '@/pages/404/page';
 import '../index.css';
+
+function RootDocument({ children }: { children: ReactNode }) {
+  return (
+    <html lang="fr">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+import { Toaster } from '@/components/Toaster';
+
+function RootComponent() {
+  return (
+    <RootDocument>
+      <GoogleAnalytics />
+      <Outlet />
+      <Toaster />
+    </RootDocument>
+  );
+}
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -21,28 +48,3 @@ export const Route = createRootRoute({
   }),
   notFoundComponent: NotFound,
 });
-
-import { Footer } from '@/components/Footer';
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-      <Footer />
-    </RootDocument>
-  );
-}
-
-function RootDocument({ children }: { children: ReactNode }) {
-  return (
-    <html lang="fr">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}

@@ -1,3 +1,4 @@
+import { ValidateEnv } from '@julr/vite-plugin-validate-env';
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import viteReact from '@vitejs/plugin-react';
@@ -14,5 +15,8 @@ export default defineConfig({
       srcDirectory: 'src',
     }),
     viteReact(),
+    ValidateEnv({
+      configFile: 'src/config/env',
+    }),
   ],
 });

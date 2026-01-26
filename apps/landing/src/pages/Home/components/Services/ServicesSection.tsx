@@ -1,9 +1,8 @@
-import { ServiceCard } from '../../../../components/sections/Services/ServiceCard';
+import { ServiceCard } from './ServiceCard';
 
 function ServicesSection() {
   return (
     <section className="grid w-full grid-cols-1 gap-0">
-      {/* Service 1: Green */}
       <ServiceCard theme="green">
         <ServiceCard.Visual className="items-end">
           <img alt="Mascotte verte" src="/mascot-1.svg" />
@@ -15,7 +14,6 @@ function ServicesSection() {
         />
       </ServiceCard>
 
-      {/* Service 2: Blue - Reversed */}
       <ServiceCard theme="blue">
         <ServiceCard.Content
           description="Confiez-nous vos corvées et concentrez-vous sur l'essentiel : binge-watcher votre série préférée sans interruption. Vous le méritez."
@@ -27,7 +25,6 @@ function ServicesSection() {
         </ServiceCard.Visual>
       </ServiceCard>
 
-      {/* Service 3: Pink */}
       <ServiceCard theme="pink">
         <ServiceCard.Visual className="items-end">
           <img alt="Mascotte triangle rose" src="/mascot-4.svg" />

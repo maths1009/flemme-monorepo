@@ -12,6 +12,7 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: "DM Serif Display", serif;
 
+  /* Smooth scrolling for anchor links */
   --color-brand-yellow: #fde104;
   --color-brand-black: #1e1e1e;
   --color-brand-bg: #f5f4f3;
@@ -23,6 +24,10 @@
   --color-service-bg-green: rgba(1, 151, 55, 0.8);
   --color-service-bg-blue: rgba(64, 94, 246, 0.8);
   --color-service-bg-pink: rgba(254, 163, 178, 0.8);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {

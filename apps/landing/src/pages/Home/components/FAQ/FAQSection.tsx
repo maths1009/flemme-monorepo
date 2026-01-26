@@ -38,7 +38,7 @@ function FaqSection() {
   const [openId, setOpenId] = useState<number | null>(2);
 
   return (
-    <section className="relative w-full overflow-hidden bg-brand-yellow py-24">
+    <section className="relative w-full overflow-hidden bg-brand-yellow py-24" id="faq">
       {/* Eyes Decoration */}
       <div className="absolute left-[-45px] top-1/2 -translate-y-1/2 md:left-10 md:top-20 md:translate-y-0">
         <img

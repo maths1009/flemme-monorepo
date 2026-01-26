@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/Button';
 
 function NotFound() {
   return (

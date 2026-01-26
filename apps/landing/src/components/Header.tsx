@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/Button';
 
 export function Header() {
   const { scrollY } = useScroll();
@@ -27,7 +27,17 @@ export function Header() {
         FLEMME
       </Link>
       <div className="flex items-center gap-4 md:gap-8">
-        <Link className="text-xs font-bold uppercase tracking-wide text-black hover:underline md:text-sm" to="/">
+        <Link
+          className="text-xs font-bold uppercase tracking-wide text-black hover:underline md:text-sm"
+          hash="faq"
+          onClick={() => {
+            const element = document.getElementById('faq');
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          to="/"
+        >
           FAQ
         </Link>
         <Button variant="primary">INSCRIS TOI</Button>

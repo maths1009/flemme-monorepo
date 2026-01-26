@@ -3,7 +3,7 @@ import { HeroSection } from './components/Hero/HeroSection';
 import { ServicesSection } from './components/Services/ServicesSection';
 import { TestimonialsSection } from './components/Testimonials/TestimonialsSection';
 
-function LandingPage() {
+function HomePage() {
   return (
     <>
       <HeroSection />
@@ -14,4 +14,4 @@ function LandingPage() {
   );
 }
 
-export { LandingPage };
+export { HomePage };

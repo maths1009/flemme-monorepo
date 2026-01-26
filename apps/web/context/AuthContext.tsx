@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchClient } from '@/lib/api';
 
 interface User {
@@ -34,27 +35,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  const checkAuth = async () => {
-    const token = localStorage.getItem('access_token');
-    // Si on a un token, on pourrait appeler un endpoint /me pour récupérer le user
-    // Pour l'instant on suppose que si le token est là, c'est ok, ou on le décodera si besoin
-    if (token) {
-        // TODO: Implement /me or decode token if API supports it to get user details on load
-        // For now, we rely on the fact that we stay logged in if token exists
+  const checkAuth = () => {
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Failed to parse user from local storage', error);
+        localStorage.removeItem('user');
+      }
     }
     setLoading(false);
   };
 
   const login = async (data: any) => {
     try {
-      const res = await fetchClient<{ user: User; access_token: string }>('/auth/login', {
-        method: 'POST',
+      const res = await fetchClient<{ user: User }>('/auth/login', {
         body: JSON.stringify(data),
+        method: 'POST',
       });
 
-      localStorage.setItem('access_token', res.access_token);
+      localStorage.setItem('user', JSON.stringify(res.user));
       setUser(res.user);
-      router.push('/auth/login/success'); 
+      router.push('/auth/login/success');
     } catch (error) {
       console.error('Login failed', error);
       throw error;
@@ -63,12 +68,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (data: any) => {
     try {
-      const res = await fetchClient<{ user: User; access_token: string }>('/auth/register', {
-        method: 'POST',
+      const res = await fetchClient<{ user: User }>('/auth/register', {
         body: JSON.stringify(data),
+        method: 'POST',
       });
 
-      localStorage.setItem('access_token', res.access_token);
+      localStorage.setItem('user', JSON.stringify(res.user));
       setUser(res.user);
       router.push('/auth/register/a2f');
     } catch (error) {
@@ -80,10 +85,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await fetchClient('/auth/logout', { method: 'POST' });
-    } catch (error){
+    } catch (error) {
       console.error('Logout API call failed', error);
     } finally {
-      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
       setUser(null);
       router.push('/auth/login');
     }
@@ -92,34 +97,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const verifyEmail = async (code: number) => {
     try {
       await fetchClient('/auth/verify-email', {
-        method: 'POST',
         body: JSON.stringify({ code }),
+        method: 'POST',
       });
       // Optionally update user state to reflect verified status if needed
-       if (user) {
-        setUser({ ...user, email_verified: true });
-       }
+      if (user) {
+        const updatedUser = { ...user, email_verified: true };
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      }
     } catch (error) {
-       console.error('Verify email failed', error);
-       throw error;
+      console.error('Verify email failed', error);
+      throw error;
     }
   };
 
   const updateUser = async (id: string, data: any) => {
-      try {
-          const res = await fetchClient<User>(`/users/${id}`, {
-              method: 'PATCH',
-              body: JSON.stringify(data),
-          });
-          setUser(res);
-      } catch (error) {
-          console.error('Update user failed', error);
-          throw error;
-      }
+    try {
+      const res = await fetchClient<User>(`/users/${id}`, {
+        body: JSON.stringify(data),
+        method: 'PATCH',
+      });
+      setUser(res);
+      localStorage.setItem('user', JSON.stringify(res));
+    } catch (error) {
+      console.error('Update user failed', error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, verifyEmail, updateUser }}>
+    <AuthContext.Provider value={{ loading, login, logout, register, updateUser, user, verifyEmail }}>
       {children}
     </AuthContext.Provider>
   );

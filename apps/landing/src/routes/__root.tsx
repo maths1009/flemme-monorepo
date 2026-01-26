@@ -1,8 +1,8 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
+import { createRootRoute, HeadContent, Navigate, Outlet, Scripts } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
-import { NotFound } from '@/pages/404/page';
 import '../index.css';
+import { Toaster } from '@/components/Toaster';
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -17,8 +17,6 @@ function RootDocument({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
-import { Toaster } from '@/components/Toaster';
 
 function RootComponent() {
   return (
@@ -46,5 +44,5 @@ export const Route = createRootRoute({
       },
     ],
   }),
-  notFoundComponent: NotFound,
+  notFoundComponent: () => <Navigate replace to="/404" />,
 });

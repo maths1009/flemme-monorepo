@@ -35,7 +35,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite dev",
-    "start": "vite start"
+    "start": "vite start",
+    "typecheck": "tsc --noEmit"
   },
   "type": "module"
 }

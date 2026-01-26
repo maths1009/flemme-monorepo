@@ -9,9 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root';
+import { Route as LayoutBlogBlogIdRouteImport } from './routes/_layout/blog/$blogId';
+import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index';
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index';
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route';
+import { Route as R404RouteImport } from './routes/404';
 
+const R404Route = R404RouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/404',
+  path: '/404',
+} as any);
 const LayoutRouteRoute = LayoutRouteRouteImport.update({
   getParentRoute: () => rootRouteImport,
   id: '/_layout',
@@ -21,32 +29,59 @@ const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
 } as any);
+const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/blog/',
+  path: '/blog/',
+} as any);
+const LayoutBlogBlogIdRoute = LayoutBlogBlogIdRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/blog/$blogId',
+  path: '/blog/$blogId',
+} as any);
 
 export interface FileRoutesByFullPath {
+  '/404': typeof R404Route;
   '/': typeof LayoutIndexRoute;
+  '/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/blog': typeof LayoutBlogIndexRoute;
 }
 export interface FileRoutesByTo {
+  '/404': typeof R404Route;
   '/': typeof LayoutIndexRoute;
+  '/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/blog': typeof LayoutBlogIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   '/_layout': typeof LayoutRouteRouteWithChildren;
+  '/404': typeof R404Route;
   '/_layout/': typeof LayoutIndexRoute;
+  '/_layout/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/_layout/blog/': typeof LayoutBlogIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/';
+  fullPaths: '/404' | '/' | '/blog/$blogId' | '/blog';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/';
-  id: '__root__' | '/_layout' | '/_layout/';
+  to: '/404' | '/' | '/blog/$blogId' | '/blog';
+  id: '__root__' | '/_layout' | '/404' | '/_layout/' | '/_layout/blog/$blogId' | '/_layout/blog/';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   LayoutRouteRoute: typeof LayoutRouteRouteWithChildren;
+  R404Route: typeof R404Route;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/404': {
+      id: '/404';
+      path: '/404';
+      fullPath: '/404';
+      preLoaderRoute: typeof R404RouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_layout': {
       id: '/_layout';
       path: '';
@@ -61,14 +96,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
+    '/_layout/blog/': {
+      id: '/_layout/blog/';
+      path: '/blog';
+      fullPath: '/blog';
+      preLoaderRoute: typeof LayoutBlogIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/blog/$blogId': {
+      id: '/_layout/blog/$blogId';
+      path: '/blog/$blogId';
+      fullPath: '/blog/$blogId';
+      preLoaderRoute: typeof LayoutBlogBlogIdRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
   }
 }
 
 interface LayoutRouteRouteChildren {
   LayoutIndexRoute: typeof LayoutIndexRoute;
+  LayoutBlogBlogIdRoute: typeof LayoutBlogBlogIdRoute;
+  LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute;
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutBlogBlogIdRoute: LayoutBlogBlogIdRoute,
+  LayoutBlogIndexRoute: LayoutBlogIndexRoute,
   LayoutIndexRoute: LayoutIndexRoute,
 };
 
@@ -76,6 +129,7 @@ const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(LayoutRou
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRouteRoute: LayoutRouteRouteWithChildren,
+  R404Route: R404Route,
 };
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
 

@@ -27,6 +27,9 @@ export function Header() {
         FLEMME
       </Link>
       <div className="flex items-center gap-4 md:gap-8">
+        <Link className="text-xs font-bold uppercase tracking-wide text-black hover:underline md:text-sm" to="/blog">
+          Blog
+        </Link>
         <Link
           className="text-xs font-bold uppercase tracking-wide text-black hover:underline md:text-sm"
           hash="faq"

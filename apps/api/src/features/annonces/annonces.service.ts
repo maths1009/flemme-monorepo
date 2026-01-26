@@ -6,6 +6,7 @@ import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.servi
 import { PaginationService } from '@/common/services/pagination.service';
 import { AnnonceDto, UpdateAnnonceDto } from './dto/annonce.dto';
 import { AnnonceParamsDto } from './dto/annonce-params.dto';
+import { CreateAnnonceDto } from './dto/create-annonce.dto';
 import { Annonce } from './entities/annonce.entity';
 import { AnnonceErrorMessages } from './errors/annonce-error-message';
 import { annonceToDto } from './mappers/annonce.mapper';
@@ -53,6 +54,16 @@ export class AnnoncesService {
       queryBuilder,
       async annonces => Promise.all(annonces.map(annonce => annonceToDto(annonce, this.fileService))),
     );
+  }
+
+  async create(createAnnonceDto: CreateAnnonceDto, user_id: string): Promise<AnnonceDto> {
+    const annonce = this.annoncesRepository.create({
+      ...createAnnonceDto,
+      user_id,
+    });
+
+    const savedAnnonce = await this.annoncesRepository.save(annonce);
+    return annonceToDto(savedAnnonce, this.fileService);
   }
 
   async update(id: string, updateAnnonceDto: UpdateAnnonceDto, user_id: string): Promise<void> {

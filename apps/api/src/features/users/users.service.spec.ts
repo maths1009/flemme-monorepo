@@ -126,12 +126,13 @@ describe('UsersService', () => {
   describe('update', () => {
     it('should update and return user', async () => {
       const user = { firstname: 'Updated', id: 'user-1' };
-      repository.update.mockResolvedValue({ affected: 1 } as any);
-      repository.findOne.mockResolvedValue(user as any);
+      repository.preload.mockResolvedValue(user as any);
+      repository.save.mockResolvedValue(user as any);
 
       const result = await service.update('user-1', { firstname: 'Updated' });
       expect(result).toEqual(user);
-      expect(repository.update).toHaveBeenCalledWith('user-1', { firstname: 'Updated' });
+      expect(repository.preload).toHaveBeenCalledWith({ firstname: 'Updated', id: 'user-1' });
+      expect(repository.save).toHaveBeenCalledWith(user);
     });
   });
 

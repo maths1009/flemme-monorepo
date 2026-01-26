@@ -9,6 +9,7 @@ import {
   NotFoundException,
   Param,
   Patch,
+  Post,
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import { User } from '../users/entities/user.entity';
 import { AnnoncesService } from './annonces.service';
 import { AnnonceDto, UpdateAnnonceDto } from './dto/annonce.dto';
 import { AnnonceParamsDto } from './dto/annonce-params.dto';
+import { CreateAnnonceDto } from './dto/create-annonce.dto';
 import { AnnonceErrorMessages } from './errors/annonce-error-message';
 
 @ApiTags('annonces')
@@ -34,6 +36,18 @@ export class AnnoncesController {
   })
   async findAll(@Query() paginationDto: AnnonceParamsDto, @CurrentUser() user: User) {
     return this.annoncesService.findAll(paginationDto, user.id);
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new annonce' })
+  @ApiBody({ type: CreateAnnonceDto })
+  @ApiResponse({
+    description: 'The created annonce',
+    status: HttpStatus.CREATED,
+    type: AnnonceDto,
+  })
+  async create(@Body() createAnnonceDto: CreateAnnonceDto, @CurrentUser() user: User) {
+    return this.annoncesService.create(createAnnonceDto, user.id);
   }
 
   @Patch(':id')

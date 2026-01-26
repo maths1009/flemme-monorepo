@@ -138,11 +138,17 @@ describe('FeedbackService', () => {
         .mockResolvedValueOnce(feedback as any) // findOne check
         .mockResolvedValueOnce(feedback as any); // return after update
 
-      repository.update.mockResolvedValue({ affected: 1 } as any);
+      repository.findOne
+        .mockResolvedValueOnce(feedback as any) // findOne check
+        .mockResolvedValueOnce(feedback as any); // return after update
+
+      repository.merge.mockReturnValue(feedback as any);
+      repository.save.mockResolvedValue(feedback as any);
 
       await service.update(feedbackId, updateDto, userId);
 
-      expect(repository.update).toHaveBeenCalledWith(feedbackId, updateDto);
+      expect(repository.merge).toHaveBeenCalledWith(feedback, updateDto);
+      expect(repository.save).toHaveBeenCalledWith(feedback);
     });
 
     it('should throw BadRequestException if not owner', async () => {

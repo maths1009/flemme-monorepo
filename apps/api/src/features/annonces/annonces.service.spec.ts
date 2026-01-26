@@ -7,6 +7,7 @@ import { FILE_SERVICE } from '@/common/services/file.service';
 import { PaginationService } from '@/common/services/pagination.service';
 import { createMockRepository } from '@/common/testing/test-utils';
 import { AnnoncesService } from './annonces.service';
+import { CreateAnnonceDto } from './dto/create-annonce.dto';
 import { Annonce } from './entities/annonce.entity';
 import { AnnonceErrorMessages } from './errors/annonce-error-message';
 
@@ -47,6 +48,36 @@ describe('AnnoncesService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('create', () => {
+    const createDto: CreateAnnonceDto = {
+      description: 'Description',
+      latitude: 48.85,
+      longitude: 2.35,
+      price: 100,
+      title: 'New Annonce',
+    };
+    const userId = 'user-1';
+
+    it('should create and return an annonce', async () => {
+      const savedAnnonce = {
+        ...createDto,
+        created_at: new Date(),
+        id: '1',
+        updated_at: new Date(),
+        user: { id: userId, role: { name: 'USER' } } as any,
+        user_id: userId,
+      };
+      repository.create.mockReturnValue(savedAnnonce);
+      repository.save.mockResolvedValue(savedAnnonce);
+
+      const result = await service.create(createDto, userId);
+
+      expect(repository.create).toHaveBeenCalledWith({ ...createDto, user_id: userId });
+      expect(repository.save).toHaveBeenCalledWith(savedAnnonce);
+      expect(result).toBeDefined();
+    });
   });
 
   describe('findAll', () => {
@@ -114,12 +145,13 @@ describe('AnnoncesService', () => {
 
     it('should update annonce if user owns it', async () => {
       const annonce = { id: 'annonce-1', user_id: userId };
-      repository.findOne.mockResolvedValue(annonce as any);
-      repository.update.mockResolvedValue({ affected: 1 } as any);
+      repository.preload.mockResolvedValue(annonce as any);
+      repository.save.mockResolvedValue(annonce as any);
 
       await service.update('annonce-1', updateDto, userId);
 
-      expect(repository.update).toHaveBeenCalledWith('annonce-1', updateDto);
+      expect(repository.preload).toHaveBeenCalledWith({ id: 'annonce-1', ...updateDto });
+      expect(repository.save).toHaveBeenCalledWith(annonce);
     });
 
     it('should throw NotFoundException if annonce not found or not owned', async () => {

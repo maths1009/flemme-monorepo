@@ -96,6 +96,12 @@ export class AnnoncesService {
     });
   }
 
+  async getOne(id: string): Promise<AnnonceDto | null> {
+    const annonce = await this.findOne(id);
+    if (!annonce) return null;
+    return annonceToDto(annonce, this.fileService);
+  }
+
   async delete(id: string, user_id: string): Promise<void> {
     const annonce = await this.annoncesRepository.findOne({ where: { id, user_id } });
     if (!annonce) {

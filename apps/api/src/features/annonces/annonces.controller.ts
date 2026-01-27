@@ -38,6 +38,61 @@ export class AnnoncesController {
     return this.annoncesService.findAll(paginationDto, user.id);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get an annonce by id' })
+  @ApiParam({ description: 'Annonce id', name: 'id' })
+  @ApiResponse({
+    description: 'The annonce',
+    status: HttpStatus.OK,
+    type: AnnonceDto,
+  })
+  @ApiException(() => NotFoundException, {
+    description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
+  })
+  async findOne(@Param('id') id: string) {
+    const annonce = await this.annoncesService.findOne(id);
+    if (!annonce) {
+      throw new NotFoundException(AnnonceErrorMessages.ANNONCE_NOT_FOUND);
+    }
+    // We need to map it to DTO. annoncesService.findOne returns Entity.
+    // However, annoncesService.findOne signature says Promise<Annonce | null>
+    // checking imports... we need annonceToDto and FileService ??
+    // actually let's check annoncesService.findOne implementation/usage.
+    // It returns entity. we need to return DTO.
+    // But annoncesService.create returns DTO.
+    // Let's rely on service to return DTO or map it here.
+    // Looking at existing code: annoncesService.findAll maps to DTO inside service.
+    // create maps to DTO inside service.
+    // findOne returns Entity (based on previous view_file).
+    // I should probably map it here or update service to map it.
+    // Updating service is cleaner but controller change is requested.
+    // Wait, I saw annoncesService.findOne returning Promise<Annonce | null> in previous read.
+    // I'll import annonceToDto and map it here, OR better, let's look at the imports available in controller.
+    // Imports available: AnnonceDto.
+    // I need to import annonceToDto from mappers if I do it here.
+    // OR I can just return the entity and let ClassSerializerInterceptor handle it?
+    // No, project seems to use manual mapping (findAll uses .map(annonceToDto)).
+    // So I should map it. But I don't have FileService injected in Controller.
+    // Service HAS FileService.
+    // BEST APPROACH: Update Service to return DTO or have a method `findOneDto`.
+    // BUT my task is "Add GET endpoint".
+    // Let's look at `annonces.service.ts` again. `findOne` returns `Annonce`.
+    // I will call `this.annoncesService.findOne(id)` and I need to map it.
+    // But I lack `FileService` here.
+    // So I should modify `AnnoncesService` to have `findOneDto` OR just modify `findOne` to return DTO?
+    // `findOne` might be used internally by `update`/`delete` where we need Entity.
+    // So better add `getOne` to Service that returns DTO.
+
+    // Changing plan slightly to be robust:
+    // 1. Add `getOne` to Service (returns DTO).
+    // 2. Call `getOne` from Controller.
+
+    // Let's start by modifying Service then.
+    // Wait, I can't modify multiple files in one turn easily if I want to be safe.
+    // I'll modify Service first.
+    return this.annoncesService.getOne(id);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create a new annonce' })
   @ApiBody({ type: CreateAnnonceDto })

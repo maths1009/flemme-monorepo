@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import {
   ImageCarouselSection,
   LocationSection,
@@ -8,13 +9,8 @@ import {
   SuggestedTasksSection,
   TitleDescriptionSection,
 } from '@/components/adverts';
-import { ProfileBanner } from '@/components/common';
-import {
-  getAdvertById,
-  getRelatedAdverts,
-  getSuggestedAdverts,
-} from '@/lib/mockData';
-import { useParams, useRouter } from 'next/navigation';
+import { ProfileBanner } from '@/components/common'; // Restore import
+import { useAnnonce } from '@/hooks/useAnnonces';
 
 export default function AdvertDetailPage() {
   const params = useParams();
@@ -22,22 +18,23 @@ export default function AdvertDetailPage() {
   const advertId = params.id as string;
 
   // Récupération des données de l'annonce
-  const advert = getAdvertById(advertId);
-  const relatedTasks = getRelatedAdverts(advertId, 3);
-  const suggestedTasks = getSuggestedAdverts(advertId, 3);
+  const { annonce: advert, loading, error } = useAnnonce(advertId);
+
+  // Mocks pour les tâches suggérées (implémentation backend future)
+  const relatedTasks: any[] = [];
+  const suggestedTasks: any[] = [];
+
+  if (loading) {
+    return <div className="min-h-screen bg-white flex items-center justify-center">Chargement...</div>;
+  }
 
   // Si l'annonce n'existe pas, afficher une erreur
-  if (!advert) {
+  if (!advert || error) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Annonce non trouvée
-          </h1>
-          <button
-            onClick={() => router.back()}
-            className="bg-gray-800 text-white px-6 py-2 rounded-full"
-          >
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Annonce non trouvée</h1>
+          <button className="bg-gray-800 text-white px-6 py-2 rounded-full" onClick={() => router.back()}>
             Retour
           </button>
         </div>
@@ -45,35 +42,44 @@ export default function AdvertDetailPage() {
     );
   }
 
+  // Mapping Backend Data to UI Components
+  const mappedUser = {
+    avatar: advert.user.profile_picture_url || 'https://placehold.co/100',
+    id: advert.user.id,
+    name: `${advert.user.firstname} ${advert.user.lastname}`,
+    rating: 0, // Not in API yet
+    reviews: 0, // Not in API yet
+  };
+
+  const images = ['https://placehold.co/600x400']; // Placeholder
+  const locationString = `Lat: ${advert.latitude}, Lng: ${advert.longitude}`; // Basic representation
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header avec carousel d'images */}
-      <ImageCarouselSection images={advert.images} title={advert.title} />
+      <ImageCarouselSection images={images} title={advert.title} />
 
       <div className="px-6 py-6">
         {/* Titre et description */}
         <TitleDescriptionSection
-          title={advert.title}
+          date={advert.created_at}
           description={advert.description}
           price={advert.price}
-          date={advert.date}
+          title={advert.title}
         />
 
         {/* Profil utilisateur */}
-        <ProfileBanner
-          user={advert.user}
-          onMessageClick={() => router.push(`/messages/${advert.id}`)}
-        />
+        <ProfileBanner onMessageClick={() => router.push(`/messages/${advert.id}`)} user={mappedUser} />
 
         {/* Localisation */}
-        <LocationSection advertId={advert.id} location={advert.location} />
+        <LocationSection advertId={advert.id} location={locationString} />
 
         {/* Tâches de l'utilisateur */}
         <RelatedTasksSection
-          user={advert.user}
-          location={advert.location}
+          location={locationString}
+          onTaskClick={taskId => router.push(`/adverts/${taskId}`)}
           relatedTasks={relatedTasks}
-          onTaskClick={(taskId) => router.push(`/adverts/${taskId}`)}
+          user={mappedUser}
         />
 
         {/* Informations de sécurité */}
@@ -81,9 +87,9 @@ export default function AdvertDetailPage() {
 
         {/* Tâches qui peuvent vous intéresser */}
         <SuggestedTasksSection
-          location={advert.location}
+          location={locationString}
+          onTaskClick={taskId => router.push(`/adverts/${taskId}`)}
           suggestedTasks={suggestedTasks}
-          onTaskClick={(taskId) => router.push(`/adverts/${taskId}`)}
         />
       </div>
     </div>

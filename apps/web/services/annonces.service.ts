@@ -32,4 +32,10 @@ export const AnnoncesService = {
   async getOne(id: string) {
     return fetchClient<Annonce>(`/annonces/${id}`);
   },
+
+  async delete(id: string) {
+    return fetchClient<void>(`/annonces/${id}`, {
+      method: 'DELETE',
+    });
+  },
 };

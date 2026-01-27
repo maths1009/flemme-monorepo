@@ -8,11 +8,15 @@ import { useRef, useState } from 'react';
 interface ImageCarouselSectionProps {
   images: string[];
   title: string;
+  isLiked?: boolean;
+  onLikeToggle?: () => void;
 }
 
 export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
   images,
   title,
+  isLiked = false,
+  onLikeToggle,
 }) => {
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -70,8 +74,13 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
         </button>
 
         <div className="absolute top-4 right-4 flex space-x-2">
-          <button className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center">
-            <Heart className="w-5 h-5 text-white" />
+          <button 
+            onClick={onLikeToggle}
+            className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center transition-transform active:scale-95"
+          >
+            <Heart 
+              className={`w-6 h-6 ${isLiked ? 'fill-red-500 text-red-500' : 'text-white'}`} 
+            />
           </button>
 
           <button className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center">

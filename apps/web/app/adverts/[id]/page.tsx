@@ -11,6 +11,7 @@ import {
 } from '@/components/adverts';
 import { ProfileBanner } from '@/components/common'; // Restore import
 import { useAnnonce } from '@/hooks/useAnnonces';
+import { useLikes } from '@/hooks/useLikes';
 
 export default function AdvertDetailPage() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function AdvertDetailPage() {
 
   // Récupération des données de l'annonce
   const { annonce: advert, loading, error } = useAnnonce(advertId);
+  const { checkIsLiked, toggleLike } = useLikes();
 
   // Mocks pour les tâches suggérées (implémentation backend future)
   const relatedTasks: any[] = [];
@@ -53,11 +55,19 @@ export default function AdvertDetailPage() {
 
   const images = ['https://placehold.co/600x400']; // Placeholder
   const locationString = `Lat: ${advert.latitude}, Lng: ${advert.longitude}`; // Basic representation
+  
+  // Check like status
+  const { isLiked } = checkIsLiked(advert.id);
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header avec carousel d'images */}
-      <ImageCarouselSection images={images} title={advert.title} />
+      <ImageCarouselSection 
+        images={images} 
+        title={advert.title}
+        isLiked={isLiked}
+        onLikeToggle={() => toggleLike(advert.id)}
+      />
 
       <div className="px-6 py-6">
         {/* Titre et description */}

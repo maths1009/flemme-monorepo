@@ -38,4 +38,11 @@ export const AnnoncesService = {
       method: 'DELETE',
     });
   },
+
+  async update(id: string, data: Partial<Annonce>) {
+    return fetchClient<Annonce>(`/annonces/${id}`, {
+      body: JSON.stringify(data),
+      method: 'PATCH',
+    });
+  },
 };

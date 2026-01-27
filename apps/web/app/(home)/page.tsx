@@ -47,7 +47,7 @@ const Page = () => {
       </div>
 
       {/* Carousel */}
-      <Carousel />
+      {adverts.length > 0 && <Carousel annonces={adverts} />}
 
       {/* Panneau "Notre application est là" */}
       <ApplicationPanel />

@@ -116,7 +116,11 @@ export default function AdvertDetailPage() {
       <div className="px-6 py-6">
         {/* Titre et description */}
         <TitleDescriptionSection
-          date={advert.created_at}
+          date={`le ${new Date(advert.created_at).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}`}
           description={advert.description}
           price={advert.price}
           title={advert.title}

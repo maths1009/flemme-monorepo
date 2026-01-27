@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
+import { TextField } from '@/components/TextField';
 
 interface StoreButton {
   icon: React.ReactNode;
@@ -66,7 +66,9 @@ function Footer() {
             className="mx-auto mb-16 flex max-w-md flex-col items-stretch gap-4 md:flex-row"
             onSubmit={handleSubmit}
           >
-            <Input className="h-auto" name="email" placeholder="TON EMAIL" required type="email" />
+            <TextField className="h-auto">
+              <TextField.Input name="email" placeholder="TON EMAIL" required type="email" />
+            </TextField>
             <Button className="uppercase h-auto" size="lg" type="submit" variant="cta">
               Inscris toi
             </Button>

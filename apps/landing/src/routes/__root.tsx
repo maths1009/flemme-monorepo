@@ -1,8 +1,10 @@
 import { createRootRoute, HeadContent, Navigate, Outlet, Scripts } from '@tanstack/react-router';
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 import type { ReactNode } from 'react';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import '../index.css';
 import { Toaster } from '@/components/Toaster';
+import { generateMeta } from '@/utils/seo';
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
@@ -21,9 +23,11 @@ function RootDocument({ children }: { children: ReactNode }) {
 function RootComponent() {
   return (
     <RootDocument>
-      <GoogleAnalytics />
-      <Outlet />
-      <Toaster />
+      <NuqsAdapter>
+        <GoogleAnalytics />
+        <Outlet />
+        <Toaster />
+      </NuqsAdapter>
     </RootDocument>
   );
 }
@@ -31,18 +35,11 @@ function RootComponent() {
 export const Route = createRootRoute({
   component: RootComponent,
   head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        content: 'width=device-width, initial-scale=1',
-        name: 'viewport',
-      },
-      {
-        title: 'Flemme',
-      },
-    ],
+    meta: generateMeta({
+      description:
+        "Flemme est la méthode ultime pour être productif sans se fatiguer. Apprenez à en faire moins pour gagner plus (de temps, d'argent, de sommeil).",
+      title: 'Flemme | La productivité décomplexée',
+    }),
   }),
   notFoundComponent: () => <Navigate replace to="/404" />,
 });

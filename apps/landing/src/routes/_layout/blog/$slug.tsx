@@ -1,11 +1,12 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { BLOG_POSTS } from '@/data/blog-posts';
 import { BlogDetailPage } from '@/pages/BlogDetail/page';
+import { generateMeta } from '@/utils/seo';
 
 // biome-ignore assist/source/useSortedKeys: because loader call before component and head
-export const Route = createFileRoute('/_layout/blog/$blogId')({
+export const Route = createFileRoute('/_layout/blog/$slug')({
   loader: ({ params }) => {
-    const post = BLOG_POSTS.find(p => p.id === params.blogId);
+    const post = BLOG_POSTS.find(p => p.slug === params.slug);
     if (!post) {
       throw redirect({ to: '/404' });
     }
@@ -29,15 +30,15 @@ export const Route = createFileRoute('/_layout/blog/$blogId')({
     };
 
     return {
-      meta: [
-        { title: `${post.title} | Flemme` },
-        { content: post.excerpt, name: 'description' },
-        { content: post.title, property: 'og:title' },
-        { content: post.excerpt, property: 'og:description' },
-        { content: post.coverImage, property: 'og:image' },
-        { content: 'article', property: 'og:type' },
+      meta: generateMeta({
+        description: post.excerpt,
+        image: post.coverImage,
+        title: `${post.title} | Flemme`,
+        type: 'article',
+      }).concat([
+        { content: post.tags.join(', '), name: 'keywords' },
         { content: 'summary_large_image', name: 'twitter:card' },
-      ],
+      ]),
       scripts: [
         {
           children: JSON.stringify(schemaOrgJSONLD),

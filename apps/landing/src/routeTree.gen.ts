@@ -9,12 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root';
-import { Route as LayoutBlogBlogIdRouteImport } from './routes/_layout/blog/$blogId';
+import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug';
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index';
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index';
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route';
 import { Route as R404RouteImport } from './routes/404';
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt';
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt';
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt';
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml';
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+} as any);
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/robots.txt',
+  path: '/robots.txt',
+} as any);
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/llms.txt',
+  path: '/llms.txt',
+} as any);
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+} as any);
 const R404Route = R404RouteImport.update({
   getParentRoute: () => rootRouteImport,
   id: '/404',
@@ -34,47 +58,101 @@ const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
 } as any);
-const LayoutBlogBlogIdRoute = LayoutBlogBlogIdRouteImport.update({
+const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
   getParentRoute: () => LayoutRouteRoute,
-  id: '/blog/$blogId',
-  path: '/blog/$blogId',
+  id: '/blog/$slug',
+  path: '/blog/$slug',
 } as any);
 
 export interface FileRoutesByFullPath {
   '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/': typeof LayoutIndexRoute;
-  '/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/blog/$slug': typeof LayoutBlogSlugRoute;
   '/blog': typeof LayoutBlogIndexRoute;
 }
 export interface FileRoutesByTo {
   '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/': typeof LayoutIndexRoute;
-  '/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/blog/$slug': typeof LayoutBlogSlugRoute;
   '/blog': typeof LayoutBlogIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   '/_layout': typeof LayoutRouteRouteWithChildren;
   '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/_layout/': typeof LayoutIndexRoute;
-  '/_layout/blog/$blogId': typeof LayoutBlogBlogIdRoute;
+  '/_layout/blog/$slug': typeof LayoutBlogSlugRoute;
   '/_layout/blog/': typeof LayoutBlogIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/404' | '/' | '/blog/$blogId' | '/blog';
+  fullPaths: '/404' | '/llms-full.txt' | '/llms.txt' | '/robots.txt' | '/sitemap.xml' | '/' | '/blog/$slug' | '/blog';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/404' | '/' | '/blog/$blogId' | '/blog';
-  id: '__root__' | '/_layout' | '/404' | '/_layout/' | '/_layout/blog/$blogId' | '/_layout/blog/';
+  to: '/404' | '/llms-full.txt' | '/llms.txt' | '/robots.txt' | '/sitemap.xml' | '/' | '/blog/$slug' | '/blog';
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/_layout/'
+    | '/_layout/blog/$slug'
+    | '/_layout/blog/';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   LayoutRouteRoute: typeof LayoutRouteRouteWithChildren;
   R404Route: typeof R404Route;
+  LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute;
+  LlmsDottxtRoute: typeof LlmsDottxtRoute;
+  RobotsDottxtRoute: typeof RobotsDottxtRoute;
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml';
+      path: '/sitemap.xml';
+      fullPath: '/sitemap.xml';
+      preLoaderRoute: typeof SitemapDotxmlRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/robots.txt': {
+      id: '/robots.txt';
+      path: '/robots.txt';
+      fullPath: '/robots.txt';
+      preLoaderRoute: typeof RobotsDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/llms.txt': {
+      id: '/llms.txt';
+      path: '/llms.txt';
+      fullPath: '/llms.txt';
+      preLoaderRoute: typeof LlmsDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/llms-full.txt': {
+      id: '/llms-full.txt';
+      path: '/llms-full.txt';
+      fullPath: '/llms-full.txt';
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/404': {
       id: '/404';
       path: '/404';
@@ -103,11 +181,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutBlogIndexRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
-    '/_layout/blog/$blogId': {
-      id: '/_layout/blog/$blogId';
-      path: '/blog/$blogId';
-      fullPath: '/blog/$blogId';
-      preLoaderRoute: typeof LayoutBlogBlogIdRouteImport;
+    '/_layout/blog/$slug': {
+      id: '/_layout/blog/$slug';
+      path: '/blog/$slug';
+      fullPath: '/blog/$slug';
+      preLoaderRoute: typeof LayoutBlogSlugRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
   }
@@ -115,13 +193,13 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteRouteChildren {
   LayoutIndexRoute: typeof LayoutIndexRoute;
-  LayoutBlogBlogIdRoute: typeof LayoutBlogBlogIdRoute;
+  LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute;
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute;
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
-  LayoutBlogBlogIdRoute: LayoutBlogBlogIdRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
+  LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutIndexRoute: LayoutIndexRoute,
 };
 
@@ -129,7 +207,11 @@ const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(LayoutRou
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRouteRoute: LayoutRouteRouteWithChildren,
+  LlmsDottxtRoute: LlmsDottxtRoute,
+  LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   R404Route: R404Route,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 };
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
 

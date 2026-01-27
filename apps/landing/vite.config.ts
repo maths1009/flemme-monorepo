@@ -7,16 +7,20 @@ import tsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
+    ValidateEnv({
+      configFile: 'src/config/env',
+    }),
     tailwindcss(),
     tsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
     tanstackStart({
+      prerender: {
+        crawlLinks: true,
+        enabled: true,
+      },
       srcDirectory: 'src',
     }),
     viteReact(),
-    ValidateEnv({
-      configFile: 'src/config/env',
-    }),
   ],
 });

@@ -126,7 +126,7 @@ export default function AdvertDetailPage() {
         <ProfileBanner onMessageClick={() => router.push(`/messages/${advert.id}`)} user={mappedUser} />
 
         {/* Localisation */}
-        <LocationSection advertId={advert.id} location={locationString} />
+        <LocationSection advertId={advert.id} />
 
         {/* Tâches de l'utilisateur */}
         <RelatedTasksSection

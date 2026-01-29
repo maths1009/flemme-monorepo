@@ -1,9 +1,20 @@
+import { createContext } from '@radix-ui/react-context';
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
 import { SearchIcon } from 'lucide-react';
+import type React from 'react';
 import { TextField } from '@/components/TextField';
 
+interface FilterBarContextValue {
+  selectedTag: string | null | undefined;
+  setSelectedTag: (tag: string | null) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+const [FilterBarProvider, useFilterBarContext] = createContext<FilterBarContextValue>('FilterBar');
+
 interface FilterBarProps {
-  tags: string[];
+  children: React.ReactNode;
   selectedTag?: string | null;
   defaultSelectedTag?: string | null;
   onSelectedTagChange?: (tag: string | null) => void;
@@ -13,7 +24,7 @@ interface FilterBarProps {
 }
 
 export function FilterBar({
-  tags,
+  children,
   selectedTag: selectedTagProp,
   defaultSelectedTag = null,
   onSelectedTagChange,
@@ -33,51 +44,64 @@ export function FilterBar({
     prop: searchQueryProp,
   });
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-  };
-
   return (
-    <div className="mb-12 flex flex-col gap-6">
-      {/* Search Input */}
-      <div className="mx-auto w-full max-w-lg">
-        <TextField variant="soft">
-          <TextField.Slot>
-            <SearchIcon className="h-5 w-5" />
-          </TextField.Slot>
-          <TextField.Input onChange={handleSearch} placeholder="Rechercher un article..." value={searchQuery} />
-        </TextField>
-      </div>
-
-      {/* Tags Filter */}
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-            selectedTag === null || selectedTag === undefined
-              ? 'bg-slate-900 text-white shadow-md'
-              : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
-          }`}
-          onClick={() => setSelectedTag(null)}
-          type="button"
-        >
-          Tous
-        </button>
-        {tags.map(tag => (
-          <button
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all capitalize ${
-              selectedTag === tag
-                ? 'bg-brand-yellow text-slate-900 shadow-md transform scale-105'
-                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
-            }`}
-            key={tag}
-            onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-            type="button"
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
-    </div>
+    <FilterBarProvider
+      searchQuery={searchQuery}
+      selectedTag={selectedTag}
+      setSearchQuery={setSearchQuery}
+      setSelectedTag={setSelectedTag}
+    >
+      <div className="mb-12 flex flex-col gap-6">{children}</div>
+    </FilterBarProvider>
   );
 }
+
+// Sub-components
+FilterBar.Search = function FilterBarSearch({ placeholder = 'Rechercher...' }: { placeholder?: string }) {
+  const { searchQuery, setSearchQuery } = useFilterBarContext('FilterBar.Search');
+
+  return (
+    <div className="mx-auto w-full max-w-lg">
+      <TextField variant="default">
+        <TextField.Slot>
+          <SearchIcon className="h-5 w-5" />
+        </TextField.Slot>
+        <TextField.Input onChange={e => setSearchQuery(e.target.value)} placeholder={placeholder} value={searchQuery} />
+      </TextField>
+    </div>
+  );
+};
+
+FilterBar.Tags = function FilterBarTags({ tags }: { tags: string[] }) {
+  const { selectedTag, setSelectedTag } = useFilterBarContext('FilterBar.Tags');
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      <button
+        className={`px-4 py-2 rounded-lg text-sm font-black uppercase tracking-wider transition-all border-2 border-black ${
+          selectedTag === null || selectedTag === undefined
+            ? 'bg-black text-white shadow-[4px_4px_0px_#fea3b2] -translate-y-0.5'
+            : 'bg-white text-black hover:bg-slate-50 hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 shadow-none'
+        }`}
+        onClick={() => setSelectedTag(null)}
+        type="button"
+      >
+        Tous
+      </button>
+      {tags.map(tag => (
+        <button
+          className={`px-4 py-2 rounded-lg text-sm font-black uppercase tracking-wider transition-all border-2 border-black capitalize ${
+            selectedTag === tag
+              ? 'bg-brand-yellow text-black shadow-[4px_4px_0px_#000] -translate-y-0.5'
+              : 'bg-white text-black hover:bg-slate-50 hover:shadow-[4px_4px_0px_#000] hover:-translate-y-0.5 shadow-none'
+          }`}
+          key={tag}
+          onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+          type="button"
+        >
+          {tag}
+        </button>
+      ))}
+    </div>
+  );
+};

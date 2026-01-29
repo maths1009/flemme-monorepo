@@ -2,25 +2,28 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-const tagVariants = cva('rounded-full font-bold uppercase tracking-wider', {
-  defaultVariants: {
-    intent: 'primary',
-    size: 'md',
-  },
-  variants: {
-    intent: {
-      muted: 'bg-slate-100 text-slate-700',
-      outline: 'border border-slate-200 text-slate-600',
-      primary: 'bg-brand-yellow text-black',
-      secondary: 'bg-slate-200 text-slate-800',
+const tagVariants = cva(
+  'inline-flex items-center justify-center font-black uppercase tracking-wider border-2 border-black transition-all hover:shadow-[2px_2px_0px_#000] hover:-translate-y-0.5',
+  {
+    defaultVariants: {
+      intent: 'primary',
+      size: 'md',
     },
-    size: {
-      lg: 'px-4 py-1.5 text-sm',
-      md: 'px-3 py-1 text-xs',
-      sm: 'px-2 py-0.5 text-[10px]',
+    variants: {
+      intent: {
+        muted: 'bg-white text-black',
+        outline: 'bg-transparent text-black',
+        primary: 'bg-brand-yellow text-black',
+        secondary: 'bg-brand-blue text-white',
+      },
+      size: {
+        lg: 'rounded-md px-4 py-1.5 text-sm',
+        md: 'rounded-sm px-2.5 py-0.5 text-[10px]',
+        sm: 'rounded-sm px-2 py-0.5 text-[8px]',
+      },
     },
   },
-});
+);
 
 interface TagProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof tagVariants> {
   children: string;

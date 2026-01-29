@@ -14,7 +14,6 @@ const textFieldVariants = cva('group flex h-12 w-full items-center gap-2 px-4 tr
     },
     variant: {
       default: 'rounded-lg border-2 border-black bg-white shadow-[2px_4px_0px_#000] focus-within:ring-offset-2',
-      soft: 'rounded-full border border-slate-200 bg-white shadow-sm hover:shadow-md focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-brand-yellow/50',
     },
   },
 });

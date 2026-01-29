@@ -1,5 +1,11 @@
 # landing
 
+## 2.1.0
+
+### Minor Changes
+
+- Add real post in blog
+
 ## 2.0.0
 
 ### Major Changes

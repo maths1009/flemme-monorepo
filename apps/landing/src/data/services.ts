@@ -41,7 +41,7 @@ const SERVICES_DATA: ServiceData[] = [
     imagePosition: 'items-end',
     label: "EXPERTS CERTIFIÉS EN 'MISSION IMPOSSIBLE'",
     theme: 'pink',
-    title: 'Vos tâches, notre aventure !',
+    title: 'Vos tâches, notre aventure!',
   },
 ];
 

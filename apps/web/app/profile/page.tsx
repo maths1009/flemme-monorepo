@@ -92,7 +92,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex flex-col border-t border-gray-100">
-        <MenuItem icon={Star} label="Mes avis" />
+        <MenuItem icon={Star} label="Mes avis" onClick={() => router.push('/feedback')} />
         <MenuItem icon={Heart} label="Favoris" />
         <MenuItem icon={Settings} label="Paramètres" />
         <MenuItem icon={History} label="Historique de mes annonces" />
@@ -129,9 +129,9 @@ export default function ProfilePage() {
   );
 }
 
-function MenuItem({ icon: Icon, label }: { icon: React.ElementType, label: string }) {
+function MenuItem({ icon: Icon, label, onClick }: { icon: React.ElementType, label: string, onClick?: () => void }) {
     return (
-        <button className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
+        <button onClick={onClick} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
             <Icon className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.5} />
             <span className="flex-1 text-left text-base font-medium text-[#1A1A1A]">{label}</span>
         </button>

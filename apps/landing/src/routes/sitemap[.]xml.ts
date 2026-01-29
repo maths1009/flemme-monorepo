@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import dayjs from 'dayjs';
 import { BLOG_POSTS } from '@/data/blog-posts';
 
 type SitemapRoute = {
@@ -17,7 +18,7 @@ export const Route = createFileRoute('/sitemap.xml')({
         const routes: SitemapRoute[] = [
           { changefreq: 'daily', path: '/', priority: '1.0' },
           { changefreq: 'weekly', path: '/blog', priority: '0.8' },
-          ...BLOG_POSTS.map(p => ({
+          ...BLOG_POSTS.filter(p => dayjs(p.publishedAt).isBefore(dayjs())).map(p => ({
             changefreq: 'monthly',
             lastmod: p.publishedAt,
             path: `/blog/${p.slug}`,

@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import dayjs from 'dayjs';
 import { BLOG_POSTS } from '@/data/blog-posts';
 import { BlogDetailPage } from '@/pages/BlogDetail/page';
 import { generateMeta } from '@/utils/seo';
@@ -7,9 +8,9 @@ import { generateMeta } from '@/utils/seo';
 export const Route = createFileRoute('/_layout/blog/$slug')({
   loader: ({ params }) => {
     const post = BLOG_POSTS.find(p => p.slug === params.slug);
-    if (!post) {
-      throw redirect({ to: '/404' });
-    }
+    if (!post) throw redirect({ to: '/404' });
+    else if (dayjs(post.publishedAt).isAfter(dayjs())) throw redirect({ to: '/404' });
+
     return { post };
   },
   head: ({ loaderData }) => {

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 import { useMemo } from 'react';
@@ -20,11 +21,12 @@ export function BlogPage() {
 
   const filteredPosts = useMemo(() => {
     return BLOG_POSTS.filter(post => {
+      const isPublished = dayjs(post.publishedAt).isBefore(dayjs());
       const matchesTag = selectedTag ? post.tags.includes(selectedTag) : true;
       const matchesSearch =
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesTag && matchesSearch;
+      return isPublished && matchesTag && matchesSearch;
     });
   }, [selectedTag, searchQuery]);
 

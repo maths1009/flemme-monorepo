@@ -5,7 +5,7 @@ import ReactGA from 'react-ga4';
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
 const IS_PROD = import.meta.env.PROD;
 
-if (IS_PROD && GA_ID) {
+if (typeof window !== 'undefined' && IS_PROD && GA_ID) {
   ReactGA.initialize(GA_ID);
 }
 

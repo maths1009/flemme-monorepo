@@ -86,7 +86,7 @@ export default function AdvertDetailPage() {
 
   // Mapping Backend Data to UI Components
   const mappedUser = {
-    avatar: advert.user.profile_picture_url || 'https://placehold.co/100',
+    avatar: advert.user.profile_picture_url || '',
     id: advert.user.id,
     name: `${advert.user.firstname} ${advert.user.lastname}`,
     rating: 0, // Not in API yet

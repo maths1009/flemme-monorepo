@@ -21,7 +21,7 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
   return (
     <div className="flex items-center justify-between mb-6 py-4">
       <div className="flex items-center space-x-3">
-        {user.avatar ? (
+        {user.avatar && user.avatar.trim() !== '' ? (
           <Image
             src={user.avatar}
             alt={`Avatar de ${user.name}`}
@@ -30,8 +30,8 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
             className="w-12 h-12 rounded-full object-cover"
           />
         ) : (
-          <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-            <span className="text-lg font-semibold text-gray-600">
+          <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+            <span className="text-lg font-semibold text-gray-500">
               {user.name.charAt(0).toUpperCase()}
             </span>
           </div>

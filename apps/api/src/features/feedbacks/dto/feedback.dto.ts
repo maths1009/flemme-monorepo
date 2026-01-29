@@ -1,10 +1,10 @@
-import { PaginationDto } from '@/common/dto/pagination.dto';
-import { UserDto } from '@/features/users/dto/user.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
+import { PaginationDto } from '@/common/dto/pagination.dto';
+import { UserDto } from '@/features/users/dto/user.dto';
 
 export class CreateFeedbackDto {
-  @ApiProperty({ example: 5, minimum: 1, maximum: 5 })
+  @ApiProperty({ example: 5, maximum: 5, minimum: 1 })
   @IsNotEmpty()
   @IsInt()
   @Min(1)
@@ -23,7 +23,7 @@ export class CreateFeedbackDto {
 }
 
 export class UpdateFeedbackDto {
-  @ApiProperty({ example: 4, minimum: 1, maximum: 5, required: false })
+  @ApiProperty({ example: 4, maximum: 5, minimum: 1, required: false })
   @IsInt()
   @Min(1)
   @Max(5)

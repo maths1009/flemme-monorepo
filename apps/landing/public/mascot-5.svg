@@ -1,0 +1,29 @@
+<svg width="240" height="321" viewBox="0 0 240 321" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M127.851 8.42578C182.761 8.42578 227.275 52.9398 227.275 107.851V298.906L127.851 306.674L28.4258 298.906V107.851C28.4258 52.9399 72.9399 8.42585 127.851 8.42578Z" fill="#F5DA02" stroke="black" stroke-width="16.8517" stroke-linejoin="round"/>
+<g clip-path="url(#clip0_306_324)">
+<rect x="85.7375" y="65" width="87.6287" height="87.6287" rx="43.8143" fill="white"/>
+<circle cx="115.052" cy="111.021" r="29.3146" fill="black"/>
+<circle cx="103.075" cy="113.543" r="10.7172" fill="white"/>
+<circle cx="126.399" cy="108.814" r="6.61943" fill="white"/>
+<rect x="87.3138" y="63.4242" width="84.4766" height="31.8363" fill="#F5DA02"/>
+<rect x="87.3138" y="63.4242" width="84.4766" height="31.8363" stroke="black" stroke-width="3.15211"/>
+</g>
+<rect x="87.3136" y="66.5761" width="84.4766" height="84.4766" rx="42.2383" stroke="black" stroke-width="3.15211"/>
+<g clip-path="url(#clip1_306_324)">
+<rect x="0.000488281" y="65" width="87.6287" height="87.6287" rx="43.8143" fill="white"/>
+<circle cx="29.3154" cy="111.02" r="29.3146" fill="black"/>
+<circle cx="17.3378" cy="113.543" r="10.7172" fill="white"/>
+<circle cx="40.6636" cy="108.814" r="6.61943" fill="white"/>
+<rect x="1.57679" y="63.4242" width="84.4766" height="31.8363" fill="#F5DA02"/>
+<rect x="1.57679" y="63.4242" width="84.4766" height="31.8363" stroke="black" stroke-width="3.15211"/>
+</g>
+<rect x="1.57654" y="66.5761" width="84.4766" height="84.4766" rx="42.2383" stroke="black" stroke-width="3.15211"/>
+<defs>
+<clipPath id="clip0_306_324">
+<rect x="85.7375" y="65" width="87.6287" height="87.6287" rx="43.8143" fill="white"/>
+</clipPath>
+<clipPath id="clip1_306_324">
+<rect x="0.000488281" y="65" width="87.6287" height="87.6287" rx="43.8143" fill="white"/>
+</clipPath>
+</defs>
+</svg>

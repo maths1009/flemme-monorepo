@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Font Imports */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/900.css";
+@import "@fontsource/dm-serif-display/400.css";
+@import "@fontsource/dm-serif-display/400-italic.css";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "DM Serif Display", serif;
+
+  /* Smooth scrolling for anchor links */
+  --color-brand-yellow: #fde104;
+  --color-brand-black: #1e1e1e;
+  --color-brand-bg: #f5f4f3;
+
+  --color-service-green: #004739;
+  --color-service-blue: #37138e;
+  --color-service-pink: #8b436a;
+
+  --color-service-bg-green: rgba(1, 151, 55, 0.8);
+  --color-service-bg-blue: rgba(64, 94, 246, 0.8);
+  --color-service-bg-pink: rgba(254, 163, 178, 0.8);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  @apply bg-brand-bg text-brand-black font-sans antialiased;
+}
+
+/* Accessibility */
+.skip-link {
+  @apply absolute top-[-40px] left-1.5 z-[1000] p-2 text-white bg-black rounded decoration-0 transition-all duration-200;
+}
+
+.skip-link:focus {
+  @apply top-1.5;
+}

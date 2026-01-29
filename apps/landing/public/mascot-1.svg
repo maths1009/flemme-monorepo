@@ -1,0 +1,41 @@
+<svg width="218" height="319" viewBox="0 0 218 319" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 427322542">
+<path id="Rectangle 29" d="M107.13 8.15332C158.198 8.1534 197.062 53.978 188.724 104.36L175.405 184.836C175.219 185.962 175.271 187.114 175.559 188.219L203.918 297.279L107.129 304.842L10.5791 297.298L41.6816 188.406C42.025 187.204 42.0868 185.939 41.8633 184.709L27.1816 103.944C18.1146 54.0658 56.434 8.15332 107.13 8.15332Z" fill="#13DA2A" stroke="black" stroke-width="16.3066" stroke-linejoin="round"/>
+<g id="Frame 427322540">
+<g id="Frame 427322539">
+<g clip-path="url(#clip0_306_244)">
+<rect x="106.227" y="65.2822" width="87.0429" height="87.0429" rx="43.5215" fill="white"/>
+<circle id="Ellipse 18" cx="149.688" cy="110.995" r="29.1187" fill="black"/>
+<circle id="Ellipse 19" cx="137.79" cy="113.501" r="10.6455" fill="white"/>
+<circle id="Ellipse 20" cx="160.96" cy="108.804" r="6.57518" fill="white"/>
+<g id="Frame 427322539_2">
+<rect x="109.982" y="58.818" width="83.9119" height="31.6235" transform="rotate(6.8612 109.982 58.818)" fill="#13DA2A"/>
+<rect x="109.982" y="58.818" width="83.9119" height="31.6235" transform="rotate(6.8612 109.982 58.818)" stroke="black" stroke-width="3.13104"/>
+</g>
+</g>
+<rect x="107.793" y="66.8477" width="83.9119" height="83.9119" rx="41.9559" stroke="black" stroke-width="3.13104"/>
+</g>
+<g id="Frame 427322538">
+<g clip-path="url(#clip1_306_244)">
+<rect x="21.0625" y="65.282" width="87.0429" height="87.0429" rx="43.5215" fill="white"/>
+<circle id="Ellipse 18_2" cx="64.7581" cy="110.995" r="29.1187" fill="black"/>
+<circle id="Ellipse 19_2" cx="52.8599" cy="113.5" r="10.6455" fill="white"/>
+<circle id="Ellipse 20_2" cx="76.03" cy="108.803" r="6.57518" fill="white"/>
+<g id="Frame 427322539_3">
+<rect x="21.0131" y="68.9511" width="83.9119" height="31.6235" transform="rotate(-7.00435 21.0131 68.9511)" fill="#13DA2A"/>
+<rect x="21.0131" y="68.9511" width="83.9119" height="31.6235" transform="rotate(-7.00435 21.0131 68.9511)" stroke="black" stroke-width="3.13104"/>
+</g>
+</g>
+<rect x="22.628" y="66.8475" width="83.9119" height="83.9119" rx="41.9559" stroke="black" stroke-width="3.13104"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_306_244">
+<rect x="106.227" y="65.2822" width="87.0429" height="87.0429" rx="43.5215" fill="white"/>
+</clipPath>
+<clipPath id="clip1_306_244">
+<rect x="21.0625" y="65.282" width="87.0429" height="87.0429" rx="43.5215" fill="white"/>
+</clipPath>
+</defs>
+</svg>

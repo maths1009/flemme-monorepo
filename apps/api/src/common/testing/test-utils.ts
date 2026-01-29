@@ -25,6 +25,7 @@ export const createMockRepository = <T extends ObjectLiteral = any>(): MockRepos
   delete: jest.fn(),
   find: jest.fn(),
   findOne: jest.fn(),
+  merge: jest.fn(),
   preload: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),

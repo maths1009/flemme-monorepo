@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString } from 'class-validator';
 import { UserDto } from '@/features/users/dto/user.dto';
 
 export class AnnonceDto {
@@ -32,17 +33,22 @@ export class AnnonceDto {
 
 export class UpdateAnnonceDto {
   @ApiProperty()
-  title: string;
+  @IsString()
+  title?: string;
 
   @ApiProperty()
-  description: string;
+  @IsString()
+  description?: string;
 
   @ApiProperty()
-  price: number;
+  @IsNumber()
+  price?: number;
 
   @ApiProperty()
-  latitude: number;
+  @IsNumber()
+  latitude?: number;
 
   @ApiProperty()
-  longitude: number;
+  @IsNumber()
+  longitude?: number;
 }

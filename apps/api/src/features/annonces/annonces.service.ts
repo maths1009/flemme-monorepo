@@ -25,8 +25,13 @@ export class AnnoncesService {
     const queryBuilder = this.annoncesRepository
       .createQueryBuilder('annonce')
       .leftJoinAndSelect('annonce.user', 'user')
-      .leftJoinAndSelect('user.role', 'role')
-      .where('annonce.user_id != :user_id', { user_id });
+      .leftJoinAndSelect('user.role', 'role');
+
+    if (paginationDto.userId) {
+      queryBuilder.where('annonce.user_id = :targetUserId', { targetUserId: paginationDto.userId });
+    } else {
+      queryBuilder.where('annonce.user_id != :user_id', { user_id });
+    }
 
     if (paginationDto.latitude && paginationDto.longitude) {
       const distanceQuery = `(

@@ -23,6 +23,8 @@ FROM base AS builder
 ARG PROJECT
 ARG PORT
 ENV PORT=${PORT}
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+ENV NITRO_PRERENDER_CONCURRENCY=1
 
 WORKDIR /app
 
@@ -38,7 +40,7 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 COPY --from=pruner /app/out/full/ .
 
 ARG MODE
-RUN PORT=${PORT} turbo build --filter=${PROJECT} -- --mode ${MODE}
+RUN PORT=${PORT} turbo build --filter=${PROJECT} --concurrency=1 -- --mode ${MODE}
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store CI=true pnpm prune --prod --no-optional --ignore-scripts
 RUN rm -rf ./**/*/src
 

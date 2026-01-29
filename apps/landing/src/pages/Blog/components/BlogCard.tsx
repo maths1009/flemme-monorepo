@@ -11,7 +11,7 @@ interface BlogCardProps {
 export function BlogCard({ post }: BlogCardProps) {
   return (
     <Link
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1 hover:shadow-xl border border-slate-100"
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all hover:-translate-y-1 border-2 border-black"
       params={{ slug: post.slug }}
       to="/blog/$slug"
     >
@@ -30,7 +30,7 @@ export function BlogCard({ post }: BlogCardProps) {
             </Tag>
           ))}
         </div>
-        <h3 className="mb-2 font-serif text-2xl font-bold leading-tight text-slate-900 group-hover:text-brand-yellow transition-colors">
+        <h3 className="mb-2 font-serif text-2xl font-bold leading-tight text-slate-900 group-hover:text-brand-blue transition-colors">
           {post.title}
         </h3>
         <p className="mb-6 line-clamp-3 text-sm text-slate-600">{post.excerpt}</p>

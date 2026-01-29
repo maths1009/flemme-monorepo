@@ -20,7 +20,7 @@ export function Header() {
         paddingBottom: isScrolled ? '1rem' : '1.5rem',
         paddingTop: isScrolled ? '1rem' : '1.5rem',
       }}
-      className="fixed top-0 z-[100] flex w-full max-w-[1400px] items-center justify-between px-4 py-6 md:px-8"
+      className="fixed top-0 z-[100] flex w-full items-center justify-between px-4 py-6 md:px-8"
       initial={false}
     >
       <Link className="text-2xl font-black uppercase tracking-tighter text-black no-underline md:text-3xl" to="/">

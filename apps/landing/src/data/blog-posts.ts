@@ -18,313 +18,337 @@ const BLOG_POSTS: BlogPost[] = [
   {
     author: USERS.MATHIS,
     content: `
-      <p>Nous vivons dans une société qui glorifie l'occupation. Être "occupé" est devenu un badge d'honneur, un signe d'importance. Mais et si la clé de la véritable productivité n'était pas de faire plus, mais de faire moins ?</p>
+      <p>On ne va pas se mentir : la vie serait incroyable si elle consistait uniquement à manger, dormir et regarder des séries. Malheureusement, la vie d'adulte vient avec son lot de corvées qui nous volent notre énergie vitale.</p>
       
-      <h2>La puissance du vide</h2>
-      <p>Le cerveau humain n'est pas conçu pour un focus constant. Comme un muscle, il a besoin de repos pour récupérer et se renforcer. Ne rien faire, ce n'est pas être paresseux, c'est laisser de l'espace à votre esprit pour vagabonder, faire des connexions inattendues et consolider les informations.</p>
+      <p>Bienvenue dans le projet flemme. Notre philosophie ? Si ça vous ennuie, ne le faites pas. Faites-le faire.</p>
       
-      <p>C'est souvent sous la douche ou en marchant sans but que nous avons nos meilleures idées. Pourquoi ? Parce que nous ne forcions pas le processus. Nous permettions simplement à notre subconscient de travailler en arrière-plan.</p>
+      <p>Voici le classement des pires tâches du quotidien selon flemme et, surtout, les solutions pour les déléguer sans culpabiliser.</p>
       
-      <h2>La procrastination stratégique</h2>
-      <p>Il existe une différence fondamentale entre la procrastination d'évitement (par peur ou ennui) et la procrastination stratégique. Cette dernière consiste à retarder délibérément une tâche pour laisser mariner les idées.</p>
+      <h3>1. Le repassage, la montagne sans fin</h3>
+      <p>C'est la tâche n°1 la plus détestée. À peine la panière est-elle vide qu'elle se remplit à nouveau. C'est le mythe de Sisyphe, mais avec des chemises froissées.</p>
       
-      <blockquote>"Je ne remets pas au lendemain, je donne à mon idée le temps de mûrir."</blockquote>
+      <h3>2. Le grand ménage (vitres et poussière)</h3>
+      <p>Frotter, astiquer, passer l'aspirateur... C'est physique, c'est long, et c'est à refaire la semaine suivante.</p>
       
-      <p>La prochaine fois que vous sentez la culpabilité monter parce que vous ne faites "rien", rappelez-vous : vous êtes peut-être en train de réaliser votre travail le plus important.</p>
+      <h3>3. L'administratif et la paperasse</h3>
+      <p>Rien ne tue plus la joie de vivre qu'un formulaire Cerfa ou une facture introuvable. La phobie administrative est réelle.</p>
+      
+      <h3>4. Les courses au supermarché</h3>
+      <p>La foule, le caddie qui roule mal, la queue à la caisse... Une perte de temps colossale.</p>
+      
+      <h3>5. Monter des meubles en kit</h3>
+      <p>Le plan est incompréhensible, il manque toujours une vis, et ça finit souvent en dispute de couple.</p>
+      
+      <h3>6. Tondre la pelouse</h3>
+      <p>C'est bruyant, il fait chaud, et ça revient trop vite.</p>
+      
+      <h3>7. Vendre ses vieux vêtements</h3>
+      <p>Prendre les photos, rédiger l'annonce, répondre aux messages "dispo ?", faire le colis, aller à la poste... Trop d'étapes.</p>
+      
+      <h3>8. Organiser les vacances</h3>
+      <p>Chercher le meilleur vol, comparer 50 hôtels, lire les avis... On a besoin de vacances rien que pour préparer les vacances.</p>
+      
+      <h3>9. La cuisine du quotidien (Le on mange quoi ce soir ?)</h3>
+      <p>La charge mentale de trouver une idée + cuisiner + faire la vaisselle tous les soirs.</p>
+      
+      <h3>10. Sortir le chien (quand il pleut)</h3>
+      <p>On les aime, mais à 6h du matin sous la bruine, l'amour est mis à rude épreuve.</p>
+      
+      <p>On vient de vous lister 10 solutions, et on parie que vous êtes déjà fatigué rien que d'imaginer devoir créer 10 comptes différents, rentrer 10 fois votre carte bleue et gérer 10 mots de passe oubliés.</p>
+      
+      <p>C'est là qu'on intervient. Le projet flemme, ce n'est pas juste un blog, c'est une mission. Nous sommes en train de construire l'application flemme.</p>
+      
+      <p>Imaginez une seule interface pour gérer votre ménage, vos courses et votre administratif. Un seul bouton rouge URGENCE FLEMME pour déléguer ce qui vous pèse, là, tout de suite.</p>
+      
+      <ul>
+        <li>Pas de recherche interminable.</li>
+        <li>Pas de comparaison de prix (on le fait pour vous).</li>
+        <li>Juste du temps libre gagné.</li>
+      </ul>
+      
+      <p>Envie de ne plus jamais rien faire (par vous-même) ? Inscrivez-vous ici pour tester l'appli flemme en avant-première</p>
+      
+      <h2>FAQ - Les questions que vous vous posez (pour ne pas avoir à chercher)</h2>
+      
+      <p><strong>Est-ce que ça coûte cher de déléguer ?</strong> L'objectif de Flemme, c'est de rentabiliser votre temps, pas de vous ruiner. Notre application est conçue pour intégrer automatiquement les aides disponibles. On s'occuppe de la paperasse pour que vous payiez le prix juste, sans effort.</p>
+      
+      <p><strong>Comment trouver quelqu'un de confiance ?</strong> Justement, ne cherchez pas. C'est le travail de l'appli Flemme. Fini d'éplucher les avis sur internet ou d'interroger les voisins. Nous sélectionnons et vérifions rigoureusement chaque intervenant. Si vous passez par Flemme, c'est que la personne est fiable. Vous commandez, vous ouvrez la porte, vous vous reposez.</p>
+      
+      <p><strong>Je culpabilise de ne rien faire, c'est normal ?</strong> Chez Flemme, la culpabilité est bannie. Nous considérons que votre énergie doit servir à ce que vous aimez vraiment, pas aux corvées. Utiliser notre projet, ce n'est pas être paresseux, c'est être un gestionnaire intelligent de sa propre vie. Laissez-nous gérer le "chiant", gardez le fun.</p>
+      
+      <p><strong>Par quoi commencer si j'ai un petit budget ?</strong> Le plus simple ? Inscrivez-vous sur le Projet Flemme. Notre algorithme vous suggérera la tâche à déléguer qui vous apportera le plus de soulagement immédiat en fonction de votre budget. Pas besoin de calculer, l'appli réfléchit pour vous.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=2068',
+    coverImage: '/team-flemme.webp',
     excerpt:
-      'Découvrez pourquoi la procrastination stratégique peut être votre meilleur atout pour une productivité durable et sans stress.',
+      "On ne va pas se mentir : la vie serait incroyable si elle consistait uniquement à manger, dormir et regarder des séries. Découvrez le top 10 des corvées qu'on déteste tous.",
     id: '1',
     layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-02').toISOString(),
-    slug: 'art-subtil-ne-rien-faire',
-    tags: ['productivité', 'mindset'],
-    title: 'L’art subtil de ne rien faire (et de le faire bien)',
+    publishedAt: dayjs('2026-02-05').toISOString(),
+    slug: 'top-10-taches-flemme',
+    tags: ['lifestyle', 'conseils'],
+    title: 'Top 10 des tâches qu’on a tous la flemme de faire',
   },
   {
     author: USERS.MATHIS,
     content: `
-      <h2>Le piège de l'infini</h2>
-      <p>Vous connaissez ce sentiment : vous avez coché 15 tâches aujourd'hui, mais la liste en contient toujours 20 autres. C'est l'effet hydre de la to-do list moderne. Pour chaque tâche accomplie, deux autres semblent apparaître.</p>
+      <p>C'était un lundi matin gris. Je regardais ma pile de linge sale, mon évier plein et mon frigo vide. J'ai eu une épiphanie : et si j'arrêtais ?</p>
       
-      <p>Le problème n'est pas votre capacité à travailler, mais la nature même de la liste. Elle mélange l'urgent, l'important, et le trivial. "Acheter du pain" côtoie "Refondre la stratégie marketing". C'est épuisant cognitivement.</p>
+      <p>Pas arrêter de vivre, non. Arrêter de subir.</p>
       
-      <h2>La méthode 1-3-5</h2>
-      <p>Pour retrouver la sérénité, essayez la règle du 1-3-5 :</p>
-      <ul>
-        <li><strong>1</strong> grosse tâche importante (celle qui vous fait avancer vraiment)</li>
-        <li><strong>3</strong> tâches moyennes (nécessaires mais gérables)</li>
-        <li><strong>5</strong> petites tâches (admin, emails, etc.)</li>
-      </ul>
+      <p>J'ai décidé de faire une expérience radicale : pendant une semaine complète, interdiction formelle de faire une tâche ménagère ou administrative. Si ce n'est pas du plaisir ou mon vrai travail, je délègue.</p>
       
-      <p>Une fois ces 9 tâches finies, arrêtez-vous. C'est fini. Vous avez gagné votre journée.</p>
+      <h2>Le choc des 48 premières heures : La culpabilité</h2>
+      <p>Le mardi, une professionnelle est venue faire le ménage alors que j'étais sur mon canapé à regarder une série.</p>
+      <p><strong>Mon ressenti :</strong> Grosse gêne. J'avais envie de lever les jambes pour la laisser passer l'aspirateur. J'avais presque envie de l'aider.</p>
+      <p><strong>La réalité :</strong> Elle s'en fichait. Elle faisait son job, elle avait ses écouteurs, elle était efficace.</p>
+      <p><strong>Leçon n°1 :</strong> La culpabilité est une construction sociale. Une fois qu'on accepte de lâcher prise, c'est le bonheur.</p>
       
-      <h2>L'art de la "Not-To-Do List"</h2>
-      <p>Parfois, le plus efficace est de décider explicitement ce que vous ne ferez PAS. Lister ces distractions vous aide à les identifier lorsqu'elles tentent de saboter votre journée. Dites non à l'accessoire pour dire oui à l'essentiel.</p>
+      <h2>Jour 3 et 4 : La redécouverte du temps libre</h2>
+      <p>Mercredi soir, pas de courses, pas de cuisine. Un service de livraison m'a apporté des plats sains (pas juste une pizza grasse). Pas de vaisselle à faire. J'ai réalisé que d'habitude, entre 18h et 21h, je ne faisais que courir.</p>
+      <p><strong>Ce que j'ai fait à la place :</strong> J'ai lu un livre en entier. J'ai appelé un pote. J'ai dormi 8h.</p>
+      <p><strong>Leçon n°2 :</strong> On n'est pas "toujours fatigué", on est juste encombré par des tâches inutiles.</p>
+      
+      <h2>Le bilan financier vs mental</h2>
+      <p>Samedi, j'ai fait faire ma paperasse et tondre la pelouse. Oui, ça a un coût. Mais quand j'ai regardé mon week-end, il était vide. Vide de contraintes. J'ai calculé mon taux horaire : combien je vaux de l'heure quand je bosse ? Payer quelqu'un moins cher que ce taux pour faire ce que je déteste, c'est mathématiquement rentable.</p>
+      
+      <h2>Le seul problème de ma semaine (et pourquoi il faut l'appli flemme)</h2>
+      <p>C'était génial, MAIS... c'était le chaos logistique. Pour réussir cette semaine, j'ai dû :</p>
+      <ol>
+        <li>Utiliser une appli pour le ménage.</li>
+        <li>Une autre pour la livraison de repas.</li>
+        <li>Chercher un bricoleur sur un site de petites annonces.</li>
+        <li>Gérer 3 paiements différents et 4 conversations par SMS.</li>
+      </ol>
+      
+      <p>Ironie du sort : j'ai eu la flemme de gérer ma flemme. C'est exactement pour ça qu'on a créé l’application flemme. On ne veut pas que vous passiez votre temps à chercher des prestataires. On veut un bouton magique.</p>
+      
+      <h2>Conclusion : Je ne reviendrai pas en arrière</h2>
+      <p>Cette semaine m'a prouvé que déléguer n'est pas un luxe de riche, c'est une hygiène de vie. Mais pour que ce soit viable sur le long terme, il faut que ce soit simple.</p>
+      
+      <p>Avec l'appli flemme, nous sommes en train de construire ce hub unique. Une seule interface pour tout déléguer, sans avoir à gérer l'organisation.</p>
+      
+      <p>On s'occupe de trouver les pros, on s'occupe de la confiance, on s'occupe de tout. Vous, vous profitez juste de votre temps libre.</p>
+      
+      <h2>FAQ - Les questions que vous vous posez (pour ne pas avoir à chercher)</h2>
+      
+      <p><strong>Dois-je rester chez moi pour surveiller les intervenants ?</strong> Surtout pas (sauf si vous le voulez). L'intérêt de Flemme, c'est de vous libérer. Nos prestataires sont certifiés pour intervenir en votre absence. Vous pouvez aller au cinéma ou au bureau, et retrouver votre maison impeccable en rentrant. C'est ça, la vraie magie.</p>
+      
+      <p><strong>Et si le travail est mal fait ? (J'ai la flemme de me plaindre)</strong> On a anticipé. Avec Flemme, vous n'avez pas à gérer les conflits gênants. Si la prestation n'est pas à la hauteur, vous cliquez sur un bouton dans l'appli, et notre service client prend le relais immédiatement pour vous rembourser ou renvoyer quelqu'un. Zéro confrontation pour vous.</p>
+      
+      <p><strong>C'est long de créer un compte ? (J'ai vraiment la flemme)</strong> On a chronométré : ça prend 45 secondes. On a conçu l'interface pour les gens fatigués. Pas de formulaires interminables. Vous connectez, vous dites ce que vous voulez, vous validez.</p>
+      
+      <p><strong>L'application est-elle déjà disponible partout ?</strong> Nous sommes en phase de lancement exclusif. Pour garantir une qualité de service parfaite, nous ouvrons les accès petit à petit. Inscrivez-vous maintenant pour être prioritaire sur la liste d'attente.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=2072',
-    excerpt: 'Arrêtez de cocher des cases. Apprenez à prioriser l’essentiel et à laisser tomber le superflu.',
+    coverImage: '/grosse-flemme.jpg.webp',
+    excerpt:
+      "J'ai décidé de faire une expérience radicale : pendant une semaine complète, interdiction formelle de faire une tâche ménagère. Voici le bilan.",
     id: '2',
     layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-05').toISOString(),
-    slug: 'todo-list-epuise',
-    tags: ['organisation', 'stress'],
-    title: 'Pourquoi votre to-do list vous épuise',
+    publishedAt: dayjs('2026-02-12').toISOString(),
+    slug: 'delegue-corvees-7-jours',
+    tags: ['expérience', 'lifestyle'],
+    title: 'J’ai délégué toutes mes corvées pendant 7 jours',
   },
   {
     author: USERS.MATHIS,
     content: `
-      <p>Nous touchons notre téléphone en moyenne 2 617 fois par jour. C'est effrayant, non ? Notre attention est devenue la marchandise la plus précieuse de l'économie moderne, et nous la donnons gratuitement.</p>
+      <p>Il y a deux types de personnes dans le monde : ceux qui paieraient n'importe quoi pour rester dans leur canapé, et ceux qui ont besoin de financer leurs projets (ou leur prochain voyage).</p>
       
-      <h2>Le coût caché de la connexion permanente</h2>
-      <p>La notification constante fragmente notre pensée. Il faut environ 23 minutes pour se reconcentrer pleinement après une interruption. Si vous êtes interrompu toutes les 10 minutes, vous ne travaillez jamais en profondeur.</p>
+      <p>Si vous faites partie de la deuxième catégorie, bonne nouvelle : la flemme des autres est votre mine d'or.</p>
       
-      <h2>3 étapes pour une détox douce</h2>
-      <p>Le minimalisme digital ne signifie pas jeter son smartphone, mais l'utiliser avec intention.</p>
+      <p>Avec l’application flemme, nous ne cherchons pas seulement à aider les paresseux. Nous cherchons des héros du quotidien. Voici comment transformer vos compétences (ou juste vos bras) en revenus, sans prise de tête.</p>
+      
+      <h2>1. Le concept : monétisez ce qui vous semble facile</h2>
+      <p>Ce qui est une corvée pour votre voisin est peut-être un jeu d'enfant pour vous.</p>
+      <ul>
+        <li>Vous adorez les animaux ? Promener un chien, c'est du plaisir payé.</li>
+        <li>Vous êtes le roi du montage de meubles suédois ? C'est une compétence rare et recherchée.</li>
+        <li>Vous avez un grand véhicule ? Aider à déplacer un canapé rapporte gros.</li>
+      </ul>
+      
+      <p>Le principe de la flemme est simple : on connecte ceux qui ne veulent pas faire avec ceux qui peuvent faire.</p>
+      
+      <h2>2. Pourquoi passer par l'appli flemme (et pas juste une petite annonce) ?</h2>
+      <p>Vous pourriez coller un papier à la boulangerie. Mais soyons honnêtes, c'est long et pas très efficace. Même pour travailler, on sait que vous avez un peu la flemme de gérer la logistique.</p>
+      <ul>
+        <li><strong>Zéro Prospection :</strong> Vous n'avez pas besoin de chercher les clients. Ils sont déjà là, sur l'appli.</li>
+        <li><strong>Paiement Garanti :</strong> Le client paie via l'appli avant la mission. Une fois le job fait, l'argent arrive chez vous.</li>
+        <li><strong>Sécurité :</strong> Tout est encadré. Pas de mauvaises surprises.</li>
+      </ul>
+      
+      <h2>3. Les missions qui rapportent le plus sur flemme</h2>
+      <p>Pas besoin d'avoir un Bac+5 pour gagner de l'argent. Voici ce que nos utilisateurs demandent le plus :</p>
+      <ul>
+        <li>Les petits bricolages : Changer une ampoule inaccessible, poser une étagère.</li>
+        <li>Le support tech : Configurer une imprimante ou expliquer comment marche Netflix.</li>
+        <li>Le grand nettoyage : Vitres, terrasses ou voitures.</li>
+        <li>Le sitting : Garder des chats, arroser les plantes pendant les vacances.</li>
+      </ul>
+      
+      <h2>4. Comment devenir un héros flemme ?</h2>
+      <p>C'est aussi simple que de commander une pizza.</p>
       <ol>
-        <li><strong>Désactiver toutes les notifications et sons</strong> (sauf appels et SMS). Votre téléphone ne devrait pas vibrer parce que quelqu'un a aimé une photo de chat.</li>
-        <li><strong>Bannir le téléphone de la chambre.</strong> Achetez un réveil. Sérieusement.</li>
-        <li><strong>La règle du "Pas d'écran avant le café".</strong> Donnez à votre cerveau le temps de s'éveiller avant de le bombarder d'informations.</li>
+        <li>Téléchargez l'appli flemme.</li>
+        <li>Créez un profil prestataire (ça prend 2 minutes).</li>
+        <li>Cochez vos compétences (Bricolage ? Jardinage ? Courses ?).</li>
+        <li>Activez vos notifs et attendez que ça sonne.</li>
       </ol>
-
-      <p>En reprenant le contrôle, vous ne gagnez pas seulement du temps. Vous gagnez de la clarté mentale, et c'est un super-pouvoir dans le monde d'aujourd'hui.</p>
+      
+      <p>Ne laissez pas votre énergie se perdre. Vos voisins ont la flemme, et ils ont un budget pour ça. Prenez-le. C'est du gagnant-gagnant.</p>
+      
+      <h2>FAQ - Devenir prestataire (pour ne pas avoir à chercher)</h2>
+      
+      <p><strong>Faut-il être un professionnel déclaré pour proposer ses services ?</strong> Pour des petites missions ponctuelles entre particuliers, la législation évolue, mais pour faire ça régulièrement, le statut d'auto-entrepreneur est idéal. C'est gratuit à créer et ça vous permet de facturer légalement via l'appli Flemme.</p>
+      
+      <p><strong>Combien je peux gagner ?</strong> C'est vous qui fixez vos disponibilités. Sur Flemme, nous suggérons des tarifs justes basés sur la difficulté de la tâche. Certains de nos héros gagnent plusieurs centaines d'euros par mois en complément de salaire.</p>
+      
+      <p><strong>Et si je casse quelque chose chez le client ?</strong> Pas de panique. L'avantage de passer par l'application flemme, c'est que nous incluons une assurance responsabilité civile pour les prestations effectuées via la plateforme.</p>
+      
+      <p><strong>Comment je reçois mon argent ?</strong> Directement sur votre compte bancaire. Une fois la mission validée par le client, les fonds sont débloqués. Simple, basique.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&q=80&w=2070',
-    excerpt: 'Comment reprendre le contrôle de votre attention dans un monde hyper-connecté.',
+    coverImage: "/j'ai-la-flemme.webp",
+    excerpt:
+      "Ce qui est une corvée pour votre voisin est peut-être un jeu d'enfant pour vous. Apprenez à monétiser votre temps libre avec Flemme.",
     id: '3',
     layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-08').toISOString(),
-    slug: 'minimalisme-digital',
-    tags: ['digital', 'lifestyle'],
-    title: 'Le minimalisme digital : moins d’écrans, plus de vie',
+    publishedAt: dayjs('2026-02-19').toISOString(),
+    slug: 'gagner-argent-aidant-voisins',
+    tags: ['revenus', 'communauté'],
+    title: 'Comment gagner de l’argent en aidant tes voisins ?',
   },
   {
     author: USERS.MATHIS,
     content: `
-      <p>Winston Churchill, Albert Einstein, John F. Kennedy. Qu'ont-ils en commun ? Ils étaient des adeptes fervents de la sieste. Ce que notre culture perçoit souvent comme de la paresse est en réalité un outil biologique puissant de redémarrage système.</p>
+      <p>On vous a menti toute votre vie. Depuis l'école, on vous répète que "l'avenir appartient à ceux qui se lèvent tôt", que "le travail c'est la santé" et que la paresse est un péché capital.</p>
       
-      <h2>La science du "Power Nap"</h2>
-      <p>Une sieste de 10 à 20 minutes suffit pour booster la vigilance et l'humeur. Elle agit comme un nettoyage de la mémoire vive (RAM) de votre cerveau, effaçant la fatigue de la matinée pour faire place à de nouvelles informations.</p>
+      <p>Résultat ? Vous culpabilisez dès que vous passez un dimanche en pyjama.</p>
       
-      <h2>Le "Nappuccino" (Sieste + Café)</h2>
-      <p>Voici une technique de pro pour les jours difficiles :</p>
-      <ol>
-        <li>Buvez un café rapidement.</li>
-        <li>Couchez-vous immédiatement pour 20 minutes (mettez un réveil !).</li>
-        <li>Au réveil, la caféine commence juste à faire effet, doublant la sensation de fraîcheur.</li>
-      </ol>
+      <p>Mais si on changeait de lunettes ? Et si la flemme n'était pas un défaut, mais une forme supérieure d'intelligence ? Spoiler : Bill Gates est d'accord avec nous.</p>
       
-      <p>Alors fermez la porte de votre bureau, mettez vos écouteurs, et offrez-vous ce luxe productif. Votre boss vous remerciera (peut-être).</p>
+      <h2>1. La théorie de Bill Gates</h2>
+      <p>La citation est célèbre, mais on ne s'en lasse pas. Bill Gates a dit : <em>"Je choisirai toujours une personne paresseuse pour faire un travail difficile... parce qu'elle trouvera un moyen facile de le faire."</em></p>
+      
+      <p>Le travailleur acharné va foncer tête baissée et transpirer pendant 4 heures. Le flemmard ? Il va réfléchir 10 minutes pour trouver comment plier l'affaire en 30 minutes et retourner sur son canapé.</p>
+      
+      <h2>2. Le flemmard va à l'essentiel</h2>
+      <p>Les gens hyperactifs se noient dans les détails. Le flemmard, lui, applique instinctivement la loi du 80/20 : 20% d'efforts pour 80% de résultats.</p>
+      <ul>
+        <li>Il ne repasse pas ses draps (à quoi bon).</li>
+        <li>Il cuisine en gros pour ne pas cuisiner tous les soirs.</li>
+        <li>Il automatise tout ce qui peut l'être.</li>
+      </ul>
+      
+      <h2>3. L'invention naît de la fatigue</h2>
+      <p>Regardez autour de vous. La plupart des inventions géniales de l'humanité sont nées parce que quelqu'un avait la flemme.</p>
+      <ul>
+        <li>La télécommande : Flemme de se lever pour changer de chaîne.</li>
+        <li>Le lave-vaisselle : Flemme de frotter les assiettes.</li>
+        <li>L'ascenseur : Flemme de monter les escaliers.</li>
+      </ul>
+      
+      <h2>4. Déléguer, c'est agir comme un PDG</h2>
+      <p>Un PDG ne nettoie pas les bureaux de son entreprise. Quand vous utilisez l’application flemme pour déléguer votre ménage ou votre paperasse, vous agissez comme le PDG de votre propre vie. Vous externalisez les tâches à faible valeur ajoutée pour vous concentrer sur votre cœur de métier.</p>
+      
+      <p>La prochaine fois qu'on vous traite de fainéant, répondez simplement que vous êtes en "mode économie d'énergie stratégique".</p>
+      
+      <h2>FAQ - La Flemme stratégique (pour ne pas avoir à chercher)</h2>
+      
+      <p><strong>Est-ce que je vais devenir "mou" si je délègue tout ?</strong> Au contraire. La charge mentale est ce qui épuise le plus votre cerveau. En déléguant, vous libérez de la bande passante mentale pour des projets qui vous tiennent vraiment à cœur.</p>
+      
+      <p><strong>Les gens vont-ils me juger si j'utilise l'appli pour tout ?</strong> Il y aura toujours des jaloux qui aiment souffrir. Pendant qu'ils astiquent leurs vitres, vous serez en terrasse au soleil. La meilleure réponse au jugement, c'est votre sourire reposé.</p>
+      
+      <p><strong>Est-ce vraiment intelligent de payer pour ça ?</strong> Calculez votre taux horaire. Si une heure de ménage coûte moins cher que ce que vaut votre temps, alors payer est la décision la plus intelligente que vous puissiez prendre.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&q=80&w=2070',
+    coverImage: '/flemme.webp',
     excerpt:
-      'Dormir au travail ? C’est peut-être la clé de votre prochaine promotion (ou du moins de votre santé mentale).',
+      'Et si la flemme n’était pas un défaut, mais une forme supérieure d’intelligence ? Découvrez la théorie de Bill Gates.',
     id: '4',
     layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-12').toISOString(),
-    slug: 'sieste-productivite',
-    tags: ['santé', 'énergie'],
-    title: 'La sieste : l’outil de productivité ultime',
+    publishedAt: dayjs('2026-02-26').toISOString(),
+    slug: 'flemmard-strategie-intelligente',
+    tags: ['mindset', 'philosophie'],
+    title: 'Être flemmard, c’est une stratégie intelligente',
   },
   {
     author: USERS.MATHIS,
     content: `
-      <h2>Pourquoi disons-nous "oui" ?</h2>
-      <p>Peur de décevoir, peur de manquer une opportunité (FOMO), ou simplement conditionnement social. Mais à chaque fois que vous dites "oui" à quelque chose de non essentiel, vous dites "non" à ce qui compte vraiment pour vous : votre repos, vos projets, votre famille.</p>
-
-      <h2>Le "Non" gracieux</h2>
-      <p>Dire non ne fait pas de vous une personne méchante. C'est un acte de respect envers votre propre temps. Voici quelques formules magiques :</p>
+      <p>Vous avez une tâche à faire. Vous savez que vous devez la faire. Et pourtant... vous êtes là, à scroller sur votre téléphone.</p>
       
+      <p>Pourquoi ? La science a une explication : votre flemme n'est pas un défaut de caractère, c'est une bataille chimique dans votre cerveau.</p>
+      
+      <h2>1. Le combat du singe et du capitaine</h2>
+      <p>Votre cerveau a deux pilotes :</p>
+      <ol>
+        <li><strong>Le cortex préfrontal (le capitaine) :</strong> Il est rationnel, il pense au long terme.</li>
+        <li><strong>Le système limbique (le singe) :</strong> Il veut du plaisir immédiat et déteste l'effort.</li>
+      </ol>
+      <p>Quand vous devez faire une corvée, le singe crie souvent plus fort que le capitaine. C'est biologique.</p>
+      
+      <h2>2. La peur déguisée en flemme</h2>
+      <p>Souvent, on ne procrastine pas parce qu'on est paresseux, mais parce qu'on est anxieux. Une tâche complexe nous fait peur. Pour éviter cette émotion négative, le cerveau "bug" et refuse de commencer.</p>
+      
+      <h2>3. La notion de friction</h2>
+      <p>Plus une tâche demande d'étapes pour démarrer, moins vous avez de chances de la faire. Sortir l'aspirateur + brancher + passer = Haute friction. Appuyer sur un bouton sur son téléphone = Basse friction.</p>
+      
+      <h2>Comment l'appli flemme soigne votre cerveau ?</h2>
+      <p>L'appli flemme est conçue pour contourner vos blocages psychologiques :</p>
       <ul>
-        <li>"Merci d'avoir pensé à moi, mais je ne peux pas m'engager sur de nouveaux projets actuellement."</li>
-        <li>"J'aimerais beaucoup aider, mais mon emploi du temps ne me le permet pas si je veux maintenir la qualité de mon travail actuel."</li>
-        <li>"Non, merci." (Oui, c'est une phrase complète).</li>
+        <li><strong>Récompense immédiate :</strong> Vous déléguez, vous vous sentez soulagé instantanément.</li>
+        <li><strong>Réduction de la friction :</strong> On a supprimé toutes les étapes chiantes. Il ne reste que le clic.</li>
+        <li><strong>Sécurité émotionnelle :</strong> Un pro s'en occupe, plus de peur de mal faire.</li>
       </ul>
-
-      <p>Protégez votre temps comme s'il s'agissait de votre compte en banque. Parce que contrairement à l'argent, le temps dépensé ne se gagne plus jamais.</p>
+      
+      <h2>FAQ - La psychanalyse de votre canapé (pour ne pas avoir à chercher)</h2>
+      <p><strong>Est-ce que la procrastination est une maladie ?</strong> Non, c'est un mécanisme de défense naturel. Avec Flemme, vous ne luttez pas contre votre nature, vous trouvez une stratégie pour vivre avec.</p>
+      <p><strong>Pourquoi je suis plus fatigué à l'idée de faire le ménage qu'après 2h de sport ?</strong> C'est la fatigue décisionnelle. Devoir planifier coûte plus d'énergie mentale que l'action physique elle-même.</p>
+      <p><strong>Comment arrêter de culpabiliser ?</strong> En utilisant flemme, vous réduisez l'écart entre ce que vous devez faire et ce qui est fait. Plus de tâches en retard = plus de raison de culpabiliser.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=2069',
-    excerpt: 'Apprenez à refuser poliment mais fermement pour protéger votre temps et votre énergie.',
+    coverImage: "/t'as-la-flemme.webp",
+    excerpt:
+      'Pourquoi procrastine-t-on autant ? Découvrez le combat entre le singe et le capitaine dans votre cerveau.',
     id: '5',
     layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-15').toISOString(),
-    slug: 'dire-non',
-    tags: ['communication', 'limites'],
-    title: 'Dire non : le super-pouvoir des gens efficaces',
+    publishedAt: dayjs('2026-03-05').toISOString(),
+    slug: 'psychologie-flemme-procrastination',
+    tags: ['psychologie', 'mental'],
+    title: 'La psychologie de la flemme',
   },
   {
     author: USERS.MATHIS,
     content: `
-      <p>La technologie devait nous libérer du temps. Au lieu de cela, nous passons nos journées à répondre à des emails et copier-coller des données entre Excel et un CRM. Il est temps de reprendre le contrôle.</p>
+      <p>Vous avez le doigt sur le bouton "commander". Et là, elle arrive. La Culpabilité.</p>
+      <p>Cette petite voix qui vous murmure : "Tu abuses, tu pourrais le faire toi-même..." Stop. Déléguer n'est pas un aveu de faiblesse, c'est une stratégie de survie moderne.</p>
       
-      <h2>Si vous le faites trois fois, automatisez-le</h2>
-      <p>C'est la règle d'or. Trier ses factures ? Répondre aux mêmes questions clients ? Poster sur les réseaux sociaux ? Tout cela peut être délégué à des robots.</p>
+      <h2>Excuse N°1 : "Mon temps coûte plus cher que ça"</h2>
+      <p>C'est l'argument mathématique. Si vous gagnez 25€ de l'heure, pourquoi passeriez-vous votre samedi à faire une tâche que vous pouvez déléguer pour moins cher ? Vous "rachetez" votre temps.</p>
       
-      <h2>La boîte à outils du flemmard tech</h2>
-      <p>Pas besoin de savoir coder pour automatiser votre vie :</p>
-      <ul>
-        <li><strong>Zapier / Make :</strong> La colle d'internet. Connectez vos apps entre elles. "Si je reçois un mail avec 'Facture', enregistre la pièce jointe dans Drive".</li>
-        <li><strong>ChatGPT :</strong> Votre assistant personnel pour rédiger, résumer, et brainstormer.</li>
-        <li><strong>Calendly :</strong> Fini le ping-pong de emails pour trouver un créneau de réunion.</li>
-      </ul>
+      <h2>Excuse N°2 : "Je préserve ma santé mentale (et mon couple)"</h2>
+      <p>Combien de disputes à cause du partage des corvées ? Déléguer, c'est externaliser le conflit. Payer un intervenant coûte moins cher qu'une thérapie de couple.</p>
       
-      <p>L'objectif n'est pas de travailler plus vite pour en faire plus. C'est de supprimer les tâches sans valeur ajoutée pour pouvoir aller cueillir des champignons (ou regarder Netflix sans culpabilité).</p>
+      <h2>Excuse N°3 : "Un pro le fera mieux et plus vite que moi"</h2>
+      <p>Un bricoleur pro va monter votre meuble en 1h30, et ce sera parfait. Vous, vous allez y passer 6 heures et perdre une vis. C'est l'humilité stratégique.</p>
+      
+      <h2>Excuse N°4 : "C'est mon coût d'opportunité"</h2>
+      <p>Quand vous choisissez de faire du repassage, vous renoncez à jouer avec vos enfants ou à lire un livre. Qu'est-ce que vous sacrifiez pour faire cette corvée ?</p>
+      
+      <h2>Excuse N°5 : "Parce que je n'ai pas envie"</h2>
+      <p>C'est l'excuse ultime. L'argument de l’application flemme. Vous n'avez pas à justifier votre besoin de repos. La vie est trop courte pour frotter des joints de carrelage.</p>
+      
+      <h2>FAQ - Anti-culpabilité (pour ne pas avoir à chercher)</h2>
+      <p><strong>Que vont penser les gens ?</strong> S'ils vous jugent, c'est qu'ils sont jaloux de votre temps libre. Les vrais amis seront contents de vous voir plus détendu.</p>
+      <p><strong>N'est-ce pas un caprice de riche ?</strong> Non. C'est un choix de budget. Certains mettent 100€ dans un resto, d'autres préfèrent payer pour récupérer 4 samedis matins de tranquillité.</p>
+      <p><strong>Si je délègue tout, qu'est-ce qu'il me reste à faire ?</strong> Absolument tout ce qui vous rend heureux. C'est ça le but.</p>
     `,
-    coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2070',
-    excerpt: 'Les outils no-code indispensables pour déléguer les tâches répétitives à des robots.',
+    coverImage: '/flemme-1068x601.webp',
+    excerpt: 'Déléguer sans regret grâce à nos 5 arguments imparables. Reprenez le contrôle de votre temps.',
     id: '6',
     layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-18').toISOString(),
-    slug: 'automatiser-flauner',
-    tags: ['tech', 'automatisation'],
-    title: 'Automatiser pour mieux flâner',
-  },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <p>Nous sommes obsédés par la vitesse. Fast food, fast fashion, speed dating. Mais la nature ne se presse jamais, et pourtant tout est accompli. Adopter la "Slow Life" n'est pas une régression, c'est une résistance nécessaire.</p>
-      
-      <h2>Moins mais mieux</h2>
-      <p>Ralentir permet de redonner du sens à nos actions. Manger en savourant, marcher en regardant le paysage, écouter quelqu'un sans penser à sa réponse. C'est dans ces interstices que se trouve la qualité de vie.</p>
-      
-      <blockquote>"Il y a plus dans la vie que d'augmenter sa vitesse." — Gandhi</blockquote>
-      
-      <p>Essayez une journée sans montre. Mangez quand vous avez faim, dormez quand vous êtes fatigué. Reconnectez-vous à votre rythme biologique plutôt qu'au rythme frénétique de la société. Vous découvrirez peut-être que vous êtes plus efficace quand vous ne courez pas après le temps.</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=2073',
-    excerpt: 'Pourquoi la vitesse n’est pas synonyme d’efficacité. Éloge de la lenteur au quotidien.',
-    id: '7',
-    layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-20').toISOString(),
-    slug: 'slow-life',
+    publishedAt: dayjs('2026-03-12').toISOString(),
+    slug: 'top-5-excuses-deleguer',
     tags: ['lifestyle', 'bien-être'],
-    title: 'Slow life : ralentir pour aller plus loin',
+    title: 'Top 5 des excuses pour déléguer',
   },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <h2>Le chaos extérieur reflète le chaos intérieur</h2>
-      <p>Regardez votre bureau. Si c'est un empilement de dossiers, de tasses de café vides et de post-it oubliés, il est probable que votre esprit ressemble à ça aussi. Notre environnement influence directement notre clarté mentale.</p>
-      
-      <h2>La politique du bureau zéro</h2>
-      <p>À la fin de chaque journée, votre bureau devrait revenir à son état initial : vide. Pas "rangé", vide. Seul votre ordinateur et peut-être une plante devraient survivre.</p>
-      
-      <p>Cela crée un rituel de clôture de la journée de travail, permettant à votre cerveau de déconnecter. Et le lendemain matin, s'asseoir devant un espace immaculé est une invitation à la création, pas un rappel de toutes les tâches en retard.</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?auto=format&fit=crop&q=80&w=2054',
-    excerpt: 'Comment un espace de travail épuré peut clarifier votre esprit et booster votre créativité.',
-    id: '8',
-    layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-22').toISOString(),
-    slug: 'bureau-vide',
-    tags: ['organisation', 'minimalisme'],
-    title: 'Le bureau vide : organisation radicale',
-  },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <p>Quand on vous dit "méditation", vous imaginez un moine zen au sommet d'une montagne. Si vous êtes du genre à taper du pied quand le micro-ondes met plus de 30 secondes, cette image vous angoisse probablement.</p>
-      
-      <h2>La méditation en mouvement</h2>
-      <p>La pleine conscience n'exige pas l'immobilité. Elle exige l'attention. Vous pouvez méditer en :</p>
-      <ul>
-        <li>Faisant la vaisselle (sentez l'eau chaude, le poids des assiettes).</li>
-        <li>Marchant (sentez le contact de vos pieds avec le sol).</li>
-        <li>Écoutant de la musique (écoutez vraiment, sans faire autre chose).</li>
-      </ul>
-      
-      <p>L'objectif n'est pas de vider votre esprit (c'est impossible), mais de remarquer quand il s'échappe et de le ramener gentiment à l'instant présent. C'est tout.</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1508672019048-805c276e71f2?auto=format&fit=crop&q=80&w=2073',
-    excerpt:
-      'Pas besoin de rester assis en tailleur pendant une heure. La pleine conscience pour ceux qui bougent tout le temps.',
-    id: '9',
-    layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-24').toISOString(),
-    slug: 'meditation-hyperactifs',
-    tags: ['santé', 'mental'],
-    title: 'Méditation pour les hyperactifs',
-  },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <p>C'est le conseil de productivité le plus simple et le plus puissant jamais inventé (merci David Allen). Si une tâche prend moins de deux minutes à accomplir, faites-la immédiatement.</p>
-      
-      <h2>Pourquoi ça marche ?</h2>
-      <p>Parce que le temps et l'énergie nécessaires pour noter la tâche, la planifier, s'en souvenir et y revenir plus tard sont supérieurs à ceux nécessaires pour la faire tout de suite.</p>
-      
-      <ul>
-        <li>Répondre à ce SMS simple ? Maintenant.</li>
-        <li>Ranger cette tasse dans le lave-vaisselle ? Maintenant.</li>
-        <li>Envoyer ce document ? Maintenant.</li>
-      </ul>
-      
-      <p>Cela garde votre to-do list propre pour les vrais projets et vous donne un sentiment d'accomplissement immédiat. C'est la victoire facile dont votre cerveau a besoin.</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1506784365377-64560b370908?auto=format&fit=crop&q=80&w=2068',
-    excerpt:
-      'Si ça prend moins de 2 minutes, faites-le tout de suite. La méthode simple pour ne plus se laisser déborder.',
-    id: '10',
-    layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-26').toISOString(),
-    slug: 'regle-2-minutes',
-    tags: ['productivité', 'organisation'],
-    title: 'La règle des 2 minutes',
-  },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <p>Le paradoxe moderne : nous adorons manger, mais cuisiner tous les soirs après le travail est une corvée. La solution ? Cuisiner une fois, manger toute la semaine.</p>
-      
-      <h2>La stratégie du dimanche</h2>
-      <p>Consacrez 2 heures le dimanche à préparer des bases :</p>
-      <ul>
-        <li>Une grande portion de céréales (riz, quinoa, pâtes).</li>
-        <li>Des légumes rôtis au four (patates douces, brocolis, carottes).</li>
-        <li>Une source de protéines (poulet, tofu, œufs durs).</li>
-        <li>Une super sauce maison.</li>
-      </ul>
-      
-      <p>Le soir venu, il ne vous reste plus qu'à assembler. C'est du Lego culinaire. C'est plus sain, moins cher, et ça libère vos soirées pour des activités plus importantes (comme ne rien faire).</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=2070',
-    excerpt: 'Préparez vos repas de la semaine en 2h chrono. Le guide complet pour les flemmards gourmands.',
-    id: '11',
-    layout: 'modern-clean',
-    publishedAt: dayjs('2026-01-28').toISOString(),
-    slug: 'batch-cooking',
-    tags: ['lifestyle', 'cuisine'],
-    title: 'Batch cooking : cuisinez moins, mangez mieux',
-  },
-  {
-    author: USERS.MATHIS,
-    content: `
-      <h2>"Ils vont finir par découvrir que je suis nul"</h2>
-      <p>Cette petite voix dans votre tête ? C'est le syndrome de l'imposteur. Et c'est mentir. Environ 70% des gens le ressentent à un moment donné, surtout les plus compétents.</p>
-      
-      <p>Le doute n'est pas une preuve d'incompétence, c'est une preuve d'intelligence. Les vrais incompétents ne doutent jamais d'eux-mêmes (effet Dunning-Kruger).</p>
-      
-      <h2>Comment le faire taire</h2>
-      <ol>
-        <li>Tenez un "Dossier de Victoires". Gardez les emails de remerciements, notez vos succès. Quand le doute frappe, relisez-le.</li>
-        <li>Parlez-en. Vous serez surpris de voir combien de personnes que vous admirez ressentent la même chose.</li>
-        <li>Acceptez d'être en apprentissage. Vous n'avez pas besoin d'être parfait, juste d'être présent et d'essayer.</li>
-      </ol>
-      
-      <p>Vous êtes à votre place. Respirez.</p>
-    `,
-    coverImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2070',
-    excerpt:
-      'Vous avez l’impression de ne pas être à votre place ? Spoiler : tout le monde ressent ça. Voici comment gérer.',
-    id: '12',
-    layout: 'visual-immersive',
-    publishedAt: dayjs('2026-01-30').toISOString(),
-    slug: 'syndrome-imposteur',
-    tags: ['mindset', 'carrière'],
-    title: 'Le syndrome de l’imposteur',
-  },
-];
+].filter((post): post is BlogPost => dayjs(post.publishedAt).isBefore(dayjs()));
 
 export { BLOG_POSTS };
 export type { BlogPost };

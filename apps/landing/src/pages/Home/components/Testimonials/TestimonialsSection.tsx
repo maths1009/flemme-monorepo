@@ -21,8 +21,8 @@ function TestimonialsSection() {
             Ce que nos héros de la paresse disent de nous
           </span>
           <h2 className="font-serif text-5xl font-black uppercase leading-none text-black md:text-7xl">
-            Ils ont osé... <br />
-            <span className="text-brand-orange">et ils ont kiffé !</span>
+            Ils ont osé...
+            <span className="text-brand-blue">et ils ont kiffé !</span>
           </h2>
         </div>
 

@@ -36,12 +36,12 @@
     "vite-tsconfig-paths": "catalog:vite"
   },
   "name": "landing",
-  "private": true,
   "scripts": {
     "build": "vite build",
     "dev": "vite dev",
     "start": "vite start",
     "typecheck": "tsc --noEmit"
   },
-  "type": "module"
+  "type": "module",
+  "version": "2.0.0"
 }

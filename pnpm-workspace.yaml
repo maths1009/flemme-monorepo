@@ -4,7 +4,7 @@ packages:
 
 catalog:
   typescript: 5.9.3
-  "@types/node": 22.18.12
+  "@types/node": 22.19.7
   zod: 3.25.76
   class-variance-authority: 0.7.1
   clsx: 2.1.1

@@ -13,7 +13,7 @@ export const Navbar: React.FC = () => {
         {/* Icônes de navigation */}
         <div className="flex items-center space-x-4">
           {/* Icône profil */}
-          <Link href="/profil" className="p-2">
+          <Link href="/profile" className="p-2">
             <Image
               src="/images/home/account.svg"
               alt="Profil"

@@ -38,8 +38,16 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store CI=true pnpm prune --prod --
 RUN rm -rf ./**/*/src
 
 # Serve the build output
-FROM nginx:alpine
+FROM base AS runner
 ARG PROJECT
-COPY --from=builder /app/apps/${PROJECT}/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+COPY --from=builder /app/apps/${PROJECT}/.output ./.output
+
+ENV PORT=3000
+ENV HOST=0.0.0.0
+ENV NODE_ENV=production
+
+EXPOSE ${PORT}
+
+CMD ["node", ".output/server/index.mjs"]

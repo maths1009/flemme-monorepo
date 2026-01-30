@@ -40,11 +40,6 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
     const fetchStats = async () => {
       if (!user.id) return;
       try {
-        // Fetch feedbacks to calculate stats
-        // We fetch paginated results but we rely on meta.total for count
-        // For average, we ideally need all ratings. Limit=100 is a reasonable approximation for now
-        // consistent with "frontend-only" request without heavy load. 
-        // If exact global average is needed for >100 reviews, backend support would be better.
         const response = await fetchClient<FeedbackResponse>(`/feedbacks?receiver_id=${user.id}&limit=100`);
         
         if (response.data) {

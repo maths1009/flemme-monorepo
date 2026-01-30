@@ -93,8 +93,8 @@ export default function ProfilePage() {
 
       <div className="flex flex-col border-t border-gray-100">
         <MenuItem icon={Star} label="Mes avis" onClick={() => router.push('/feedback')} />
-        <MenuItem icon={Heart} label="Favoris" />
-        <MenuItem icon={Settings} label="Paramètres" />
+        <MenuItem icon={Heart} label="Favoris" onClick={() => router.push('/favorites')} />
+        <MenuItem icon={Settings} label="Paramètres" onClick={() => router.push('/profile/settings')} />
         <MenuItem icon={History} label="Historique de mes annonces" />
       </div>
 

@@ -1,5 +1,5 @@
 import { FileServiceInterface } from '@/common/services/file.service';
-import { userToDto } from '@/features/users/mappers/user.mapper';
+import { userToPublicDto } from '@/features/users/mappers/user.mapper';
 import { FeedbackDto } from '../dto/feedback.dto';
 import { Feedback } from '../entities/feedback.entity';
 
@@ -9,7 +9,7 @@ export const feedbackToDto = async (feedback: Feedback, fileService?: FileServic
     id: feedback.id,
     message: feedback.message,
     rating: feedback.rating,
-    receiver: await userToDto(feedback.receiver, fileService),
-    sender: await userToDto(feedback.sender, fileService),
+    receiver: await userToPublicDto(feedback.receiver, fileService),
+    sender: await userToPublicDto(feedback.sender, fileService),
   };
 };

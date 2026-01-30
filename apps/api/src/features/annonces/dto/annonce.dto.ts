@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { PublicUserDto } from '@/features/users/dto/user.dto';
 
 export class AnnonceDto {
   @ApiProperty()
@@ -27,8 +27,8 @@ export class AnnonceDto {
   @ApiProperty()
   longitude: number;
 
-  @ApiProperty({ type: UserDto })
-  user: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  user: PublicUserDto;
 }
 
 export class UpdateAnnonceDto {

@@ -40,7 +40,7 @@ const PhotoUpload = React.forwardRef<HTMLInputElement, PhotoUploadProps>(
       // Vérifier le type de fichier
       if (!acceptedFormats.some((format) => file.type === format)) {
         const formatsText = acceptedFormats
-          .map((f) => f.split('/')[1].toUpperCase())
+          .map((f) => (f.split('/')[1] ?? f).toUpperCase())
           .join(', ');
         onError?.(`Format non supporté. Formats acceptés : ${formatsText}`);
         resetUpload();

@@ -24,7 +24,7 @@ export const AnnoncesService = {
       method: 'POST',
     });
   },
-  async getAll(params?: { latitude?: number; longitude?: number; distance?: number; limit?: number; page?: number }) {
+  async getAll(params?: { latitude?: number; longitude?: number; distance?: number; limit?: number; page?: number; userId?: string }) {
     const query = new URLSearchParams(params as any).toString();
     return fetchClient<{ data: Annonce[]; meta: any }>(`/annonces?${query}`);
   },

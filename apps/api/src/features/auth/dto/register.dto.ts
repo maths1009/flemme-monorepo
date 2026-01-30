@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from 'class-validator';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { MyProfileDto } from '@/features/users/dto/user.dto';
 import { PASSWORD_REGEX } from '../auth.helper';
 import { AuthErrorMessages } from '../errors/auth-error-messages.enum';
 
@@ -36,6 +36,6 @@ export class RegisterDto {
 }
 
 export class RegisterResponseDto {
-  @ApiProperty({ type: () => UserDto })
-  user: UserDto;
+  @ApiProperty({ type: () => MyProfileDto })
+  user: MyProfileDto;
 }

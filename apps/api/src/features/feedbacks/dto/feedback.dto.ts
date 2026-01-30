@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
 import { PaginationDto } from '@/common/dto/pagination.dto';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { PublicUserDto } from '@/features/users/dto/user.dto';
 
 export class CreateFeedbackDto {
   @ApiProperty({ example: 5, maximum: 5, minimum: 1 })
@@ -47,11 +47,11 @@ export class FeedbackDto {
   @ApiProperty()
   created_at: Date;
 
-  @ApiProperty({ type: UserDto })
-  receiver: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  receiver: PublicUserDto;
 
-  @ApiProperty({ type: UserDto })
-  sender: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  sender: PublicUserDto;
 }
 
 export class FeedbackParamsDto extends PaginationDto {

@@ -10,9 +10,9 @@ import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.servi
 import { generateOtpCode } from '@/common/utils/2fa.util';
 import { comparePasswords, hashPassword } from '@/common/utils/password.util';
 import { DevicesService } from '@/features/devices/devices.service';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { MyProfileDto } from '@/features/users/dto/user.dto';
 import { User } from '@/features/users/entities/user.entity';
-import { userToDto } from '@/features/users/mappers/user.mapper';
+import { userToMyProfileDto } from '@/features/users/mappers/user.mapper';
 import { UsersService } from '@/features/users/users.service';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { LoginResponseDto } from './dto/login.dto';
@@ -32,7 +32,7 @@ export class AuthService {
     @Inject(REDIS_CLIENT) private readonly redisClient: RedisClientType,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<UserDto | null> {
+  async validateUser(email: string, password: string): Promise<MyProfileDto | null> {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) return null;
@@ -41,7 +41,7 @@ export class AuthService {
 
     if (!isPasswordValid) return null;
 
-    return userToDto(user);
+    return userToMyProfileDto(user);
   }
 
   async sendEmailVerificationEmail(user: User): Promise<void> {
@@ -68,7 +68,7 @@ export class AuthService {
     await this.devicesService.create(sessionId, user.id, userAgent, ip);
 
     return {
-      user: await userToDto(user, this.fileService),
+      user: await userToMyProfileDto(user, this.fileService),
     };
   }
 

@@ -33,6 +33,10 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
 
   const currentItem = annonces[currentIndex];
 
+  if (!currentItem) {
+    return null;
+  }
+
   const handleTaskClick = () => {
     router.push(`/adverts/${currentItem.id}`);
   };

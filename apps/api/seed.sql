@@ -125,15 +125,75 @@ INSERT INTO likes (id, user_id, annonce_id, created_at) VALUES
 -- 6. Feedbacks
 -- Bob gives feedback to Alice
 INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
-('aca9ab1d-c335-4f15-88c1-fb66eec093b2', 5, 'Great transaction!', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', '338715f7-2186-4760-93e2-93ee0cb70eac', NOW());
+('aca9ab1d-c335-4f15-88c1-fb66eec093b2', 5, 'Excellente transaction ! Très réactive et sympathique.', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', '338715f7-2186-4760-93e2-93ee0cb70eac', NOW());
 
 -- Alice gives feedback to Bob
 INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
-('78680f4b-1adf-4272-beb6-3ec1ba7e623d', 4, 'Good buyer, slightly late.', '338715f7-2186-4760-93e2-93ee0cb70eac', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', NOW());
+('78680f4b-1adf-4272-beb6-3ec1ba7e623d', 4, 'Bon acheteur, légèrement en retard mais correct.', '338715f7-2186-4760-93e2-93ee0cb70eac', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', NOW());
 
--- David gives feedback to Eve (Previous transaction not shown)
+-- David gives feedback to Eve
 INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
-('23c1b145-859d-4470-9747-8e527fd5c7b5', 5, 'Lovely buyer!', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', '1634000c-d46a-4703-b124-167b085c1efc', NOW());
+('23c1b145-859d-4470-9747-8e527fd5c7b5', 5, 'Super acheteuse ! Transaction impeccable.', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', '1634000c-d46a-4703-b124-167b085c1efc', NOW());
+
+-- Charlie gives feedback to Alice
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('85cbe4af-2a6c-42c5-a468-52cd499e6c8b', 5, 'Parfait ! Le canapé était exactement comme décrit.', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', NOW());
+
+-- Grace gives feedback to Charlie
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('2dee6508-6fd3-4cdd-ba4c-e39ef5f2493a', 4, 'Très bon vendeur, matériel en bon état.', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', 'b3c243cf-a9b9-4442-a22d-b53d59fbfbeb', NOW());
+
+-- Eve gives feedback to Grace
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('fbc04176-b270-4770-b4d5-586e53996c12', 5, 'La guitare est magnifique ! Merci beaucoup.', 'b3c243cf-a9b9-4442-a22d-b53d59fbfbeb', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', NOW());
+
+-- Frank gives feedback to David
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('627ba99a-5ce7-42e7-9f82-d07dbc2d47d9', 5, 'Objectif photo impeccable, emballage soigné.', '1634000c-d46a-4703-b124-167b085c1efc', '69fd9b05-1b97-4b87-a3d1-a200e2c3605c', NOW());
+
+-- Alice gives feedback to Charlie
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('009ca69a-550d-4384-ba6e-ddc8249bb865', 4, 'Bonne communication, livraison rapide.', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', NOW());
+
+-- Bob gives feedback to Eve
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('26df2ee5-74fb-463f-b509-d68712a5b882', 5, 'Superbe sac à main, état neuf !', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', '338715f7-2186-4760-93e2-93ee0cb70eac', NOW());
+
+-- Charlie gives feedback to Frank
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('db1e9247-b3e1-446f-a334-059b96bccbb0', 3, 'Le livre était un peu abîmé mais ça va.', '69fd9b05-1b97-4b87-a3d1-a200e2c3605c', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', NOW());
+
+-- Grace gives feedback to Bob
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('e2ab19b3-1a3b-4748-8659-10abefcf3acf', 5, 'Très bon vélo, conforme à la description.', '338715f7-2186-4760-93e2-93ee0cb70eac', 'b3c243cf-a9b9-4442-a22d-b53d59fbfbeb', NOW());
+
+-- David gives feedback to Alice
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('cfedbe7e-e524-41f4-936b-c27e6d08d516', 5, 'Lampe parfaite pour mon bureau, merci !', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', '1634000c-d46a-4703-b124-167b085c1efc', NOW());
+
+-- Eve gives feedback to Bob
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('81508da1-ec39-40be-a416-ae922689aa75', 4, 'Bon vendeur, un peu lent à répondre.', '338715f7-2186-4760-93e2-93ee0cb70eac', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', NOW());
+
+-- Frank gives feedback to Grace
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('6242b752-e691-4e14-964f-9c46e9a6bef8', 5, 'Le pupitre est top, parfait pour mes cours.', 'b3c243cf-a9b9-4442-a22d-b53d59fbfbeb', '69fd9b05-1b97-4b87-a3d1-a200e2c3605c', NOW());
+
+-- Alice gives feedback to David
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('79a94351-33ce-4764-bdbf-17964e1982ff', 5, 'Photos magnifiques avec cet objectif !', '1634000c-d46a-4703-b124-167b085c1efc', '2c39e4bd-11d6-45e2-bf99-7239623e4cf7', NOW());
+
+-- Bob gives feedback to Charlie
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('7176370a-bad7-4779-9539-cdd8ad1f0850', 4, 'Le clavier fonctionne bien, quelques traces.', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', '338715f7-2186-4760-93e2-93ee0cb70eac', NOW());
+
+-- Charlie gives feedback to Grace
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('c5ac2767-d896-46a9-9a33-6ab5cbe4315d', 5, 'Archet de violon superbe, merci !', 'b3c243cf-a9b9-4442-a22d-b53d59fbfbeb', 'd1a76ab7-bcbd-4cbd-9981-e745577ffac6', NOW());
+
+-- Eve gives feedback to Frank
+INSERT INTO feedbacks (id, rating, message, receiver_id, sender_id, created_at) VALUES
+('62524dd1-bf9e-4335-acb1-ece0f220d9e9', 4, 'Petit frigo pratique, merci !', '69fd9b05-1b97-4b87-a3d1-a200e2c3605c', '189ef79e-da1a-4cdf-bb9c-b3549764c93c', NOW());
 
 
 -- 7. Trackings

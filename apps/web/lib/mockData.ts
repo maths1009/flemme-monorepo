@@ -69,7 +69,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user2,
+    user: mockUsers.user2!,
     category: 'courses',
   },
   '2': {
@@ -86,7 +86,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user3,
+    user: mockUsers.user3!,
     category: 'ménage',
   },
   '3': {
@@ -103,7 +103,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user4,
+    user: mockUsers.user4!,
     category: 'social',
   },
   '4': {
@@ -120,7 +120,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user1,
+    user: mockUsers.user1!,
     category: 'animaux',
   },
   '5': {
@@ -137,7 +137,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user1,
+    user: mockUsers.user1!,
     category: 'jardinage',
   },
   '6': {
@@ -154,7 +154,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user1,
+    user: mockUsers.user1!,
     category: 'animaux',
   },
   '7': {
@@ -171,7 +171,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user2,
+    user: mockUsers.user2!,
     category: 'courses',
   },
   '8': {
@@ -188,7 +188,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user2,
+    user: mockUsers.user2!,
     category: 'ménage',
   },
   '9': {
@@ -205,7 +205,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user3,
+    user: mockUsers.user3!,
     category: 'courses',
   },
   '10': {
@@ -221,14 +221,8 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     date: '23/04/2025',
     location: 'Angers (49000)',
-    image: '/images/home/mock/image.png',
-    images: [
-      '/images/home/mock/image.png',
-      '/images/home/mock/image.png',
-      '/images/home/mock/image.png',
-    ],
     price: 18,
-    user: mockUsers.user3,
+    user: mockUsers.user3!,
     category: 'ménage',
   },
   '11': {
@@ -245,7 +239,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user4,
+    user: mockUsers.user4!,
     category: 'social',
   },
   '12': {
@@ -262,7 +256,7 @@ export const mockAdverts: Record<string, Advert> = {
       '/images/home/mock/image.png',
       '/images/home/mock/image.png',
     ],
-    user: mockUsers.user4,
+    user: mockUsers.user4!,
     category: 'social',
   },
 };

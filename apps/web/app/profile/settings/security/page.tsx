@@ -5,13 +5,20 @@ import { fetchClient } from '@/lib/api';
 import { ArrowLeft, CheckCircle, Mail, ShieldAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/common/input-otp';
 
 export default function SecuritySettingsPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, verifyEmail } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState('');
 
   const resetMessages = () => {
     setSuccessMessage(null);
@@ -23,12 +30,33 @@ export default function SecuritySettingsPage() {
     setIsLoading(true);
     try {
       await fetchClient('/auth/resend-email-verification', { method: 'POST' });
-      setSuccessMessage('Email de vérification envoyé !');
+      setSuccessMessage('Email de vérification envoyé ! Veuillez entrer le code ci-dessous.');
+      setShowOtpInput(true);
     } catch (error) {
       setErrorMessage("Erreur lors de l'envoi de l'email");
       console.error(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (otp.length !== 6) {
+        setErrorMessage('Le code doit contenir 6 chiffres');
+        return;
+    }
+
+    resetMessages();
+    setIsLoading(true);
+    try {
+        await verifyEmail(parseInt(otp));
+        setSuccessMessage('Email vérifié avec succès !');
+        setShowOtpInput(false);
+    } catch (error: any) {
+        console.error(error);
+        setErrorMessage(error.message || 'Code invalide ou expiré');
+    } finally {
+        setIsLoading(false);
     }
   };
 
@@ -92,17 +120,45 @@ export default function SecuritySettingsPage() {
             </div>
             
             {!user?.email_verified && (
-              <div className="mt-4">
-                <p className="text-sm text-gray-500 mb-3">
+              <div className="mt-4 space-y-4">
+                <p className="text-sm text-gray-500">
                   Votre email n'est pas vérifié. Vérifiez-le pour sécuriser votre compte.
                 </p>
-                <button
-                  onClick={handleResendVerification}
-                  disabled={isLoading}
-                  className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLoading ? 'Envoi...' : "Renvoyer l'email de vérification"}
-                </button>
+
+                {showOtpInput ? (
+                     <div className="flex flex-col items-center gap-4">
+                        <InputOTP
+                            maxLength={6}
+                            value={otp}
+                            onChange={(value) => setOtp(value)}
+                        >
+                            <InputOTPGroup>
+                                <InputOTPSlot index={0} />
+                                <InputOTPSlot index={1} />
+                                <InputOTPSlot index={2} />
+                                <InputOTPSlot index={3} />
+                                <InputOTPSlot index={4} />
+                                <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                        </InputOTP>
+                        
+                        <button
+                            onClick={handleVerifyCode}
+                            disabled={isLoading}
+                            className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isLoading ? 'Validation...' : 'Valider le code'}
+                        </button>
+                     </div>
+                ) : (
+                    <button
+                    onClick={handleResendVerification}
+                    disabled={isLoading}
+                    className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                    {isLoading ? 'Envoi...' : "Renvoyer l'email de vérification"}
+                    </button>
+                )}
               </div>
             )}
           </div>

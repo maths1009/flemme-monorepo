@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { BLOG_POSTS } from '@/data/blog-posts';
 import { BlogDetailPage } from '@/pages/BlogDetail/page';
+import { getBlogPostSchema } from '@/utils/schema';
 import { generateMeta } from '@/utils/seo';
 
 // biome-ignore assist/source/useSortedKeys: because loader call before component and head
@@ -14,19 +15,7 @@ export const Route = createFileRoute('/_layout/blog/$slug')({
   head: ({ loaderData }) => {
     if (!loaderData) return {};
     const { post } = loaderData;
-    const schemaOrgJSONLD = {
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      author: [
-        {
-          '@type': 'Person',
-          name: post.author.name,
-        },
-      ],
-      datePublished: post.publishedAt,
-      headline: post.title,
-      image: [post.coverImage],
-    };
+    const schemaOrgJSONLD = getBlogPostSchema(post);
 
     return {
       meta: generateMeta({

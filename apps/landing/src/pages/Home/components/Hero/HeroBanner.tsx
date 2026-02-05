@@ -8,15 +8,15 @@ export function HeroBanner() {
       initial={{ opacity: 0, y: 100 }}
       transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
     >
-      <img alt="double eyes" src="/double-eyes.svg" />
+      <img alt="double eyes" className="hidden md:block" src="/double-eyes.svg" />
       <p className="text-center text-xs font-bold uppercase tracking-wider text-black md:text-base">
         ON S'OCCUPE DE TOUT, MÊME DE TA GRAND MÈRE
       </p>
 
-      <div className="hidden items-center gap-4 md:flex">
+      <div className="flex items-center gap-2 md:gap-4">
         <motion.svg
           aria-label="TikTok"
-          className="h-6 w-6 cursor-pointer text-black"
+          className="h-5 w-5 cursor-pointer text-black md:h-6 md:w-6"
           fill="none"
           onClick={() => window.open('https://www.tiktok.com/@flemmeapp', '_blank')}
           role="img"
@@ -30,7 +30,7 @@ export function HeroBanner() {
         </motion.svg>
         <motion.svg
           aria-label="Instagram"
-          className="h-6 w-6 cursor-pointer text-black"
+          className="h-5 w-5 cursor-pointer text-black md:h-6 md:w-6"
           fill="none"
           onClick={() => window.open('https://www.instagram.com/flemmeapp/', '_blank')}
           role="img"
@@ -46,7 +46,7 @@ export function HeroBanner() {
         </motion.svg>
         <motion.svg
           aria-label="LinkedIn"
-          className="h-6 w-6 cursor-pointer text-black"
+          className="h-5 w-5 cursor-pointer text-black md:h-6 md:w-6"
           fill="none"
           onClick={() => window.open('https://www.linkedin.com/company/flemme/about/', '_blank')}
           role="img"

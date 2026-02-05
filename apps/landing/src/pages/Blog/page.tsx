@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 import { useMemo } from 'react';
@@ -95,8 +94,8 @@ export function BlogPage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-4">
                 <Button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, (p ?? 1) - 1))} variant="default">
-                  <ChevronLeft className="mr-2 h-4 w-4" />
-                  Précédent
+                  <ChevronLeft className="h-4 w-4 md:mr-2" />
+                  <span className="hidden md:inline">Précédent</span>
                 </Button>
                 <span className="text-sm font-medium text-slate-600">
                   Page {page} sur {totalPages}
@@ -106,8 +105,8 @@ export function BlogPage() {
                   onClick={() => setPage(p => Math.min(totalPages, (p ?? 1) + 1))}
                   variant="default"
                 >
-                  Suivant
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                  <span className="hidden md:inline">Suivant</span>
+                  <ChevronRight className="h-4 w-4 md:ml-2" />
                 </Button>
               </div>
             )}

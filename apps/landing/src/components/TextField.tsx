@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
-const textFieldVariants = cva('group flex h-12 w-full items-center gap-2 px-4 transition-all', {
+const textFieldVariants = cva('group flex h-11 w-full items-center gap-2 px-3 transition-all md:h-12 md:px-4', {
   defaultVariants: {
     error: false,
     variant: 'default',

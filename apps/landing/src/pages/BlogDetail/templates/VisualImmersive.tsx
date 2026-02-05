@@ -1,9 +1,11 @@
+import { Link } from '@tanstack/react-router';
 import { Avatar } from '@/components/Avatar';
 import { Container } from '@/components/Container';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 import { Tag } from '@/components/Tag';
 import type { BlogPost } from '@/data/blog-posts';
 import { calculateReadTime, formatDate } from '@/utils/date';
+import { getFullName, getSlug } from '@/utils/users';
 
 export function VisualImmersiveTemplate(post: BlogPost) {
   return (
@@ -25,19 +27,25 @@ export function VisualImmersiveTemplate(post: BlogPost) {
 
             <p className="text-lg md:text-xl text-slate-600 mb-6 md:mb-8 font-medium leading-relaxed">{post.excerpt}</p>
 
-            <div className="flex items-center gap-4 border-t border-slate-200 pt-6 md:pt-8">
-              <Avatar
-                alt={post.author.name}
-                className="border-2 border-white shadow-sm"
-                size="lg"
-                src={post.author.avatar}
-              />
-              <div className="flex flex-col">
-                <span className="font-bold text-base md:text-lg text-slate-900">{post.author.name}</span>
-                <span className="text-slate-500 text-xs md:text-sm">
-                  {formatDate(post.publishedAt)} • {calculateReadTime(post.content)} de lecture
-                </span>
-              </div>
+            <div className="flex items-center gap-4 border-t border-slate-200 pt-6 md:pt-8 w-fit">
+              <Link
+                className="flex items-center gap-4 hover:opacity-80 transition-opacity"
+                params={{ slug: getSlug(post.author) }}
+                to="/team/$slug"
+              >
+                <Avatar
+                  alt={getFullName(post.author)}
+                  className="border-2 border-white shadow-sm"
+                  size="lg"
+                  src={post.author.avatar}
+                />
+                <div className="flex flex-col">
+                  <span className="font-bold text-base md:text-lg text-slate-900">{getFullName(post.author)}</span>
+                  <span className="text-slate-500 text-xs md:text-sm">
+                    {formatDate(post.publishedAt)} • {calculateReadTime(post.content)} de lecture
+                  </span>
+                </div>
+              </Link>
             </div>
           </div>
 

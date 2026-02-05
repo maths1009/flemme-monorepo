@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root';
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug';
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index';
+import { Route as LayoutCgvRouteImport } from './routes/_layout/cgv';
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index';
+import { Route as LayoutMentionsLegalesRouteImport } from './routes/_layout/mentions-legales';
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route';
+import { Route as LayoutTeamSlugRouteImport } from './routes/_layout/team/$slug';
+import { Route as LayoutTeamIndexRouteImport } from './routes/_layout/team/index';
 import { Route as R404RouteImport } from './routes/404';
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt';
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt';
@@ -53,10 +57,30 @@ const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
 } as any);
+const LayoutMentionsLegalesRoute = LayoutMentionsLegalesRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+} as any);
+const LayoutCgvRoute = LayoutCgvRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/cgv',
+  path: '/cgv',
+} as any);
+const LayoutTeamIndexRoute = LayoutTeamIndexRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/team/',
+  path: '/team/',
+} as any);
 const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
   getParentRoute: () => LayoutRouteRoute,
   id: '/blog/',
   path: '/blog/',
+} as any);
+const LayoutTeamSlugRoute = LayoutTeamSlugRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/team/$slug',
+  path: '/team/$slug',
 } as any);
 const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
   getParentRoute: () => LayoutRouteRoute,
@@ -70,9 +94,13 @@ export interface FileRoutesByFullPath {
   '/llms.txt': typeof LlmsDottxtRoute;
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/cgv': typeof LayoutCgvRoute;
+  '/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/': typeof LayoutIndexRoute;
   '/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/team/$slug': typeof LayoutTeamSlugRoute;
   '/blog': typeof LayoutBlogIndexRoute;
+  '/team': typeof LayoutTeamIndexRoute;
 }
 export interface FileRoutesByTo {
   '/404': typeof R404Route;
@@ -80,9 +108,13 @@ export interface FileRoutesByTo {
   '/llms.txt': typeof LlmsDottxtRoute;
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/cgv': typeof LayoutCgvRoute;
+  '/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/': typeof LayoutIndexRoute;
   '/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/team/$slug': typeof LayoutTeamSlugRoute;
   '/blog': typeof LayoutBlogIndexRoute;
+  '/team': typeof LayoutTeamIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -92,15 +124,43 @@ export interface FileRoutesById {
   '/llms.txt': typeof LlmsDottxtRoute;
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/_layout/cgv': typeof LayoutCgvRoute;
+  '/_layout/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/_layout/': typeof LayoutIndexRoute;
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/_layout/team/$slug': typeof LayoutTeamSlugRoute;
   '/_layout/blog/': typeof LayoutBlogIndexRoute;
+  '/_layout/team/': typeof LayoutTeamIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/404' | '/llms-full.txt' | '/llms.txt' | '/robots.txt' | '/sitemap.xml' | '/' | '/blog/$slug' | '/blog';
+  fullPaths:
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/cgv'
+    | '/mentions-legales'
+    | '/'
+    | '/blog/$slug'
+    | '/team/$slug'
+    | '/blog'
+    | '/team';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/404' | '/llms-full.txt' | '/llms.txt' | '/robots.txt' | '/sitemap.xml' | '/' | '/blog/$slug' | '/blog';
+  to:
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/cgv'
+    | '/mentions-legales'
+    | '/'
+    | '/blog/$slug'
+    | '/team/$slug'
+    | '/blog'
+    | '/team';
   id:
     | '__root__'
     | '/_layout'
@@ -109,9 +169,13 @@ export interface FileRouteTypes {
     | '/llms.txt'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/_layout/cgv'
+    | '/_layout/mentions-legales'
     | '/_layout/'
     | '/_layout/blog/$slug'
-    | '/_layout/blog/';
+    | '/_layout/team/$slug'
+    | '/_layout/blog/'
+    | '/_layout/team/';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -174,11 +238,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
+    '/_layout/mentions-legales': {
+      id: '/_layout/mentions-legales';
+      path: '/mentions-legales';
+      fullPath: '/mentions-legales';
+      preLoaderRoute: typeof LayoutMentionsLegalesRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/cgv': {
+      id: '/_layout/cgv';
+      path: '/cgv';
+      fullPath: '/cgv';
+      preLoaderRoute: typeof LayoutCgvRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/team/': {
+      id: '/_layout/team/';
+      path: '/team';
+      fullPath: '/team';
+      preLoaderRoute: typeof LayoutTeamIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
     '/_layout/blog/': {
       id: '/_layout/blog/';
       path: '/blog';
       fullPath: '/blog';
       preLoaderRoute: typeof LayoutBlogIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/team/$slug': {
+      id: '/_layout/team/$slug';
+      path: '/team/$slug';
+      fullPath: '/team/$slug';
+      preLoaderRoute: typeof LayoutTeamSlugRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
     '/_layout/blog/$slug': {
@@ -192,15 +284,23 @@ declare module '@tanstack/react-router' {
 }
 
 interface LayoutRouteRouteChildren {
+  LayoutCgvRoute: typeof LayoutCgvRoute;
+  LayoutMentionsLegalesRoute: typeof LayoutMentionsLegalesRoute;
   LayoutIndexRoute: typeof LayoutIndexRoute;
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute;
+  LayoutTeamSlugRoute: typeof LayoutTeamSlugRoute;
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute;
+  LayoutTeamIndexRoute: typeof LayoutTeamIndexRoute;
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
+  LayoutCgvRoute: LayoutCgvRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutMentionsLegalesRoute: LayoutMentionsLegalesRoute,
+  LayoutTeamIndexRoute: LayoutTeamIndexRoute,
+  LayoutTeamSlugRoute: LayoutTeamSlugRoute,
 };
 
 const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(LayoutRouteRouteChildren);

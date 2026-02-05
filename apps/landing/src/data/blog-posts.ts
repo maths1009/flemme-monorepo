@@ -16,7 +16,7 @@ interface BlogPost {
 
 const BLOG_POSTS: BlogPost[] = [
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>On ne va pas se mentir : la vie serait incroyable si elle consistait uniquement à manger, dormir et regarder des séries. Malheureusement, la vie d'adulte vient avec son lot de corvées qui nous volent notre énergie vitale.</p>
       
@@ -24,34 +24,34 @@ const BLOG_POSTS: BlogPost[] = [
       
       <p>Voici le classement des pires tâches du quotidien selon flemme et, surtout, les solutions pour les déléguer sans culpabiliser.</p>
       
-      <h3>1. Le repassage, la montagne sans fin</h3>
+      <h2>1. Le repassage, la montagne sans fin</h2>
       <p>C'est la tâche n°1 la plus détestée. À peine la panière est-elle vide qu'elle se remplit à nouveau. C'est le mythe de Sisyphe, mais avec des chemises froissées.</p>
       
-      <h3>2. Le grand ménage (vitres et poussière)</h3>
+      <h2>2. Le grand ménage (vitres et poussière)</h2>
       <p>Frotter, astiquer, passer l'aspirateur... C'est physique, c'est long, et c'est à refaire la semaine suivante.</p>
       
-      <h3>3. L'administratif et la paperasse</h3>
+      <h2>3. L'administratif et la paperasse</h2>
       <p>Rien ne tue plus la joie de vivre qu'un formulaire Cerfa ou une facture introuvable. La phobie administrative est réelle.</p>
       
-      <h3>4. Les courses au supermarché</h3>
+      <h2>4. Les courses au supermarché</h2>
       <p>La foule, le caddie qui roule mal, la queue à la caisse... Une perte de temps colossale.</p>
       
-      <h3>5. Monter des meubles en kit</h3>
+      <h2>5. Monter des meubles en kit</h2>
       <p>Le plan est incompréhensible, il manque toujours une vis, et ça finit souvent en dispute de couple.</p>
       
-      <h3>6. Tondre la pelouse</h3>
+      <h2>6. Tondre la pelouse</h2>
       <p>C'est bruyant, il fait chaud, et ça revient trop vite.</p>
       
-      <h3>7. Vendre ses vieux vêtements</h3>
+      <h2>7. Vendre ses vieux vêtements</h2>
       <p>Prendre les photos, rédiger l'annonce, répondre aux messages "dispo ?", faire le colis, aller à la poste... Trop d'étapes.</p>
       
-      <h3>8. Organiser les vacances</h3>
+      <h2>8. Organiser les vacances</h2>
       <p>Chercher le meilleur vol, comparer 50 hôtels, lire les avis... On a besoin de vacances rien que pour préparer les vacances.</p>
       
-      <h3>9. La cuisine du quotidien (Le on mange quoi ce soir ?)</h3>
+      <h2>9. La cuisine du quotidien (Le on mange quoi ce soir ?)</h2>
       <p>La charge mentale de trouver une idée + cuisiner + faire la vaisselle tous les soirs.</p>
       
-      <h3>10. Sortir le chien (quand il pleut)</h3>
+      <h2>10. Sortir le chien (quand il pleut)</h2>
       <p>On les aime, mais à 6h du matin sous la bruine, l'amour est mis à rude épreuve.</p>
       
       <p>On vient de vous lister 10 solutions, et on parie que vous êtes déjà fatigué rien que d'imaginer devoir créer 10 comptes différents, rentrer 10 fois votre carte bleue et gérer 10 mots de passe oubliés.</p>
@@ -89,7 +89,7 @@ const BLOG_POSTS: BlogPost[] = [
     title: 'Top 10 des tâches qu’on a tous la flemme de faire',
   },
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>C'était un lundi matin gris. Je regardais ma pile de linge sale, mon évier plein et mon frigo vide. J'ai eu une épiphanie : et si j'arrêtais ?</p>
       
@@ -150,7 +150,7 @@ const BLOG_POSTS: BlogPost[] = [
     title: 'J’ai délégué toutes mes corvées pendant 7 jours',
   },
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>Il y a deux types de personnes dans le monde : ceux qui paieraient n'importe quoi pour rester dans leur canapé, et ceux qui ont besoin de financer leurs projets (ou leur prochain voyage).</p>
       
@@ -217,7 +217,7 @@ const BLOG_POSTS: BlogPost[] = [
     title: 'Comment gagner de l’argent en aidant tes voisins ?',
   },
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>On vous a menti toute votre vie. Depuis l'école, on vous répète que "l'avenir appartient à ceux qui se lèvent tôt", que "le travail c'est la santé" et que la paresse est un péché capital.</p>
       
@@ -270,7 +270,7 @@ const BLOG_POSTS: BlogPost[] = [
     title: 'Être flemmard, c’est une stratégie intelligente',
   },
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>Vous avez une tâche à faire. Vous savez que vous devez la faire. Et pourtant... vous êtes là, à scroller sur votre téléphone.</p>
       
@@ -314,7 +314,7 @@ const BLOG_POSTS: BlogPost[] = [
     title: 'La psychologie de la flemme',
   },
   {
-    author: USERS.MATHIS,
+    author: USERS[0],
     content: `
       <p>Vous avez le doigt sur le bouton "commander". Et là, elle arrive. La Culpabilité.</p>
       <p>Cette petite voix qui vous murmure : "Tu abuses, tu pourrais le faire toi-même..." Stop. Déléguer n'est pas un aveu de faiblesse, c'est une stratégie de survie moderne.</p>

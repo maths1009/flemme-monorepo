@@ -31,6 +31,7 @@
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "@vitejs/plugin-react": "catalog:vite",
+    "schema-dts": "^1.1.5",
     "typescript": "catalog:",
     "vite": "catalog:vite",
     "vite-tsconfig-paths": "catalog:vite"
@@ -43,5 +44,5 @@
     "typecheck": "tsc --noEmit"
   },
   "type": "module",
-  "version": "2.1.0"
+  "version": "2.2.0"
 }

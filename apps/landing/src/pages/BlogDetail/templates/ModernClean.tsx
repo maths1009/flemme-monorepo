@@ -1,9 +1,11 @@
+import { Link } from '@tanstack/react-router';
 import { Avatar } from '@/components/Avatar';
 import { Container } from '@/components/Container';
 import { RichTextRenderer } from '@/components/RichTextRenderer';
 import { Tag } from '@/components/Tag';
 import type { BlogPost } from '@/data/blog-posts';
 import { calculateReadTime, formatDate } from '@/utils/date';
+import { getFullName, getSlug } from '@/utils/users';
 
 export function ModernCleanTemplate(post: BlogPost) {
   return (
@@ -22,13 +24,24 @@ export function ModernCleanTemplate(post: BlogPost) {
           </h1>
 
           <div className="flex items-center justify-center gap-3 md:gap-4">
-            <Avatar alt={post.author.name} className="border border-slate-200" size="md" src={post.author.avatar} />
-            <div className="flex flex-col text-left">
-              <span className="font-bold text-base md:text-lg text-slate-900">{post.author.name}</span>
-              <span className="text-slate-500 text-xs md:text-sm">
-                {formatDate(post.publishedAt)} • {calculateReadTime(post.content)} de lecture
-              </span>
-            </div>
+            <Link
+              className="flex items-center gap-3 md:gap-4 hover:opacity-80 transition-opacity"
+              params={{ slug: getSlug(post.author) }}
+              to="/team/$slug"
+            >
+              <Avatar
+                alt={getFullName(post.author)}
+                className="border border-slate-200"
+                size="md"
+                src={post.author.avatar}
+              />
+              <div className="flex flex-col text-left">
+                <span className="font-bold text-base md:text-lg text-slate-900">{getFullName(post.author)}</span>
+                <span className="text-slate-500 text-xs md:text-sm">
+                  {formatDate(post.publishedAt)} • {calculateReadTime(post.content)} de lecture
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
 

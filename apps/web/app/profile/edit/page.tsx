@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { ArrowLeft, Save, User } from 'lucide-react';
+import { Header } from '@/components/common/Header';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -66,12 +67,7 @@ export default function ProfileEditPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="flex items-center px-6 py-4 border-b border-gray-100 gap-4 sticky top-0 bg-white z-10">
-        <button onClick={() => router.back()} className="p-2 -ml-2">
-          <ArrowLeft className="w-6 h-6 text-[#1A1A1A]" />
-        </button>
-        <h1 className="text-xl font-bold text-[#1A1A1A]">Modifier le profil</h1>
-      </div>
+      <Header title="Modifier le profil" sticky />
 
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">

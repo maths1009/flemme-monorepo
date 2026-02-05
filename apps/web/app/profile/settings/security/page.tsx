@@ -3,6 +3,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { fetchClient } from '@/lib/api';
 import { ArrowLeft, CheckCircle, Mail, ShieldAlert } from 'lucide-react';
+import { Header } from '@/components/common/Header';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
@@ -81,14 +82,8 @@ export default function SecuritySettingsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="relative flex items-center w-full px-6 py-4 border-b border-gray-100">
-        <button onClick={() => router.back()} className="z-10 p-2 -ml-2">
-          <ArrowLeft className="w-6 h-6 text-[#1A1A1A]" />
-        </button>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <h1 className="text-xl font-bold text-[#1A1A1A]">Sécurité</h1>
-        </div>
-      </div>
+      {/* Header */}
+      <Header title="Sécurité" />
 
       <div className="flex flex-col p-6 space-y-8">
 

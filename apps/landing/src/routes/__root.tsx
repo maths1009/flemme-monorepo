@@ -1,7 +1,8 @@
 import { createRootRoute, HeadContent, Navigate, Outlet, Scripts } from '@tanstack/react-router';
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 import type { ReactNode } from 'react';
-import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { CookieBanner } from '@/components/CookieBanner';
+import { AnalyticsProvider } from '@/providers/AnalyticsProvider';
 import '../index.css';
 import { Toaster } from '@/components/Toaster';
 import { generateMeta } from '@/utils/seo';
@@ -11,6 +12,8 @@ function RootDocument({ children }: { children: ReactNode }) {
     <html lang="fr">
       <head>
         <HeadContent />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link href="/double-eyes.svg" rel="icon" />
       </head>
       <body>
         {children}
@@ -24,9 +27,11 @@ function RootComponent() {
   return (
     <RootDocument>
       <NuqsAdapter>
-        <GoogleAnalytics />
-        <Outlet />
-        <Toaster />
+        <AnalyticsProvider>
+          <CookieBanner />
+          <Outlet />
+          <Toaster />
+        </AnalyticsProvider>
       </NuqsAdapter>
     </RootDocument>
   );

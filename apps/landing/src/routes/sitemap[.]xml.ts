@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import { BLOG_POSTS } from '@/data/blog-posts';
+import { USERS } from '@/data/users';
+import { getSlug } from '@/utils/users';
 
 type SitemapRoute = {
   path: string;
@@ -23,6 +25,14 @@ export const Route = createFileRoute('/sitemap.xml')({
             lastmod: p.publishedAt,
             path: `/blog/${p.slug}`,
             priority: '0.6',
+          })),
+          { changefreq: 'monthly', path: '/mentions-legales', priority: '0.5' },
+          { changefreq: 'monthly', path: '/cgv', priority: '0.5' },
+          { changefreq: 'monthly', path: '/team', priority: '0.5' },
+          ...USERS.map(m => ({
+            changefreq: 'monthly',
+            path: `/team/${getSlug(m)}`,
+            priority: '0.5',
           })),
         ];
 

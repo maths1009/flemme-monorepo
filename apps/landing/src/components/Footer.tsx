@@ -83,12 +83,15 @@ function Footer() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-8 border-t border-white/10 pt-8 text-sm font-bold text-white/40">
-          <a className="hover:text-white transition-colors" href="/">
-            Privacy
+        <div className="flex flex-wrap justify-center gap-4 border-t border-white/10 pt-8 text-sm font-bold text-white/40 md:justify-end md:gap-8">
+          <a className="hover:text-white transition-colors" href="/team">
+            L'équipe
           </a>
-          <a className="hover:text-white transition-colors" href="/">
-            Terms
+          <a className="hover:text-white transition-colors" href="/mentions-legales">
+            Mentions légales
+          </a>
+          <a className="hover:text-white transition-colors" href="/cgv">
+            CGV
           </a>
         </div>
       </div>

@@ -1,5 +1,32 @@
 # landing
 
+## 2.2.0
+
+### Minor Changes
+
+✨ **New Features & Improvements**
+
+#### 👥 Team Section
+- **Team page** with organizational chart display
+- **Team member profiles** with individual detail pages
+- **Extended users data** with roles, bios, and social links
+
+#### ⚖️ Legal Pages
+- **CGV page** (Terms of Service)
+- **Mentions Légales page** (Legal Notice)
+- **Reusable `LegalPageTemplate`** component
+
+#### 🍪 Cookie Consent
+- **Cookie banner** with animated UI using Framer Motion
+- **Consent provider** for cookie management
+
+#### 🛠️ Improvements
+- **Hero section** heading restructured for better SEO (H1 consolidation)
+- **Blog cards** enhanced with author avatars and improved layout
+- **Article templates** refined with better author display
+- **Footer** updated with new navigation links
+- **Sitemap** extended with new routes
+
 ## 2.1.0
 
 ### Minor Changes

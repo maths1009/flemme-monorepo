@@ -87,6 +87,9 @@ function Footer() {
           <a className="hover:text-white transition-colors" href="/team">
             L'équipe
           </a>
+          <a className="hover:text-white transition-colors" href="/contact">
+            Contact
+          </a>
           <a className="hover:text-white transition-colors" href="/mentions-legales">
             Mentions légales
           </a>

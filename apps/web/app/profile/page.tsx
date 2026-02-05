@@ -109,11 +109,7 @@ export default function ProfilePage() {
               <div key={advert.id} className="flex-shrink-0 w-[160px]">
                  <MiniTaskCard 
                    title={advert.title}
-                   location={
-                     advert.latitude && advert.longitude 
-                       ? `${Number(advert.latitude).toFixed(2)}, ${Number(advert.longitude).toFixed(2)}` 
-                       : 'Localisation non définie'
-                   }
+                   location=""
                    price={advert.price}
                    image={''} 
                    onClick={() => router.push(`/adverts/${advert.id}`)}

@@ -43,8 +43,8 @@ export const MiniTaskCard: React.FC<MiniTaskCardProps> = ({
           {title}
         </h3>
         {/* Localisation */}
-        <p className="text-xs text-gray-500 mb-1.5">{location}</p>
-        22
+        {location && <p className="text-xs text-gray-500 mb-1.5">{location}</p>}
+
         {/* Prix */}
         <div className="flex justify-start">
           <PriceTag price={price} size="small" />

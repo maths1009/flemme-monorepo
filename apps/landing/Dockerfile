@@ -1,10 +1,12 @@
 ARG NODE_VERSION=22.20.0-slim
 ARG PROJECT=landing
+ARG MODE=production
+ARG PORT=3000
 
 FROM node:${NODE_VERSION} AS slim
 
 # Setup pnpm and turbo on the alpine base
-FROM slim as base
+FROM slim AS base
 RUN npm install pnpm turbo --global
 RUN pnpm config set store-dir ~/.pnpm-store
 
@@ -19,6 +21,10 @@ RUN turbo prune --scope=${PROJECT} --docker
 # Build the project
 FROM base AS builder
 ARG PROJECT
+ARG PORT
+ENV PORT=${PORT}
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+ENV NITRO_PRERENDER_CONCURRENCY=1
 
 WORKDIR /app
 
@@ -33,7 +39,8 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
-RUN turbo build --filter=${PROJECT}
+ARG MODE
+RUN PORT=${PORT} turbo build --filter=${PROJECT} --concurrency=1 -- --mode ${MODE}
 RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store CI=true pnpm prune --prod --no-optional --ignore-scripts
 RUN rm -rf ./**/*/src
 
@@ -44,9 +51,8 @@ WORKDIR /app
 
 COPY --from=builder /app/apps/${PROJECT}/.output ./.output
 
-ENV PORT=3000
-ENV HOST=0.0.0.0
-ENV NODE_ENV=production
+ARG PORT
+ENV PORT=${PORT}
 
 EXPOSE ${PORT}
 

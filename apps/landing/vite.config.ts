@@ -25,4 +25,7 @@ export default defineConfig({
     nitro(),
     viteReact(),
   ],
+  preview: {
+    host: true,
+  },
 });

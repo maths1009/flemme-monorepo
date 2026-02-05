@@ -19,6 +19,10 @@ export interface Advert {
   images: string[];
   user: User;
   category: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 // Utilisateurs mockés
@@ -71,6 +75,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user2!,
     category: 'courses',
+    coordinates: { lat: 47.4784, lng: -0.5632 },
   },
   '2': {
     id: '2',
@@ -88,6 +93,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user3!,
     category: 'ménage',
+    coordinates: { lat: 47.4725, lng: -0.551 },
   },
   '3': {
     id: '3',
@@ -105,6 +111,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user4!,
     category: 'social',
+    coordinates: { lat: 47.465, lng: -0.558 },
   },
   '4': {
     id: '4',
@@ -122,6 +129,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user1!,
     category: 'animaux',
+    coordinates: { lat: 47.481, lng: -0.545 },
   },
   '5': {
     id: '5',
@@ -139,6 +147,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user1!,
     category: 'jardinage',
+    coordinates: { lat: 47.475, lng: -0.57 },
   },
   '6': {
     id: '6',
@@ -156,6 +165,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user1!,
     category: 'animaux',
+    coordinates: { lat: 47.468, lng: -0.565 },
   },
   '7': {
     id: '7',
@@ -173,6 +183,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user2!,
     category: 'courses',
+    coordinates: { lat: 47.476, lng: -0.555 },
   },
   '8': {
     id: '8',
@@ -190,6 +201,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user2!,
     category: 'ménage',
+    coordinates: { lat: 47.471, lng: -0.548 },
   },
   '9': {
     id: '9',
@@ -207,6 +219,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user3!,
     category: 'courses',
+    coordinates: { lat: 47.479, lng: -0.56 },
   },
   '10': {
     id: '10',
@@ -224,6 +237,7 @@ export const mockAdverts: Record<string, Advert> = {
     price: 18,
     user: mockUsers.user3!,
     category: 'ménage',
+    coordinates: { lat: 47.473, lng: -0.568 },
   },
   '11': {
     id: '11',
@@ -241,6 +255,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user4!,
     category: 'social',
+    coordinates: { lat: 47.469, lng: -0.552 },
   },
   '12': {
     id: '12',
@@ -258,6 +273,7 @@ export const mockAdverts: Record<string, Advert> = {
     ],
     user: mockUsers.user4!,
     category: 'social',
+    coordinates: { lat: 47.477, lng: -0.546 },
   },
 };
 

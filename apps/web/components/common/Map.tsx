@@ -4,6 +4,8 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 // Configuration des icônes Leaflet
 const createIcon = () => {
@@ -18,28 +20,62 @@ const createIcon = () => {
   });
 };
 
+// Configuration pour le marqueur de position utilisateur (Point bleu pulsant)
+const createUserIcon = () => {
+  return L.divIcon({
+    className: 'custom-user-location',
+    html: `
+      <div class="relative flex items-center justify-center w-6 h-6 -ml-3 -mt-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-500 border-2 border-white shadow-sm"></span>
+      </div>
+    `,
+    iconSize: [24, 24],
+    iconAnchor: [0, 0], // Centré grâce au CSS -ml-3 -mt-3
+  });
+};
+
 interface MapProps {
-  coordinates: {
+  coordinates?: {
     lat: number;
     lng: number;
   };
   popupText?: string;
+  markers?: Array<{
+    lat: number;
+    lng: number;
+    title?: string;
+    price?: number;
+    image?: string;
+    id?: string;
+    popupText?: string; // Garder pour la compatibilité
+  }>;
   className?: string;
 }
 
-const Map = ({ coordinates, popupText = "Lieu de la mission", className }: MapProps) => {
+const Map = ({ coordinates, popupText = "Lieu de la mission", markers, className }: MapProps) => {
   const [icon, setIcon] = useState<L.Icon | null>(null);
+  const [userIcon, setUserIcon] = useState<L.DivIcon | null>(null);
 
   useEffect(() => {
     setIcon(createIcon());
+    setUserIcon(createUserIcon());
   }, []);
 
-  if (!icon) return null;
+  if (!icon || !userIcon) return null;
+
+  // Determine center: prioritize coordinates prop, then first marker, then default
+  const firstMarker = markers?.[0];
+  const centerPosition: [number, number] = coordinates 
+    ? [coordinates.lat, coordinates.lng] 
+    : firstMarker
+      ? [firstMarker.lat, firstMarker.lng]
+      : [48.8566, 2.3522];
 
   return (
     <MapContainer
-      center={[coordinates.lat, coordinates.lng]}
-      key={`${coordinates.lat}-${coordinates.lng}`}
+      center={centerPosition}
+      key={`${centerPosition[0]}-${centerPosition[1]}`}
       style={{ height: '100%', width: '100%' }}
       zoom={13}
       className={className}
@@ -48,9 +84,44 @@ const Map = ({ coordinates, popupText = "Lieu de la mission", className }: MapPr
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker icon={icon} position={[coordinates.lat, coordinates.lng]}>
-        <Popup>{popupText}</Popup>
-      </Marker>
+      {coordinates && (
+        <Marker icon={userIcon} position={[coordinates.lat, coordinates.lng]} zIndexOffset={1000}>
+          <Popup>{popupText}</Popup>
+        </Marker>
+      )}
+      {markers?.map((marker, index) => (
+        <Marker 
+          key={index} 
+          icon={icon} 
+          position={[marker.lat, marker.lng]}
+        >
+          <Popup className="custom-popup">
+            {marker.id ? (
+              <Link href={`/adverts/${marker.id}`} className="block w-48">
+                <div className="flex flex-col gap-2">
+                  <div className="relative w-full h-24 rounded-t-lg overflow-hidden bg-gray-100">
+                     <Image
+                        src={marker.image || '/images/mock/placeholder.jpg'}
+                        alt={marker.title || 'Annonce'}
+                        fill
+                        className="object-cover"
+                      />
+                  </div>
+                  <div className="p-1">
+                    <h3 className="font-semibold text-sm text-gray-900 line-clamp-1">{marker.title}</h3>
+                    <div className="flex justify-between items-center mt-2">
+                         <span className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs font-medium">{marker.price}€</span>
+                         <span className="text-xs text-gray-500">Voir l'annonce</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <span>{marker.popupText || "Annonce"}</span>
+            )}
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };

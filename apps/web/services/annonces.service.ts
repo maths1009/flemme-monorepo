@@ -15,6 +15,10 @@ export interface Annonce {
     lastname: string;
     profile_picture_url?: string;
   };
+  photos?: {
+    id: string;
+    url: string;
+  }[];
 }
 
 export const AnnoncesService = {

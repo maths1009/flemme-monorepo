@@ -1,10 +1,19 @@
 'use client';
 
 import { getAllAdverts } from '@/lib/mockData';
-import { ArrowLeft, Filter, Search } from 'lucide-react';
+import { ArrowLeft, Filter, Search, List, Map as MapIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import dynamic from 'next/dynamic';
+
+import { Header } from '@/components/common/Header';
+import { Annonce, AnnoncesService } from '@/services/annonces.service';
+
+const Map = dynamic(() => import('@/components/common/Map'), {
+  loading: () => <div className="h-full w-full bg-gray-100 animate-pulse" />,
+  ssr: false,
+});
 
 interface Category {
   id: string;
@@ -17,11 +26,69 @@ export default function SearchPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [showMap, setShowMap] = React.useState(false);
+  const [realAdverts, setRealAdverts] = React.useState<Annonce[]>([]);
+  const [userLocation, setUserLocation] = React.useState<{ lat: number; lng: number } | undefined>(undefined);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  // Fetch real adverts for the map based on user location
+  React.useEffect(() => {
+    if (showMap) {
+      setIsLoading(true);
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
+            
+            try {
+              // Fetch adverts around the user (e.g., 20km radius)
+              const response = await AnnoncesService.getAll({ 
+                latitude, 
+                longitude, 
+                distance: 20 
+              });
+              setRealAdverts(response.data);
+            } catch (error) {
+              console.error('Error fetching nearby adverts:', error);
+            } finally {
+              setIsLoading(false);
+            }
+          },
+          async (error) => {
+            console.warn('Geolocation error or denied:', error);
+            // Fallback: fetch all adverts if geolocation fails
+            try {
+              const response = await AnnoncesService.getAll();
+              setRealAdverts(response.data);
+            } catch (err) {
+              console.error('Error fetching adverts:', err);
+            } finally {
+              setIsLoading(false);
+            }
+          }
+        );
+      } else {
+        // Fallback if geolocation is not supported
+        const fetchAll = async () => {
+          try {
+            const response = await AnnoncesService.getAll();
+            setRealAdverts(response.data);
+          } catch (error) {
+            console.error('Error fetching adverts:', error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+        fetchAll();
+      }
+    }
+  }, [showMap]);
 
   // Récupérer la catégorie depuis les paramètres URL
   const selectedCategory = searchParams.get('category');
 
-  // Récupérer toutes les annonces
+  // Récupérer toutes les annonces (Mock Data pour la liste)
   const allAdverts = getAllAdverts();
 
   // Catégories avec leurs icônes
@@ -80,7 +147,7 @@ export default function SearchPage() {
     router.push('/search');
   };
 
-  // Filtrer les annonces par catégorie
+  // Filtrer les annonces par catégorie (Mock Data)
   const getFilteredAdverts = () => {
     if (!selectedCategory) return [];
 
@@ -112,22 +179,56 @@ export default function SearchPage() {
     }
   };
 
+  // Si la carte est active, afficher la carte avec les VRAIES annonces
+  if (showMap) {
+    const markers = realAdverts
+      .filter((ad) => ad.latitude && ad.longitude)
+      .map((ad) => ({
+        lat: Number(ad.latitude),
+        lng: Number(ad.longitude),
+        title: ad.title,
+        price: ad.price,
+        image: ad.photos?.[0]?.url || '/images/mock/placeholder.jpg', 
+        id: ad.id,
+      }));
+
+    return (
+      <div className="min-h-screen bg-primary flex flex-col h-screen">
+        <Header 
+          title="Carte" 
+          onBack={() => setShowMap(false)} 
+          variant="search"
+          className="pt-8"
+        />
+        <div className="flex-1 overflow-hidden relative rounded-t-3xl bg-gray-50 flex flex-col">
+          {userLocation && realAdverts.length === 0 && !isLoading && (
+             <div className="bg-orange-50 text-orange-800 px-4 py-3 text-sm font-medium text-center border-b border-orange-100 relative z-10">
+               Aucune annonce n'a été trouvée dans un rayon de 20km autour de vous
+             </div>
+          )}
+          <div className="flex-1 w-full relative">
+            <Map 
+              markers={markers} 
+              coordinates={userLocation}
+              popupText="Ma position"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Si une catégorie est sélectionnée, afficher les annonces filtrées
   if (selectedCategory) {
     return (
-      <div className="min-h-screen bg-primary px-6 py-8">
-        {/* Header avec retour */}
-        <div className="flex items-center mb-6">
-          <button
-            onClick={handleBackToCategories}
-            className="mr-4 p-2 hover:bg-white hover:bg-opacity-10 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-foreground" />
-          </button>
-          <h1 className="text-xl font-semibold text-foreground">
-            {getCategoryName()}
-          </h1>
-        </div>
+      <div className="min-h-screen bg-primary">
+        <Header 
+          title={getCategoryName()} 
+          onBack={handleBackToCategories} 
+          variant="search"
+          className="pt-8"
+        />
+        <div className="px-6 pb-8">
 
         {/* Barre de recherche */}
         <div className="mb-6">
@@ -256,6 +357,7 @@ export default function SearchPage() {
           )}
         </div>
       </div>
+    </div>
     );
   }
 
@@ -280,9 +382,12 @@ export default function SearchPage() {
       </div>
 
       {/* Titre "Voir la carte" */}
-      <div className="mb-6">
-        <h2 className="text-lg font-medium text-gray-600">Voir la carte</h2>
-      </div>
+      <button 
+        onClick={() => setShowMap(true)}
+        className="mb-6 w-full text-left"
+      >
+        <h2 className="text-lg font-medium text-gray-600 hover:text-gray-800 transition-colors">Voir la carte</h2>
+      </button>
 
       {/* Liste des catégories */}
       <div className="space-y-0">

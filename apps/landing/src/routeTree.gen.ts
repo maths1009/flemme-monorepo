@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root';
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug';
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index';
 import { Route as LayoutCgvRouteImport } from './routes/_layout/cgv';
+import { Route as LayoutContactRouteImport } from './routes/_layout/contact';
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index';
 import { Route as LayoutMentionsLegalesRouteImport } from './routes/_layout/mentions-legales';
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route';
@@ -62,6 +63,11 @@ const LayoutMentionsLegalesRoute = LayoutMentionsLegalesRouteImport.update({
   id: '/mentions-legales',
   path: '/mentions-legales',
 } as any);
+const LayoutContactRoute = LayoutContactRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/contact',
+  path: '/contact',
+} as any);
 const LayoutCgvRoute = LayoutCgvRouteImport.update({
   getParentRoute: () => LayoutRouteRoute,
   id: '/cgv',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/cgv': typeof LayoutCgvRoute;
+  '/contact': typeof LayoutContactRoute;
   '/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/': typeof LayoutIndexRoute;
   '/blog/$slug': typeof LayoutBlogSlugRoute;
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/cgv': typeof LayoutCgvRoute;
+  '/contact': typeof LayoutContactRoute;
   '/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/': typeof LayoutIndexRoute;
   '/blog/$slug': typeof LayoutBlogSlugRoute;
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute;
   '/sitemap.xml': typeof SitemapDotxmlRoute;
   '/_layout/cgv': typeof LayoutCgvRoute;
+  '/_layout/contact': typeof LayoutContactRoute;
   '/_layout/mentions-legales': typeof LayoutMentionsLegalesRoute;
   '/_layout/': typeof LayoutIndexRoute;
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute;
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/cgv'
+    | '/contact'
     | '/mentions-legales'
     | '/'
     | '/blog/$slug'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/cgv'
+    | '/contact'
     | '/mentions-legales'
     | '/'
     | '/blog/$slug'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/_layout/cgv'
+    | '/_layout/contact'
     | '/_layout/mentions-legales'
     | '/_layout/'
     | '/_layout/blog/$slug'
@@ -245,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutMentionsLegalesRouteImport;
       parentRoute: typeof LayoutRouteRoute;
     };
+    '/_layout/contact': {
+      id: '/_layout/contact';
+      path: '/contact';
+      fullPath: '/contact';
+      preLoaderRoute: typeof LayoutContactRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
     '/_layout/cgv': {
       id: '/_layout/cgv';
       path: '/cgv';
@@ -285,6 +304,7 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteRouteChildren {
   LayoutCgvRoute: typeof LayoutCgvRoute;
+  LayoutContactRoute: typeof LayoutContactRoute;
   LayoutMentionsLegalesRoute: typeof LayoutMentionsLegalesRoute;
   LayoutIndexRoute: typeof LayoutIndexRoute;
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute;
@@ -297,6 +317,7 @@ const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutCgvRoute: LayoutCgvRoute,
+  LayoutContactRoute: LayoutContactRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutMentionsLegalesRoute: LayoutMentionsLegalesRoute,
   LayoutTeamIndexRoute: LayoutTeamIndexRoute,

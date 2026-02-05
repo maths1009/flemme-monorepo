@@ -1,8 +1,26 @@
 # landing
 
+## 2.3.0
+
+### Minor Changes
+
+✨ **New Communication Features**
+
+- **Contact page** with inquiry form
+- **New `TextArea` component** for multi-line inputs
+
 ## 2.2.0
 
 ### Minor Changes
+
+🎨 **Complete Landing Page Redesign**
+
+This version marks a major overhaul of the landing page infrastructure and design:
+
+- **Complete Rewrite**: Migration to **TanStack Start** and **Tailwind CSS v4**.
+- **Modern UI**: New design system with core components (`Container`, `Avatar`, `Tag`, `Button`, etc.).
+- **Content Engine**: Enhanced blog filtering and rendering system.
+- **SEO & Core**: Dynamic sitemap, robots.txt, and LLMs support.
 
 ✨ **New Features & Improvements**
 
@@ -26,6 +44,7 @@
 - **Article templates** refined with better author display
 - **Footer** updated with new navigation links
 - **Sitemap** extended with new routes
+- **Removed** deprecated `GoogleAnalytics` component (replaced by gtag)
 
 ## 2.1.0
 

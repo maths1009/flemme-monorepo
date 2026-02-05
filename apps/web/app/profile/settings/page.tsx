@@ -11,7 +11,7 @@ export default function SettingsPage() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/login');
+      router.push('/auth/login');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -42,6 +42,7 @@ export default function SettingsPage() {
             icon={Bell} 
             label="Notifications" 
             description="Configurer les alertes et notifications"
+            onClick={() => router.push('/profile/notifications')}
         />
 
         {/* Sécurité Section */}
@@ -49,12 +50,13 @@ export default function SettingsPage() {
         <SettingsItem 
             icon={Lock} 
             label="Confidentialité" 
-            description="Contrôler vos données et préférences"
+            description="Gérer vos sessions actives"
         />
         <SettingsItem 
             icon={ShieldCheck} 
             label="Sécurité" 
             description="Mot de passe et authentification"
+            onClick={() => router.push('/profile/settings/security')}
         />
 
         {/* Préférences Section */}
@@ -63,6 +65,7 @@ export default function SettingsPage() {
             icon={Globe} 
             label="Langue" 
             description="Choisir la langue de l'application"
+            onClick={() => router.push('/profile/language')}
         />
 
         {/* Support Section */}

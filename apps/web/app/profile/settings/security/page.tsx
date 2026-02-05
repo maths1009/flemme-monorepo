@@ -1,0 +1,138 @@
+'use client';
+
+import { useAuth } from '@/context/AuthContext';
+import { fetchClient } from '@/lib/api';
+import { ArrowLeft, CheckCircle, Mail, ShieldAlert } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+export default function SecuritySettingsPage() {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const resetMessages = () => {
+    setSuccessMessage(null);
+    setErrorMessage(null);
+  };
+
+  const handleResendVerification = async () => {
+    resetMessages();
+    setIsLoading(true);
+    try {
+      await fetchClient('/auth/resend-email-verification', { method: 'POST' });
+      setSuccessMessage('Email de vérification envoyé !');
+    } catch (error) {
+      setErrorMessage("Erreur lors de l'envoi de l'email");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    resetMessages();
+    setIsLoading(true);
+    try {
+      if (!user?.email) return;
+      await fetchClient('/auth/request-password-reset', {
+        method: 'POST',
+        body: JSON.stringify({ email: user.email }),
+      });
+      setSuccessMessage('Email de réinitialisation envoyé !');
+    } catch (error) {
+      setErrorMessage("Erreur lors de la demande de réinitialisation");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="relative flex items-center w-full px-6 py-4 border-b border-gray-100">
+        <button onClick={() => router.back()} className="z-10 p-2 -ml-2">
+          <ArrowLeft className="w-6 h-6 text-[#1A1A1A]" />
+        </button>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <h1 className="text-xl font-bold text-[#1A1A1A]">Sécurité</h1>
+        </div>
+      </div>
+
+      <div className="flex flex-col p-6 space-y-8">
+
+        {successMessage && (
+          <div className="p-4 bg-green-50 text-green-700 rounded-xl text-sm font-medium border border-green-100">
+            {successMessage}
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="p-4 bg-red-50 text-red-700 rounded-xl text-sm font-medium border border-red-100">
+            {errorMessage}
+          </div>
+        )}
+        
+        {/* Email Verification Section */}
+        <section>
+          <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Email</h2>
+          <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex items-center gap-3 mb-3">
+              <Mail className="w-5 h-5 text-gray-500" />
+              <span className="text-[#1A1A1A] font-medium">{user?.email}</span>
+              {user?.email_verified && (
+                <span className="flex items-center gap-1 px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
+                  <CheckCircle className="w-3 h-3" />
+                  Vérifié
+                </span>
+              )}
+            </div>
+            
+            {!user?.email_verified && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-500 mb-3">
+                  Votre email n'est pas vérifié. Vérifiez-le pour sécuriser votre compte.
+                </p>
+                <button
+                  onClick={handleResendVerification}
+                  disabled={isLoading}
+                  className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? 'Envoi...' : "Renvoyer l'email de vérification"}
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Password Section */}
+        <section>
+          <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Mot de passe</h2>
+          <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex items-start gap-3 mb-4">
+              <ShieldAlert className="w-5 h-5 text-gray-500 mt-0.5" />
+              <div>
+                <p className="text-[#1A1A1A] font-medium">Réinitialiser le mot de passe</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Vous recevrez un email avec un lien pour modifier votre mot de passe.
+                </p>
+              </div>
+            </div>
+            
+            <button
+              onClick={handlePasswordReset}
+              disabled={isLoading}
+              className="w-full py-2.5 px-4 border border-gray-300 bg-white text-[#1A1A1A] rounded-lg font-semibold text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? 'Envoi...' : 'Envoyer le lien de réinitialisation'}
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  );
+}

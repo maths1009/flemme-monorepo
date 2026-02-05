@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type * as React from 'react';
 
 // Import dynamique du composant Carte complet pour désactiver le SSR
-const LocationMap = dynamic(() => import('./LocationMap'), {
+const LocationMap = dynamic(() => import('@/components/common/Map'), {
   loading: () => (
     <div className="h-full w-full bg-gray-100 flex items-center justify-center text-gray-400">
       Chargement de la carte...

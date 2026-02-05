@@ -1,5 +1,6 @@
 'use client';
 
+import { PriceTag } from '@/components/common/PriceTag';
 import { getAllAdverts } from '@/lib/mockData';
 import { ArrowLeft, Filter, Search, List, Map as MapIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -340,8 +341,8 @@ export default function SearchPage() {
                       <span className="text-sm text-gray-500">
                         {advert.location}
                       </span>
-                      <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {advert.price}€
+                      <div className="bg-transparent">
+                        <PriceTag price={advert.price} size="small" />
                       </div>
                     </div>
                   </div>
@@ -363,68 +364,77 @@ export default function SearchPage() {
 
   // Affichage par défaut : liste des catégories
   return (
-    <div className="min-h-screen bg-primary px-6 py-8">
-      {/* Barre de recherche */}
-      <div className="mb-6">
-        <div className="relative">
-          <div className="flex items-center bg-foreground rounded-full px-4 py-3">
-            <Search className="w-4 h-4 text-gray-400 mr-3" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Trouver des tâches"
-              className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none text-base"
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            />
+    <div className="min-h-screen bg-primary">
+      <Header 
+        title="Recherche" 
+        onBack={() => router.push('/')} 
+        variant="search"
+        className="pt-8"
+      />
+      
+      <div className="px-6 pb-8">
+        {/* Barre de recherche */}
+        <div className="mb-6">
+          <div className="relative">
+            <div className="flex items-center bg-foreground rounded-full px-4 py-3">
+              <Search className="w-4 h-4 text-gray-400 mr-3" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Trouver des tâches"
+                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none text-base"
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Titre "Voir la carte" */}
-      <button 
-        onClick={() => setShowMap(true)}
-        className="mb-6 w-full text-left"
-      >
-        <h2 className="text-lg font-medium text-gray-600 hover:text-gray-800 transition-colors">Voir la carte</h2>
-      </button>
+        {/* Titre "Voir la carte" */}
+        <button 
+          onClick={() => setShowMap(true)}
+          className="mb-6 w-full text-left"
+        >
+          <h2 className="text-lg font-medium text-gray-600 hover:text-gray-800 transition-colors">Voir la carte</h2>
+        </button>
 
-      {/* Liste des catégories */}
-      <div className="space-y-0">
-        {categories.map((category, index) => (
-          <React.Fragment key={category.id}>
-            <button
-              onClick={() => handleCategoryClick(category.id)}
-              className="w-full flex items-center py-4 hover:bg-white hover:bg-opacity-10 transition-colors"
-            >
-              {/* Icône de catégorie */}
-              <div className="w-10 h-10 mr-3 flex-shrink-0">
-                <Image
-                  src={category.icon}
-                  alt={category.name}
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                />
-              </div>
+        {/* Liste des catégories */}
+        <div className="space-y-0">
+          {categories.map((category, index) => (
+            <React.Fragment key={category.id}>
+              <button
+                onClick={() => handleCategoryClick(category.id)}
+                className="w-full flex items-center py-4 hover:bg-white hover:bg-opacity-10 transition-colors"
+              >
+                {/* Icône de catégorie */}
+                <div className="w-10 h-10 mr-3 flex-shrink-0">
+                  <Image
+                    src={category.icon}
+                    alt={category.name}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
 
-              {/* Contenu texte */}
-              <div className="flex-1 text-left">
-                <h3 className="text-lg font-semibold text-foreground mb-1">
-                  {category.name}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {category.description}
-                </p>
-              </div>
-            </button>
+                {/* Contenu texte */}
+                <div className="flex-1 text-left">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {category.description}
+                  </p>
+                </div>
+              </button>
 
-            {/* Séparateur HR - pas pour le dernier élément */}
-            {index < categories.length - 1 && (
-              <hr className="border-gray-300 border-t-1" />
-            )}
-          </React.Fragment>
-        ))}
+              {/* Séparateur HR - pas pour le dernier élément */}
+              {index < categories.length - 1 && (
+                <hr className="border-gray-300 border-t-1" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

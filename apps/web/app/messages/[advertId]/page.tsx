@@ -2,6 +2,7 @@
 
 import { useAnnonce } from '@/hooks/useAnnonces';
 import { ArrowLeft, Flag, MoreHorizontal, Plus, Send, Star } from 'lucide-react';
+import { PriceTag } from '@/components/common/PriceTag';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -161,9 +162,9 @@ export default function MessagePage() {
           </div>
           <div className="flex-1">
             <h3 className="font-medium text-gray-800 line-clamp-1">{advert.title}</h3>
-            <p className="text-sm text-gray-600">
-              {advert.price}€
-            </p>
+            <div className="mt-1">
+              <PriceTag price={advert.price} size="small" />
+            </div>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import L from 'leaflet';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PriceTag } from './PriceTag';
 
 // Configuration des icônes Leaflet
 const createIcon = () => {
@@ -110,7 +111,7 @@ const Map = ({ coordinates, popupText = "Lieu de la mission", markers, className
                   <div className="p-1">
                     <h3 className="font-semibold text-sm text-gray-900 line-clamp-1">{marker.title}</h3>
                     <div className="flex justify-between items-center mt-2">
-                         <span className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs font-medium">{marker.price}€</span>
+                         <PriceTag price={marker.price || 0} size="small" />
                          <span className="text-xs text-gray-500">Voir l'annonce</span>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { PriceTag } from '@/components/common/PriceTag';
 
 interface TaskCardProps {
   title: string;
@@ -47,7 +48,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
           {/* Prix */}
           <div className="text-right">
-            <span className="text-xl font-bold text-gray-800">{price}€</span>
+            <PriceTag price={price} size="medium" />
           </div>
         </div>
       </div>

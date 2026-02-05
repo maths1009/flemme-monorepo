@@ -2,6 +2,7 @@
 
 import { getAdvertById } from '@/lib/mockData';
 import { MoreHorizontal, X } from 'lucide-react';
+import { PriceTag } from '@/components/common/PriceTag';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -158,7 +159,7 @@ export default function PaymentPage() {
           </h3>
           <div className="flex justify-between items-center">
             <span className="text-gray-800">{advert.title}</span>
-            <span className="text-gray-800">{advert.price}€</span>
+            <PriceTag price={advert.price} size="small" />
           </div>
         </div>
 

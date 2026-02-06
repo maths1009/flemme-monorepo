@@ -1,8 +1,8 @@
 'use client';
 
 import { Star } from 'lucide-react';
-import Image from 'next/image';
 import * as React from 'react';
+import { Avatar } from '../common/Avatar';
 
 interface FeedbackAuthor {
   id: string;
@@ -50,21 +50,12 @@ export const FeedbackCard: React.FC<FeedbackCardProps> = ({
         onClick={() => onAuthorClick?.(author.id)}
         className="flex-shrink-0"
       >
-        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-          {author.profile_picture_url ? (
-            <Image
-              src={author.profile_picture_url}
-              alt={displayName}
-              width={48}
-              height={48}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-lg font-bold text-gray-500">
-              {displayName.charAt(0).toUpperCase()}
-            </span>
-          )}
-        </div>
+        <Avatar
+          src={author.profile_picture_url}
+          alt={displayName}
+          fallback={displayName}
+          size="md"
+        />
       </button>
 
       <div className="flex-1 min-w-0">

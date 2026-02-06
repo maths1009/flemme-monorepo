@@ -1,6 +1,7 @@
 'use client';
 
 import { MiniTaskCard } from '@/components/home';
+import { Avatar } from '@/components/common/Avatar';
 import { useAuth } from '@/context/AuthContext';
 import { useAnnonces } from '@/hooks/useAnnonces';
 import { AnnoncesService, Annonce } from '@/services/annonces.service';
@@ -57,20 +58,14 @@ export default function ProfilePage() {
       <div className="bg-[#FDFBF7] px-4 pb-0 mt-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 flex-shrink-0 rounded-full overflow-hidden shadow-sm flex items-center justify-center bg-gray-200">
-              {user.profile_picture_url ? (
-                <Image
+            <div className="flex-shrink-0 shadow-sm rounded-full">
+               <Avatar
                   src={user.profile_picture_url}
                   alt="Profile"
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-2xl font-bold text-gray-500">
-                  {user.firstname?.charAt(0).toUpperCase()}
-                </span>
-              )}
+                  fallback={user.username || user.firstname}
+                  size="lg"
+                  className="w-16 h-16"
+               />
             </div>
             <div>
               <h2 className="font-bold text-lg text-[#1A1A1A]">

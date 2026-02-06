@@ -1,11 +1,11 @@
 'use client';
 
 import { Star } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { fetchClient } from '@/lib/api';
+import { Avatar } from './Avatar';
 
 interface ProfileBannerProps {
   user: {
@@ -65,21 +65,12 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
   return (
     <div className="flex items-center justify-between mb-6 py-4">
       <Link href={`/profile/${user.id}`} className="flex items-center space-x-3 group hover:opacity-80 transition-opacity">
-        {user.avatar && user.avatar.trim() !== '' ? (
-          <Image
-            src={user.avatar}
-            alt={`Avatar de ${user.name}`}
-            width={48}
-            height={48}
-            className="w-12 h-12 rounded-full object-cover"
-          />
-        ) : (
-          <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-lg font-semibold text-gray-500">
-              {user.name.charAt(0).toUpperCase()}
-            </span>
-          </div>
-        )}
+        <Avatar
+          src={user.avatar}
+          alt={`Avatar de ${user.name}`}
+          fallback={user.name}
+          size="md"
+        />
         <div>
           <h3 className="font-semibold text-gray-800 group-hover:underline">{user.name}</h3>
           <div className="flex items-center space-x-1">

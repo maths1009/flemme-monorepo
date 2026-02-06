@@ -2,7 +2,7 @@
 
 import { MiniTaskCard } from '@/components/home/MiniTaskCard';
 import { fetchClient } from '@/lib/api';
-import { ArrowLeft } from 'lucide-react';
+import { Header } from '@/components/common/Header';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -63,17 +63,7 @@ export default function FavoritesPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white border-b border-gray-100">
-        <div className="px-4 h-14 flex items-center justify-between">
-          <Link href="/profile" className="p-2 -ml-2 hover:bg-gray-50 rounded-full">
-            <ArrowLeft className="w-5 h-5 text-gray-800" />
-          </Link>
-          
-          <h1 className="text-lg font-bold text-gray-900">Favoris</h1>
-          
-          <div className="w-9" /> {/* Spacer for alignment */}
-        </div>
-      </header>
+      <Header title="Favoris" onBack={() => router.push('/profile')} />
 
       {/* Content */}
       <div className="px-4 py-6">
@@ -96,6 +86,8 @@ export default function FavoritesPage() {
           <div className="flex overflow-x-auto pb-4 -mx-4 px-4 space-x-4 scrollbar-hide">
             {likes.map((like) => {
               const annonce = like.annonce;
+              if (!annonce) return null;
+              
               // Image par défaut si pas de photo
               const image = annonce?.photos && annonce.photos.length > 0
                 ? annonce.photos[0].url

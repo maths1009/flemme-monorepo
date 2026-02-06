@@ -1,10 +1,11 @@
 'use client';
 
-import { ArrowLeft, MoreHorizontal, Star } from 'lucide-react';
+import { MoreHorizontal, Star } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import * as React from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { Header } from '@/components/common/Header';
+import { useRouter } from 'next/navigation';
 
 // MOCK DATA
 const MOCK_CONVERSATIONS = [
@@ -76,6 +77,7 @@ const MOCK_CONVERSATIONS = [
 ];
 
 export default function MessagesPage() {
+  const router = useRouter();
   const { user } = useAuth();
   const [activeMenuId, setActiveMenuId] = React.useState<string | null>(null);
 
@@ -101,19 +103,10 @@ export default function MessagesPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white border-b border-gray-100">
-        <div className="px-4 h-14 flex items-center justify-between">
-          <Link href="/profile" className="p-2 -ml-2 hover:bg-gray-50 rounded-full">
-            <ArrowLeft className="w-5 h-5 text-gray-800" />
-          </Link>
-          
-          <h1 className="text-base font-bold text-gray-900">
-            {user?.username || user?.firstname || 'Messages'}
-          </h1>
-          
-          <div className="w-9" /> {/* Spacer for alignment */}
-        </div>
-      </header>
+      <Header 
+        title={user?.username || user?.firstname || 'Messages'} 
+        onBack={() => router.push('/profile')}
+      />
 
       {/* Title */}
       <div className="px-4 py-4">

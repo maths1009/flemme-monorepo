@@ -1,5 +1,6 @@
 ARG NODE_VERSION=22.20.0-slim
 ARG PROJECT=api
+ARG PORT=8000
 
 FROM node:${NODE_VERSION} AS slim
 
@@ -19,6 +20,8 @@ RUN turbo prune --scope=${PROJECT} --docker
 # Build the project
 FROM base AS builder
 ARG PROJECT
+ARG PORT
+ENV PORT=${PORT}
 
 WORKDIR /app
 ENV CI=true
@@ -36,19 +39,20 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 COPY --from=pruner /app/out/full/ .
 
 RUN turbo build --filter=${PROJECT}
-RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store CI=true pnpm prune --prod --no-optional --ignore-scripts
-RUN rm -rf ./**/*/src
+RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm --filter=${PROJECT} deploy --prod --legacy /app/deployed
 
 # Prepare the runtime image
-FROM slim AS runner
+FROM base AS runner
 ARG PROJECT
-ARG PORT=8000
+ARG PORT
 
 ENV NODE_ENV=production
+ENV PORT=${PORT}
 
 WORKDIR /app
-COPY --from=builder --chown=nodejs:nodejs /app .
-WORKDIR /app/apps/${PROJECT}
+COPY --from=builder /app/deployed/ .
+COPY --from=builder /app/apps/${PROJECT}/dist ./dist
 
 EXPOSE ${PORT}
-CMD ["node", "dist/src/main.js"]
+
+CMD ["node", "dist/main.js"]

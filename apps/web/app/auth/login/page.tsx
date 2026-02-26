@@ -84,6 +84,17 @@ const LoginPage = () => {
             >
               Mot de passe oublié ?
             </button>
+
+            <div className="text-center text-sm text-foreground/60 mt-2">
+              Pas de compte ?{' '}
+              <button
+                type="button"
+                onClick={() => router.push('/auth/register')}
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                S'inscrire
+              </button>
+            </div>
           </form>
         </div>
       </div>

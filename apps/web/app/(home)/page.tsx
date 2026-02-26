@@ -62,7 +62,7 @@ const Page = () => {
               <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                 {adverts.slice(0, 5).map(advert => (
                   <MiniTaskCard
-                    image={'https://placehold.co/600x400'}
+                    image={`https://picsum.photos/seed/${advert.id}/600/400`}
                     key={advert.id}
                     location={'À proximité'}
                     onClick={() => router.push(`/adverts/${advert.id}`)}
@@ -77,7 +77,7 @@ const Page = () => {
               <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                 {adverts.slice(6, 10).map(advert => (
                   <MiniTaskCard
-                    image={'https://placehold.co/600x400'}
+                    image={`https://picsum.photos/seed/${advert.id}/600/400`}
                     key={advert.id}
                     location={'À proximité'}
                     onClick={() => router.push(`/adverts/${advert.id}`)}

@@ -45,9 +45,9 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
       
       <div className="mb-6">
         <TaskCard
-          avatar={currentItem.user.profile_picture_url || 'https://placehold.co/100'}
+          avatar={currentItem.user.profile_picture_url || `https://picsum.photos/seed/${currentItem.user.id}/100/100`}
           date={`le ${new Date(currentItem.created_at).toLocaleDateString()}`}
-          image={'https://placehold.co/600x400'}
+          image={`https://picsum.photos/seed/${currentItem.id}/600/400`}
           onClick={handleTaskClick}
           price={currentItem.price}
           title={currentItem.title}

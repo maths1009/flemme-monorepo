@@ -89,7 +89,7 @@ export default function AdvertDetailPage() {
     reviews: 0,
   };
 
-  const images = ['https://placehold.co/600x400'];
+  const images = [`https://picsum.photos/seed/${advert.id}/600/400`];
   const locationString = `Lat: ${advert.latitude}, Lng: ${advert.longitude}`;
 
   const { isLiked } = checkIsLiked(advert.id);

@@ -188,7 +188,7 @@ export default function PublicProfilePage() {
                         : 'Localisation non définie'
                     }
                     price={annonce.price}
-                    image=""
+                    image={`https://picsum.photos/seed/${annonce.id}/600/400`}
                     onClick={() => router.push(`/adverts/${annonce.id}`)}
                   />
                 ))}

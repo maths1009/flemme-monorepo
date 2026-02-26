@@ -68,7 +68,7 @@ export const ProfileBanner: React.FC<ProfileBannerProps> = ({
         <Avatar
           src={user.avatar}
           alt={`Avatar de ${user.name}`}
-          fallback={user.name}
+          fallback={user.id || user.name}
           size="md"
         />
         <div>

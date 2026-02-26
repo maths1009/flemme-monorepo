@@ -4,6 +4,7 @@ import { useAnnonce } from '@/hooks/useAnnonces';
 import { ArrowLeft, Flag, MoreHorizontal, Plus, Send, Star } from 'lucide-react';
 import { PriceTag } from '@/components/common/PriceTag';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import * as React from 'react';
 
 interface Message {
@@ -90,11 +91,14 @@ export default function MessagePage() {
             </button>
             <div className="flex items-center space-x-3">
               {user.profile_picture_url ? (
-                <img
-                  src={user.profile_picture_url}
-                  alt={`Avatar de ${user.firstname}`}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+                <div className="w-10 h-10 rounded-full overflow-hidden relative flex-shrink-0">
+                  <Image
+                    src={user.profile_picture_url}
+                    alt={`Avatar de ${user.firstname}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               ) : (
                 <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                   <span className="text-sm font-semibold text-gray-600">
@@ -154,9 +158,13 @@ export default function MessagePage() {
       {/* Contexte de l'annonce */}
       <div className="bg-blue-50 border-b border-blue-100 px-4 py-3">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-blue-200 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-700">
-             
-             IMG
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden relative">
+             <Image
+               src={`https://picsum.photos/seed/${advert.id}/100/100`}
+               alt={advert.title}
+               fill
+               className="object-cover"
+             />
           </div>
           <div className="flex-1">
             <h3 className="font-medium text-gray-800 line-clamp-1">{advert.title}</h3>
@@ -178,11 +186,14 @@ export default function MessagePage() {
                   className="flex justify-start items-start space-x-3"
                 >
                   {user.profile_picture_url ? (
-                    <img
-                      src={user.profile_picture_url}
-                      alt={`Avatar de ${user.firstname}`}
-                      className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                    />
+                    <div className="w-8 h-8 rounded-full overflow-hidden relative flex-shrink-0">
+                      <Image
+                        src={user.profile_picture_url}
+                        alt={`Avatar de ${user.firstname}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-semibold text-gray-600">

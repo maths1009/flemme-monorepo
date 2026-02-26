@@ -106,7 +106,7 @@ export default function ProfilePage() {
                    title={advert.title}
                    location=""
                    price={advert.price}
-                   image={''}
+                   image={`https://picsum.photos/seed/${advert.id}/600/400`}
                    onClick={() => router.push(`/adverts/${advert.id}`)}
                  />
               </div>

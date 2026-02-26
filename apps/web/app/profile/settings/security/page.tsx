@@ -1,16 +1,12 @@
 'use client';
 
-import { useAuth } from '@/context/AuthContext';
-import { fetchClient } from '@/lib/api';
 import { ArrowLeft, CheckCircle, Mail, ShieldAlert } from 'lucide-react';
-import { Header } from '@/components/common/Header';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from '@/components/common/input-otp';
+import { Header } from '@/components/common/Header';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/common/InputOTP';
+import { useAuth } from '@/context/AuthContext';
+import { fetchClient } from '@/lib/api';
 
 export default function SecuritySettingsPage() {
   const router = useRouter();
@@ -43,21 +39,21 @@ export default function SecuritySettingsPage() {
 
   const handleVerifyCode = async () => {
     if (otp.length !== 6) {
-        setErrorMessage('Le code doit contenir 6 chiffres');
-        return;
+      setErrorMessage('Le code doit contenir 6 chiffres');
+      return;
     }
 
     resetMessages();
     setIsLoading(true);
     try {
-        await verifyEmail(parseInt(otp));
-        setSuccessMessage('Email vérifié avec succès !');
-        setShowOtpInput(false);
+      await verifyEmail(parseInt(otp));
+      setSuccessMessage('Email vérifié avec succès !');
+      setShowOtpInput(false);
     } catch (error: any) {
-        console.error(error);
-        setErrorMessage(error.message || 'Code invalide ou expiré');
+      console.error(error);
+      setErrorMessage(error.message || 'Code invalide ou expiré');
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -67,12 +63,12 @@ export default function SecuritySettingsPage() {
     try {
       if (!user?.email) return;
       await fetchClient('/auth/request-password-reset', {
-        method: 'POST',
         body: JSON.stringify({ email: user.email }),
+        method: 'POST',
       });
       setSuccessMessage('Email de réinitialisation envoyé !');
     } catch (error) {
-      setErrorMessage("Erreur lors de la demande de réinitialisation");
+      setErrorMessage('Erreur lors de la demande de réinitialisation');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -81,11 +77,9 @@ export default function SecuritySettingsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      
       <Header title="Sécurité" />
 
       <div className="flex flex-col p-6 space-y-8">
-
         {successMessage && (
           <div className="p-4 bg-green-50 text-green-700 rounded-xl text-sm font-medium border border-green-100">
             {successMessage}
@@ -97,7 +91,7 @@ export default function SecuritySettingsPage() {
             {errorMessage}
           </div>
         )}
-        
+
         <section>
           <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Email</h2>
           <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
@@ -111,7 +105,7 @@ export default function SecuritySettingsPage() {
                 </span>
               )}
             </div>
-            
+
             {!user?.email_verified && (
               <div className="mt-4 space-y-4">
                 <p className="text-sm text-gray-500">
@@ -119,38 +113,34 @@ export default function SecuritySettingsPage() {
                 </p>
 
                 {showOtpInput ? (
-                     <div className="flex flex-col items-center gap-4">
-                        <InputOTP
-                            maxLength={6}
-                            value={otp}
-                            onChange={(value) => setOtp(value)}
-                        >
-                            <InputOTPGroup>
-                                <InputOTPSlot index={0} />
-                                <InputOTPSlot index={1} />
-                                <InputOTPSlot index={2} />
-                                <InputOTPSlot index={3} />
-                                <InputOTPSlot index={4} />
-                                <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                        </InputOTP>
-                        
-                        <button
-                            onClick={handleVerifyCode}
-                            disabled={isLoading}
-                            className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isLoading ? 'Validation...' : 'Valider le code'}
-                        </button>
-                     </div>
-                ) : (
+                  <div className="flex flex-col items-center gap-4">
+                    <InputOTP maxLength={6} onChange={value => setOtp(value)} value={otp}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+
                     <button
-                    onClick={handleResendVerification}
-                    disabled={isLoading}
-                    className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={isLoading}
+                      onClick={handleVerifyCode}
                     >
-                    {isLoading ? 'Envoi...' : "Renvoyer l'email de vérification"}
+                      {isLoading ? 'Validation...' : 'Valider le code'}
                     </button>
+                  </div>
+                ) : (
+                  <button
+                    className="w-full py-2.5 px-4 bg-black text-white rounded-lg font-semibold text-sm hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={isLoading}
+                    onClick={handleResendVerification}
+                  >
+                    {isLoading ? 'Envoi...' : "Renvoyer l'email de vérification"}
+                  </button>
                 )}
               </div>
             )}
@@ -170,17 +160,16 @@ export default function SecuritySettingsPage() {
                 </p>
               </div>
             </div>
-            
+
             <button
-              onClick={handlePasswordReset}
-              disabled={isLoading}
               className="w-full py-2.5 px-4 border border-gray-300 bg-white text-[#1A1A1A] rounded-lg font-semibold text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
+              onClick={handlePasswordReset}
             >
               {isLoading ? 'Envoi...' : 'Envoyer le lien de réinitialisation'}
             </button>
           </div>
         </section>
-
       </div>
     </div>
   );

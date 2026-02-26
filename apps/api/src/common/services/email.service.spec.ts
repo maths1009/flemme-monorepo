@@ -11,6 +11,18 @@ const sendMailMock = jest.fn();
   sendMail: sendMailMock,
 });
 
+// Mock react-email render
+jest.mock('@react-email/components', () => ({
+  render: jest.fn().mockImplementation(async content => content),
+}));
+
+// Mock flemme/emails templates
+jest.mock('@flemme/emails', () => ({
+  EmailVerificationEmail: jest.fn().mockImplementation(props => `Verification ${JSON.stringify(props)}`),
+  ResetPasswordEmail: jest.fn().mockImplementation(props => `Reset ${JSON.stringify(props)}`),
+  WelcomeEmail: jest.fn().mockImplementation(props => `Welcome ${JSON.stringify(props)}`),
+}));
+
 describe('EmailService', () => {
   let service: EmailService;
   let configService: DeepMocked<ConfigService>;

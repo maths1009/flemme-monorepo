@@ -1,5 +1,7 @@
+import { EmailVerificationEmail, ResetPasswordEmail, WelcomeEmail } from '@flemme/emails';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { render } from '@react-email/components';
 import * as nodemailer from 'nodemailer';
 import { Env } from '../utils';
 
@@ -48,12 +50,9 @@ export class EmailService {
   }
 
   async sendWelcomeEmail(to: string, name: string): Promise<void> {
-    /* const html = await render(await WelcomeEmail({userName: name, confirmationUrl: 'https://google.com'})) */
+    const html = await render(await WelcomeEmail({ confirmationUrl: 'https://google.com', userName: name }));
     await this.send({
-      html: `
-        <h1>Bienvenue sur Flemme !</h1>
-        <p>Bienvenue ${name} !</p>
-      `,
+      html,
       subject: 'Bienvenue sur Flemme !',
       text: `Bienvenue ${name} !`,
       to,
@@ -61,12 +60,9 @@ export class EmailService {
   }
 
   async sendEmailVerificationEmail(to: string, name: string, verificationCode: number): Promise<void> {
+    const html = await render(await EmailVerificationEmail({ userName: name, verificationCode }));
     await this.send({
-      html: `
-        <h1>Vérifiez votre email</h1>
-        <p>Bienvenue ${name} !</p>
-        <p>Votre code de vérification est : ${verificationCode}</p>
-      `,
+      html,
       subject: 'Vérifiez votre email',
       text: `Bienvenue ${name} ! Votre code de vérification est : ${verificationCode}`,
       to,
@@ -74,12 +70,9 @@ export class EmailService {
   }
 
   async sendResetPasswordEmail(to: string, name: string, resetUrl: string): Promise<void> {
-    /* const html = await render(ResetPasswordEmail({ userName: name, resetUrl })); */
+    const html = await render(await ResetPasswordEmail({ resetUrl, userName: name }));
     await this.send({
-      html: `
-        <h1>Réinitialisation de votre mot de passe</h1>
-        <p>Bonjour ${name}, vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur ce lien : ${resetUrl}</p>
-      `,
+      html,
       subject: 'Réinitialisation de votre mot de passe',
       text: `Bonjour ${name}, vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur ce lien : ${resetUrl}`,
       to,

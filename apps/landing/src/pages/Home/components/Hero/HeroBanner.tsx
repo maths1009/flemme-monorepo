@@ -8,7 +8,7 @@ export function HeroBanner() {
       initial={{ opacity: 0, y: 100 }}
       transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
     >
-      <img alt="double eyes" className="hidden md:block" src="/double-eyes.svg" />
+      <img alt="double eyes" className="hidden md:block" height="80" src="/double-eyes.svg" width="120" />
       <p className="text-center text-xs font-bold uppercase tracking-wider text-black md:text-base">
         ON S'OCCUPE DE TOUT, MÊME DE TA GRAND MÈRE
       </p>

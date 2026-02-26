@@ -32,7 +32,7 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
     await swagger(app);
   }
 
-  app.setGlobalPrefix('api/v1', {
+  app.setGlobalPrefix('v1', {
     exclude: [
       {
         method: RequestMethod.GET,

@@ -1,5 +1,6 @@
-import { Button, Hr, Text } from '@react-email/components';
+import { Text } from '@react-email/components';
 import type React from 'react';
+import { Button } from '../common/Button';
 import { EmailTemplate } from '../common/template';
 
 interface WelcomeEmailProps {
@@ -7,39 +8,36 @@ interface WelcomeEmailProps {
   confirmationUrl: string;
 }
 
-export const WelcomeEmail: React.FC<WelcomeEmailProps> = ({ userName, confirmationUrl }) => {
+const WelcomeEmail: React.FC<WelcomeEmailProps> = ({ userName, confirmationUrl }) => {
   return (
     <EmailTemplate previewText={`Bienvenue ${userName} ! Confirmez votre compte pour commencer.`} title="Flemme">
-      <Text style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Bienvenue sur Flemme ! 🎉</Text>
+      <Text className="font-serif text-[28px] font-bold mb-6 text-black tracking-tight leading-tight">
+        Bienvenue sur Flemme ! 🎉
+      </Text>
 
-      <Text style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '20px' }}>Salut {userName},</Text>
+      <Text className="text-base leading-relaxed mb-4 text-black">
+        Salut <span className="font-bold">{userName}</span>,
+      </Text>
 
-      <Text style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '30px' }}>
+      <Text className="text-base leading-relaxed mb-8 text-black">
         Nous sommes ravis de vous accueillir sur Flemme ! Votre compte a été créé avec succès. Pour commencer à utiliser
-        notre plateforme, veuillez confirmer votre adresse email.
+        notre plateforme, veuillez confirmer votre adresse email ci-dessous :
       </Text>
 
       <Button
+        className="bg-brand-green text-white border-black text-lg py-4 block max-w-max mx-auto"
         href={confirmationUrl}
-        style={{
-          backgroundColor: '#3b82f6',
-          borderRadius: '6px',
-          color: '#ffffff',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          padding: '12px 24px',
-          textDecoration: 'none',
-        }}
       >
         Confirmer mon compte
       </Button>
 
-      <Hr style={{ margin: '30px 0' }} />
-
-      <Text style={{ color: '#6b7280', fontSize: '14px', lineHeight: '1.5' }}>
+      <Text className="text-gray-500 text-sm leading-relaxed mt-8 pt-6 border-t-[3px] border-black">
         Si vous n'avez pas créé de compte sur Flemme, vous pouvez ignorer cet email. Ce lien de confirmation expirera
         dans 24 heures.
       </Text>
     </EmailTemplate>
   );
 };
+
+export default WelcomeEmail;
+export { WelcomeEmail };

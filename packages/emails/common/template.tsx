@@ -1,93 +1,75 @@
-import { Body, Container, Head, Html, Preview, Section, Tailwind, Text } from '@react-email/components';
+import { Body, Container, Font, Head, Html, Preview, Section, Tailwind, Text } from '@react-email/components';
 import type React from 'react';
 import type { EmailTemplateProps } from './types';
 
 export const EmailTemplate: React.FC<EmailTemplateProps> = ({ children, title = 'Flemme', previewText }) => {
-  const backgroundColor = '#ffffff';
-  const textColor = '#1f2937';
-  const accentColor = '#3b82f6';
   return (
     <Html>
       <Head>
         <title>{title}</title>
         <meta content="light dark" name="color-scheme" />
         <meta content="light dark" name="supported-color-schemes" />
+        <Font
+          fallbackFontFamily="sans-serif"
+          fontFamily="Inter"
+          fontStyle="normal"
+          fontWeight={400}
+          webFont={{
+            format: 'woff2',
+            url: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf',
+          }}
+        />
+        <Font
+          fallbackFontFamily="serif"
+          fontFamily="DM Serif Display"
+          fontStyle="normal"
+          fontWeight={400}
+          webFont={{
+            format: 'woff2',
+            url: 'https://fonts.gstatic.com/s/dmserifdisplay/v15/xXPI1bRoMw1SCUp-RTJRaMoMUXzWPYgB.woff2',
+          }}
+        />
       </Head>
       <Preview>{previewText}</Preview>
-      <Tailwind>
-        <Body
-          style={{
-            backgroundColor,
-            color: textColor,
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-            margin: 0,
-            padding: 0,
-          }}
-        >
-          <Container
-            style={{
-              margin: '0 auto',
-              maxWidth: '600px',
-              padding: '20px',
-            }}
-          >
-            {/* Header */}
-            <Section
-              style={{
-                borderBottom: `2px solid ${accentColor}`,
-                padding: '20px 0',
-                textAlign: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  color: accentColor,
-                  fontSize: '28px',
-                  fontWeight: 'bold',
-                  margin: 0,
-                }}
-              >
+      <Tailwind
+        config={{
+          theme: {
+            extend: {
+              colors: {
+                'brand-bg': '#f5f4f3',
+                'brand-black': '#1e1e1e',
+                'brand-blue': '#405ef6cc',
+                'brand-green': '#004739',
+                'brand-orange': '#ff6b35',
+                'brand-pink': '#fea3b2',
+                'brand-yellow': '#fde104',
+              },
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                serif: ['"DM Serif Display"', 'serif'],
+              },
+            },
+          },
+        }}
+      >
+        <Body className="bg-brand-bg text-brand-black font-sans my-auto mx-auto px-4 py-8">
+          {/* Main Card */}
+          <Container className="bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-xl mx-auto w-full max-w-[600px] overflow-hidden">
+            {/* Brutalist Header Banner */}
+            <Section className="bg-brand-yellow border-b-[3px] border-black p-6 text-center">
+              <Text className="text-black font-serif text-4xl mt-2 font-bold p-0 leading-none tracking-tighter">
                 {title}
               </Text>
             </Section>
 
-            {/* Content */}
-            <Section
-              style={{
-                backgroundColor: '#f9fafb',
-                borderRadius: '8px',
-                margin: '20px 0',
-                padding: '40px 20px',
-              }}
-            >
-              {children}
-            </Section>
+            {/* Content Area */}
+            <Section className="px-8 pt-6 pb-8">{children}</Section>
 
-            {/* Footer */}
-            <Section
-              style={{
-                borderTop: `1px solid #e5e7eb`,
-                padding: '20px 0',
-                textAlign: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  color: '#6b7280',
-                  fontSize: '14px',
-                  margin: '0 0 10px 0',
-                }}
-              >
-                © 2025 {title}. Tous droits réservés.
-              </Text>
-              <Text
-                style={{
-                  color: '#9ca3af',
-                  fontSize: '12px',
-                  margin: 0,
-                }}
-              >
-                Cet email a été envoyé automatiquement. Veuillez ne pas y répondre.
+            {/* Brutalist Footer */}
+            <Section className="bg-gray-100 border-t-[3px] border-black p-6 text-center">
+              <Text className="text-black text-sm font-bold tracking-wider mb-2">LA FLEMME VAINCRA.</Text>
+              <Text className="text-gray-500 text-xs mt-1">
+                Cet email a été envoyé automatiquement. Il est l'heure de retourner chiller.
               </Text>
             </Section>
           </Container>

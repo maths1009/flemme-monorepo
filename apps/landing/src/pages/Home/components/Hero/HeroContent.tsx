@@ -34,6 +34,8 @@ export function HeroContent() {
       <motion.img
         alt="Mascotte Flemme"
         className="absolute bottom-[-10%] left-1/2 -z-10 h-[50vh] w-[80vw] -translate-x-1/2 origin-bottom object-contain object-bottom md:h-[75vh] md:w-[75vh] lg:h-[85vh] lg:w-[85vh]"
+        fetchPriority="high"
+        height="800"
         loading="eager"
         src="/mascot-2.svg"
         whileInView={{
@@ -45,6 +47,7 @@ export function HeroContent() {
           },
           y: [0, -20, 0],
         }}
+        width="800"
       />
     </div>
   );

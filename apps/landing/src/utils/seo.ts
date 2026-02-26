@@ -24,7 +24,7 @@ export function generateMeta({
   const imageUrl = image ? (image.startsWith('http') ? image : `${baseUrl}${image}`) : `${baseUrl}/og-image.jpg`;
 
   const meta = [
-    { content: title, name: 'title' },
+    { title: title },
     { content: description, name: 'description' },
     { content: type, property: 'og:type' },
     { content: title, property: 'og:title' },

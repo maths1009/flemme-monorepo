@@ -12,6 +12,31 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteRouteImport } from './routes/_layout/route'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+} as any);
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/robots.txt',
+  path: '/robots.txt',
+} as any);
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/llms.txt',
+  path: '/llms.txt',
+} as any);
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+} as any);
+const R404Route = R404RouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/404',
+  path: '/404',
+} as any);
 const LayoutRouteRoute = LayoutRouteRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
@@ -47,6 +72,41 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml';
+      path: '/sitemap.xml';
+      fullPath: '/sitemap.xml';
+      preLoaderRoute: typeof SitemapDotxmlRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/robots.txt': {
+      id: '/robots.txt';
+      path: '/robots.txt';
+      fullPath: '/robots.txt';
+      preLoaderRoute: typeof RobotsDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/llms.txt': {
+      id: '/llms.txt';
+      path: '/llms.txt';
+      fullPath: '/llms.txt';
+      preLoaderRoute: typeof LlmsDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/llms-full.txt': {
+      id: '/llms-full.txt';
+      path: '/llms-full.txt';
+      fullPath: '/llms-full.txt';
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/404': {
+      id: '/404';
+      path: '/404';
+      fullPath: '/404';
+      preLoaderRoute: typeof R404RouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -69,6 +129,10 @@ interface LayoutRouteRouteChildren {
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutBlogIndexRoute: LayoutBlogIndexRoute,
+  LayoutBlogSlugRoute: LayoutBlogSlugRoute,
+  LayoutCgvRoute: LayoutCgvRoute,
+  LayoutContactRoute: LayoutContactRoute,
   LayoutIndexRoute: LayoutIndexRoute,
 }
 

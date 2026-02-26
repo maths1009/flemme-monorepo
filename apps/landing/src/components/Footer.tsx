@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
+import { TextField } from '@/components/TextField';
 
 interface StoreButton {
   icon: React.ReactNode;
@@ -24,7 +23,20 @@ function StoreButton({ icon, label }: StoreButton) {
 }
 
 function Footer() {
-  const [email, setEmail] = useState('');
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const isEmail = email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    if (isEmail) {
+      toast.info("C'est fait.", {
+        description: 'Tu es inscrit ! Bienvenue dans le club des pros de la détente !',
+      });
+      e.currentTarget.reset();
+    } else {
+      toast.error('Email invalide');
+    }
+  };
 
   return (
     <footer className="relative w-full overflow-hidden bg-[#1a1a1a] py-18 text-white">
@@ -50,27 +62,14 @@ function Footer() {
           </h2>
           <p className="mb-12 text-xl font-medium text-white/80">Rejoignez le club des pros de la détente !</p>
 
-          <form className="mx-auto mb-16 flex max-w-md flex-col items-stretch gap-4 md:flex-row">
-            <Input
-              className="h-auto"
-              onChange={e => setEmail(e.target.value)}
-              placeholder="TON EMAIL"
-              type="email"
-              value={email}
-            />
-            <Button
-              className="uppercase h-auto"
-              onClick={() => {
-                if (email) {
-                  toast.info("C'est fait.", {
-                    description: 'Tu es inscrit ! Bienvenue dans le club des pros de la détente !',
-                  });
-                  setEmail('');
-                }
-              }}
-              size="lg"
-              variant="cta"
-            >
+          <form
+            className="mx-auto mb-16 flex max-w-md flex-col items-stretch gap-4 md:flex-row"
+            onSubmit={handleSubmit}
+          >
+            <TextField className="h-auto">
+              <TextField.Input name="email" placeholder="TON EMAIL" required type="email" />
+            </TextField>
+            <Button className="uppercase h-auto" size="lg" type="submit" variant="cta">
               Inscris toi
             </Button>
           </form>
@@ -84,12 +83,18 @@ function Footer() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-8 border-t border-white/10 pt-8 text-sm font-bold text-white/40">
-          <a className="hover:text-white transition-colors" href="/">
-            Privacy
+        <div className="flex flex-wrap justify-center gap-4 border-t border-white/10 pt-8 text-sm font-bold text-white/40 md:justify-end md:gap-8">
+          <a className="hover:text-white transition-colors" href="/team">
+            L'équipe
           </a>
-          <a className="hover:text-white transition-colors" href="/">
-            Terms
+          <a className="hover:text-white transition-colors" href="/contact">
+            Contact
+          </a>
+          <a className="hover:text-white transition-colors" href="/mentions-legales">
+            Mentions légales
+          </a>
+          <a className="hover:text-white transition-colors" href="/cgv">
+            CGV
           </a>
         </div>
       </div>

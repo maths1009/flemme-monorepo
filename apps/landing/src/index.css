@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Font Imports */
 @import "@fontsource/inter/400.css";
@@ -14,6 +15,10 @@
 
   /* Smooth scrolling for anchor links */
   --color-brand-yellow: #fde104;
+  --color-brand-pink: #fea3b2;
+  --color-brand-orange: #ff6b35;
+  --color-brand-blue: #405ef6cc;
+  --color-brand-green: #004739;
   --color-brand-black: #1e1e1e;
   --color-brand-bg: #f5f4f3;
 

@@ -12,65 +12,65 @@ const MOCK_CONVERSATIONS = [
     id: '1',
     user: {
       username: 'camille.cpla',
-      avatar: '/images/mock/150.jpeg',
+      avatar: 'https://picsum.photos/seed/u1/150/150',
       rating: 5,
       reviewsCount: 12,
       lastSeen: 'il y a 2h',
     },
     ad: {
-      image: '/images/mock/150.jpeg',
+      image: 'https://picsum.photos/seed/a1/600/400',
     },
   },
   {
     id: '2',
     user: {
       username: 'camille.cpla',
-      avatar: '/images/mock/150.jpeg',
+      avatar: 'https://picsum.photos/seed/u2/150/150',
       rating: 5,
       reviewsCount: 12,
       lastSeen: 'il y a 2h',
     },
     ad: {
-      image: '/images/mock/150.jpeg',
+      image: 'https://picsum.photos/seed/a2/600/400',
     },
   },
   {
     id: '3',
     user: {
       username: 'camille.cpla',
-      avatar: '/images/mock/150.jpeg',
+      avatar: 'https://picsum.photos/seed/u3/150/150',
       rating: 5,
       reviewsCount: 12,
       lastSeen: 'il y a 2h',
     },
     ad: {
-      image: '/images/mock/150.jpeg',
+      image: 'https://picsum.photos/seed/a3/600/400',
     },
   },
   {
     id: '4',
     user: {
       username: 'camille.cpla',
-      avatar: '/images/mock/150.jpeg',
+      avatar: 'https://picsum.photos/seed/u4/150/150',
       rating: 5,
       reviewsCount: 12,
       lastSeen: 'il y a 2h',
     },
     ad: {
-      image: '/images/mock/150.jpeg',
+      image: 'https://picsum.photos/seed/a4/600/400',
     },
   },
   {
     id: '5',
     user: {
       username: 'camille.cpla',
-      avatar: '/images/mock/150.jpeg',
+      avatar: 'https://picsum.photos/seed/u5/150/150',
       rating: 5,
       reviewsCount: 12,
       lastSeen: 'il y a 2h',
     },
     ad: {
-      image: '/images/mock/150.jpeg',
+      image: 'https://picsum.photos/seed/a5/600/400',
     },
   },
 ];
@@ -179,7 +179,7 @@ export default function MessagesPage() {
          <div className="flex items-start px-4 py-4 hover:bg-gray-50 transition-colors cursor-pointer">
             <div className="relative w-12 h-12 flex-shrink-0 mr-3">
               <Image
-                src="/images/mock/150.jpeg"
+                src="https://picsum.photos/seed/u6/150/150"
                 alt="camille.cpla"
                 fill
                 className="rounded-full object-cover border border-gray-200"
@@ -194,7 +194,7 @@ export default function MessagesPage() {
               <p className="text-xs text-gray-500 mb-2">Dernière connexion : il y a 2h</p>
                <div className="relative w-12 h-8 rounded overflow-hidden">
                  <Image
-                    src="/images/mock/150.jpeg"
+                    src="https://picsum.photos/seed/a6/600/400"
                     alt="Annonce"
                     fill
                     className="object-cover"

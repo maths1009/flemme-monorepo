@@ -47,7 +47,12 @@ export function Avatar({
           onError={() => setError(true)}
         />
       ) : (
-        <span className="font-semibold text-gray-500">{initials}</span>
+        <Image
+          src={`https://picsum.photos/seed/${fallback || 'default'}/150/150`}
+          alt={alt}
+          fill
+          className="object-cover"
+        />
       )}
     </div>
   );

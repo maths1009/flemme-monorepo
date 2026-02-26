@@ -6,6 +6,10 @@ const nextConfig = {
         hostname: 'placehold.co',
         protocol: 'https',
       },
+      {
+        hostname: 'picsum.photos',
+        protocol: 'https',
+      },
     ],
   },
   output: 'standalone',

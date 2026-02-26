@@ -180,8 +180,7 @@ function SearchPageContent() {
         lat: Number(ad.latitude),
         lng: Number(ad.longitude),
         title: ad.title,
-        price: ad.price,
-        image: ad.photos?.[0]?.url || '/images/mock/placeholder.jpg',
+        image: ad.photos?.[0]?.url || `https://picsum.photos/seed/${ad.id}/100/100`,
         id: ad.id,
       }));
 

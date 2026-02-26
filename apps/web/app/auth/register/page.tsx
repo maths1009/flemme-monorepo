@@ -160,8 +160,19 @@ const RegisterPage = () => {
             size="lg"
             className="w-full mt-4 rounded-full"
           >
-            Se connecter
+            S'inscrire
           </Button>
+
+          <div className="text-center text-sm text-foreground/60 mt-4">
+            Déjà un compte ?{' '}
+            <button
+              type="button"
+              onClick={() => router.push('/auth/login')}
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              Se connecter
+            </button>
+          </div>
         </form>
       </div>
     </div>

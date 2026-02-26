@@ -4,7 +4,7 @@ import { Annonce } from './annonces.service';
 export interface Like {
   id: string;
   created_at: string;
-  annonce: Annonce | { id: string }; // Handle potential partial data
+  annonce: Annonce | { id: string };
 }
 
 export const LikesService = {

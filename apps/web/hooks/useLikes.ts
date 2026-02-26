@@ -29,7 +29,7 @@ export function useLikes() {
   }, [fetchLikes]);
 
   const checkIsLiked = (annonceId: string) => {
-    // Safe access with optional chaining
+    
     const like = likes.find((l) => l.annonce?.id === annonceId);
     return {
       isLiked: !!like,
@@ -46,11 +46,11 @@ export function useLikes() {
       } else {
         await LikesService.create(annonceId);
       }
-      // Re-fetch to sync state
+      
       await fetchLikes();
     } catch (error) {
       console.error('Failed to toggle like', error);
-      // Optional: Handle 400 "Already Liked" gracefully if we want to be extra robust
+      
       if ((error as any)?.status === 400) {
            await fetchLikes();
       }

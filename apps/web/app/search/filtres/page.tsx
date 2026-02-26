@@ -4,13 +4,12 @@ import { X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
-export default function FilterPage() {
+function FilterPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [minPrice, setMinPrice] = React.useState('0');
   const [maxPrice, setMaxPrice] = React.useState('0');
 
-  // Récupérer les filtres existants depuis l'URL
   const existingFilters = searchParams.get('filters')
     ? JSON.parse(decodeURIComponent(searchParams.get('filters')!))
     : {};
@@ -19,7 +18,6 @@ export default function FilterPage() {
     Record<string, string[]>
   >(existingFilters || {});
 
-  // Groupes de filtres
   const filterGroups = [
     {
       name: 'Disponibilité',
@@ -83,7 +81,7 @@ export default function FilterPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <button onClick={handleClose} className="p-2">
           <X className="w-6 h-6 text-gray-800" />
@@ -92,9 +90,8 @@ export default function FilterPage() {
         <div className="w-10" />
       </div>
 
-      {/* Contenu */}
       <div className="px-6 py-6 pb-32">
-        {/* Groupes de filtres */}
+        
         {filterGroups.map((group) => (
           <div key={group.name} className="mb-8">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -118,7 +115,6 @@ export default function FilterPage() {
           </div>
         ))}
 
-        {/* Section Prix */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Prix</h2>
           <div className="flex items-end gap-2 min-w-0">
@@ -153,7 +149,6 @@ export default function FilterPage() {
         </div>
       </div>
 
-      {/* Bouton flottant */}
       <div className="fixed bottom-0 left-0 right-0 bg-white px-6 py-4">
         <button
           onClick={handleApplyFilters}
@@ -163,5 +158,13 @@ export default function FilterPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function FilterPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <FilterPageContent />
+    </React.Suspense>
   );
 }

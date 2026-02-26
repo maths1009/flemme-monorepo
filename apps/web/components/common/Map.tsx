@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PriceTag } from './PriceTag';
 
-// Configuration des icônes Leaflet
 const createIcon = () => {
   return new L.Icon({
     iconAnchor: [12, 41],
@@ -21,7 +20,6 @@ const createIcon = () => {
   });
 };
 
-// Configuration pour le marqueur de position utilisateur (Point bleu pulsant)
 const createUserIcon = () => {
   return L.divIcon({
     className: 'custom-user-location',
@@ -32,7 +30,7 @@ const createUserIcon = () => {
       </div>
     `,
     iconSize: [24, 24],
-    iconAnchor: [0, 0], // Centré grâce au CSS -ml-3 -mt-3
+    iconAnchor: [0, 0],
   });
 };
 
@@ -49,7 +47,7 @@ interface MapProps {
     price?: number;
     image?: string;
     id?: string;
-    popupText?: string; // Garder pour la compatibilité
+    popupText?: string;
   }>;
   className?: string;
 }
@@ -65,10 +63,9 @@ const Map = ({ coordinates, popupText = "Lieu de la mission", markers, className
 
   if (!icon || !userIcon) return null;
 
-  // Determine center: prioritize coordinates prop, then first marker, then default
   const firstMarker = markers?.[0];
-  const centerPosition: [number, number] = coordinates 
-    ? [coordinates.lat, coordinates.lng] 
+  const centerPosition: [number, number] = coordinates
+    ? [coordinates.lat, coordinates.lng]
     : firstMarker
       ? [firstMarker.lat, firstMarker.lng]
       : [48.8566, 2.3522];
@@ -91,9 +88,9 @@ const Map = ({ coordinates, popupText = "Lieu de la mission", markers, className
         </Marker>
       )}
       {markers?.map((marker, index) => (
-        <Marker 
-          key={index} 
-          icon={icon} 
+        <Marker
+          key={index}
+          icon={icon}
           position={[marker.lat, marker.lng]}
         >
           <Popup className="custom-popup">

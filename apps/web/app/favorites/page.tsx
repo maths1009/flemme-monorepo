@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// Interfaces locales pour le mapping
 interface LikeDto {
   id: string;
   created_at: string;
@@ -39,9 +38,6 @@ export default function FavoritesPage() {
   const [likes, setLikes] = useState<LikeDto[]>([]);
   const [loading, setLoading] = useState(true);
   
-
-
-
   useEffect(() => {
     const fetchLikes = async () => {
       if (!user?.id) return;
@@ -62,10 +58,9 @@ export default function FavoritesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <Header title="Favoris" onBack={() => router.push('/profile')} />
 
-      {/* Content */}
       <div className="px-4 py-6">
         <h2 className="text-xl font-medium text-gray-400 mb-6">Mes favoris</h2>
 
@@ -90,8 +85,8 @@ export default function FavoritesPage() {
               
               // Image par défaut si pas de photo
               const image = annonce?.photos && annonce.photos.length > 0
-                ? annonce.photos[0].url
-                : '/images/mock/150.jpeg'; // Fallback
+                ? annonce.photos[0]?.url ?? '/images/mock/150.jpeg'
+                : '/images/mock/150.jpeg';
 
               const location = annonce.latitude && annonce.longitude
                 ? `Angers (49000)` // Mock location name as coordinates are not user friendly

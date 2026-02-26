@@ -20,7 +20,6 @@ export const TitleDescriptionSection: React.FC<
         {description}
       </p>
 
-      {/* Prix et date */}
       <div className="flex items-center justify-between">
         <PriceTag price={price} size="medium" />
         <span className="text-gray-500 text-sm">{date}</span>

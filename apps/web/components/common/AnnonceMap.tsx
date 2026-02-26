@@ -6,7 +6,6 @@ import L from 'leaflet';
 import { useEffect, useState } from 'react';
 import { useUserLocation } from '@/hooks/useUserLocation';
 
-// Configuration des icônes Leaflet (Same as Map.tsx)
 const createIcon = () => {
   return new L.Icon({
     iconAnchor: [12, 41],
@@ -19,7 +18,6 @@ const createIcon = () => {
   });
 };
 
-// Configuration pour le marqueur de position utilisateur (Point bleu pulsant)
 const createUserIcon = () => {
   return L.divIcon({
     className: 'custom-user-location',
@@ -30,7 +28,7 @@ const createUserIcon = () => {
       </div>
     `,
     iconSize: [24, 24],
-    iconAnchor: [0, 0], // Centré grâce au CSS -ml-3 -mt-3
+    iconAnchor: [0, 0],
   });
 };
 
@@ -39,7 +37,7 @@ interface AnnonceMapProps {
     lat: number;
     lng: number;
   };
-  className?: string; // Add className prop for flexibility
+  className?: string;
 }
 
 const AnnonceMap = ({ advertLocation, className }: AnnonceMapProps) => {
@@ -54,13 +52,12 @@ const AnnonceMap = ({ advertLocation, className }: AnnonceMapProps) => {
 
   if (!icon || !userIcon) return null;
 
-  // Center on advert location
   const centerPosition: [number, number] = [advertLocation.lat, advertLocation.lng];
 
   return (
     <MapContainer
       center={centerPosition}
-      key={`${centerPosition[0]}-${centerPosition[1]}`} // Re-mount if center changes
+      key={`${centerPosition[0]}-${centerPosition[1]}`}
       style={{ height: '100%', width: '100%' }}
       zoom={13}
       className={className}
@@ -70,12 +67,10 @@ const AnnonceMap = ({ advertLocation, className }: AnnonceMapProps) => {
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       
-      {/* Advert Marker (Standard Red Pin) */}
       <Marker icon={icon} position={centerPosition}>
         <Popup>Lieu de la mission</Popup>
       </Marker>
 
-      {/* User Marker (Blue Pulsing Dot) */}
       {userLocation && (
         <Marker icon={userIcon} position={[userLocation.lat, userLocation.lng]} zIndexOffset={1000}>
           <Popup>Ma position</Popup>

@@ -11,10 +11,10 @@ interface AvatarProps {
 }
 
 const sizeClasses = {
-  sm: 'w-8 h-8 text-xs', // 32px
-  md: 'w-12 h-12 text-base', // 48px
-  lg: 'w-16 h-16 text-xl', // 64px
-  xl: 'w-24 h-24 text-2xl', // 96px
+  sm: 'w-8 h-8 text-xs',
+  md: 'w-12 h-12 text-base',
+  lg: 'w-16 h-16 text-xl',
+  xl: 'w-24 h-24 text-2xl',
 };
 
 export function Avatar({
@@ -27,7 +27,7 @@ export function Avatar({
   const [error, setError] = React.useState(false);
 
   const showImage = src && !error;
-  // Use first 1-2 chars of fallback, or "?" if missing
+  
   const initials = fallback?.slice(0, 2).toUpperCase() || '?';
 
   return (

@@ -81,8 +81,7 @@ export default function SecuritySettingsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      {/* Header */}
+      
       <Header title="Sécurité" />
 
       <div className="flex flex-col p-6 space-y-8">
@@ -99,7 +98,6 @@ export default function SecuritySettingsPage() {
           </div>
         )}
         
-        {/* Email Verification Section */}
         <section>
           <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Email</h2>
           <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">

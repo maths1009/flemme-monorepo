@@ -20,7 +20,6 @@ const RegisterPage = () => {
     e.preventDefault();
     setErrors([]);
 
-    // Local minimal validation
     if (!firstName || !lastName || !email || !phone || !password) {
       setErrors(['Tous les champs sont obligatoires']);
       return;
@@ -32,18 +31,17 @@ const RegisterPage = () => {
     }
 
     try {
-      // Mapping fields to match API RegisterDto
-      // Generating username from email for now as it is required but not asked in form
+      
       await register({
         firstname: firstName,
         lastname: lastName,
         email,
         password,
       });
-      // Register function in context handles redirection and token storage
+      
     } catch (err: any) {
       console.error(err);
-      // Handle API errors
+      
       import('@/lib/error-formatter').then(({ formatApiErrors }) => {
         setErrors(formatApiErrors(err));
       });

@@ -13,7 +13,7 @@ const CompleteProfilePage = () => {
 
   const handleImageChange = (file: File | null, preview: string | null) => {
     setProfileImage(file);
-    setError(''); // Clear any previous errors
+    setError('');
   };
 
   const handleImageError = (errorMessage: string) => {
@@ -57,7 +57,7 @@ const CompleteProfilePage = () => {
     <div className="relative mx-auto h-screen max-w-[390px] bg-primary/5">
       <div className="flex h-full flex-col">
         <div className="flex flex-1 flex-col gap-8 px-6 pt-12">
-          {/* Titre principal */}
+          
           <div className="text-center">
             <h1 className="mb-6 text-4xl font-extrabold text-foreground text-center">
               Fais-toi une place ici !
@@ -111,7 +111,6 @@ const CompleteProfilePage = () => {
           </form>
         </div>
 
-        {/* Bouton en bas */}
         <div className="px-6 pb-8">
           <Button
             onClick={handleSubmit}

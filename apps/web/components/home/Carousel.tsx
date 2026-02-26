@@ -14,7 +14,6 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
-  // Reset index if annonces change or empty
   React.useEffect(() => {
     setCurrentIndex(0);
   }, [annonces]);
@@ -43,11 +42,11 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
 
   return (
     <div className="px-6 mb-8">
-      {/* Card d'annonce */}
+      
       <div className="mb-6">
         <TaskCard
           avatar={currentItem.user.profile_picture_url || 'https://placehold.co/100'}
-          date={`le ${new Date(currentItem.created_at).toLocaleDateString()}`} // Placeholder
+          date={`le ${new Date(currentItem.created_at).toLocaleDateString()}`}
           image={'https://placehold.co/600x400'}
           onClick={handleTaskClick}
           price={currentItem.price}
@@ -55,9 +54,8 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
         />
       </div>
 
-      {/* Navigation */}
       <div className="flex items-center justify-between bg-foreground rounded-full px-1 py-2">
-        {/* Bouton précédent */}
+        
         <button
           className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
           onClick={goToPrevious}
@@ -65,7 +63,6 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
           <ChevronLeft className="w-6 h-6 text-white border-2 border-white rounded-full" />
         </button>
 
-        {/* Bouton "Faire la tâche" */}
         <button
           className="flex-1 mx-4 py-3 bg-foreground text-white rounded-full font-medium hover:bg-gray-700 transition-colors border-2 border-white"
           onClick={handleTaskClick}
@@ -73,7 +70,6 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
           Faire la tâche
         </button>
 
-        {/* Bouton suivant */}
         <button
           className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
           onClick={goToNext}
@@ -82,7 +78,6 @@ export const Carousel: React.FC<CarouselProps> = ({ annonces }) => {
         </button>
       </div>
 
-      {/* Indicateurs de slides */}
       <div className="flex justify-center mt-4 space-x-2">
         {annonces.map((_, index) => (
           <button

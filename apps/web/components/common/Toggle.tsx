@@ -15,14 +15,14 @@ export const Toggle: React.FC<ToggleProps> = ({ enabled, onChange, disabled = fa
       onClick={() => !disabled && onChange(!enabled)}
       disabled={disabled}
       className={`
-        relative inline-flex items-center w-12 h-6 rounded-full 
+        relative inline-flex items-center w-12 h-6 rounded-full
         transition-colors duration-200 focus:outline-none
         ${enabled ? 'bg-black' : 'bg-gray-200'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
-      {/* Knob */}
-      <span 
+      
+      <span
         style={{
           position: 'absolute',
           top: '4px',

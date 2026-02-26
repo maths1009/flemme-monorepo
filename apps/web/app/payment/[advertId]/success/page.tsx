@@ -10,7 +10,6 @@ export default function PaymentSuccessPage() {
   const router = useRouter();
   const advertId = params.advertId as string;
 
-  // Récupération des données de l'annonce
   const advert = getAdvertById(advertId);
 
   if (!advert) {
@@ -22,13 +21,13 @@ export default function PaymentSuccessPage() {
   }
 
   const handleContinue = () => {
-    // Rediriger vers la page des directions
+    
     router.push(`/payment/${advertId}/directions`);
   };
 
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-6">
-      {/* Illustration */}
+      
       <div className="mb-12">
         <Image
           src="/images/payement/success-payment.png"
@@ -39,7 +38,6 @@ export default function PaymentSuccessPage() {
         />
       </div>
 
-      {/* Message de succès */}
       <div className="text-center mb-12 max-w-sm">
         <h1 className="text-3xl font-bold text-gray-800 leading-tight">
           Hop, <span style={{ color: '#4E77CF' }}>{advert.user.name}</span> s'en

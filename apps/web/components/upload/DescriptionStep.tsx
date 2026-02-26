@@ -35,7 +35,7 @@ export const DescriptionStep: React.FC<DescriptionStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
           Description
@@ -43,7 +43,6 @@ export const DescriptionStep: React.FC<DescriptionStepProps> = ({
         <p className="text-foreground/60 text-base">Décrivez votre tâche.</p>
       </div>
 
-      {/* Champ de description */}
       <div className="flex-1 flex flex-col">
         <textarea
           value={description}
@@ -56,7 +55,6 @@ export const DescriptionStep: React.FC<DescriptionStepProps> = ({
           autoFocus
         />
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="pt-8">
           <Button
             onClick={handleContinue}

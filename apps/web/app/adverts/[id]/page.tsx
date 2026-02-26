@@ -9,7 +9,7 @@ import {
   SuggestedTasksSection,
   TitleDescriptionSection,
 } from '@/components/adverts';
-import { ProfileBanner } from '@/components/common'; // Restore import
+import { ProfileBanner } from '@/components/common';
 import { useAuth } from '@/context/AuthContext';
 import { useAnnonce } from '@/hooks/useAnnonces';
 import { useLikes } from '@/hooks/useLikes';
@@ -21,14 +21,13 @@ export default function AdvertDetailPage() {
   const advertId = params.id as string;
   const { user } = useAuth();
 
-  // Récupération des données de l'annonce
   const { annonce: advert, loading, error } = useAnnonce(advertId);
   const { checkIsLiked, toggleLike } = useLikes();
 
   const isOwner = user && advert ? user.id === advert.user.id : false;
 
   const handleEdit = () => {
-    // Navigate to edit page (to be implemented)
+    
     router.push(`/adverts/${advertId}/edit`);
   };
 
@@ -61,7 +60,6 @@ export default function AdvertDetailPage() {
     }
   };
 
-  // Mocks pour les tâches suggérées (implémentation backend future)
   const relatedTasks: any[] = [];
   const suggestedTasks: any[] = [];
 
@@ -69,9 +67,8 @@ export default function AdvertDetailPage() {
     return <div className="min-h-screen bg-white flex items-center justify-center">Chargement...</div>;
   }
 
-  // Si l'annonce n'existe pas, afficher une erreur
   if (!advert || error) {
-    // ... (unchanged)
+    
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -84,24 +81,22 @@ export default function AdvertDetailPage() {
     );
   }
 
-  // Mapping Backend Data to UI Components
   const mappedUser = {
     avatar: advert.user.profile_picture_url || '',
     id: advert.user.id,
     name: `${advert.user.firstname} ${advert.user.lastname}`,
-    rating: 0, // Not in API yet
-    reviews: 0, // Not in API yet
+    rating: 0,
+    reviews: 0,
   };
 
-  const images = ['https://placehold.co/600x400']; // Placeholder
-  const locationString = `Lat: ${advert.latitude}, Lng: ${advert.longitude}`; // Basic representation
+  const images = ['https://placehold.co/600x400'];
+  const locationString = `Lat: ${advert.latitude}, Lng: ${advert.longitude}`;
 
-  // Check like status
   const { isLiked } = checkIsLiked(advert.id);
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header avec carousel d'images */}
+      
       <ImageCarouselSection
         images={images}
         isLiked={isLiked}
@@ -114,7 +109,7 @@ export default function AdvertDetailPage() {
       />
 
       <div className="px-6 py-6">
-        {/* Titre et description */}
+        
         <TitleDescriptionSection
           date={`le ${new Date(advert.created_at).toLocaleDateString('fr-FR', {
             day: 'numeric',
@@ -126,10 +121,8 @@ export default function AdvertDetailPage() {
           title={advert.title}
         />
 
-        {/* Profil utilisateur */}
         <ProfileBanner onMessageClick={() => router.push(`/messages/${advert.id}`)} user={mappedUser} />
 
-        {/* Localisation */}
         <LocationSection
           advertId={advert.id}
           coordinates={{
@@ -138,7 +131,6 @@ export default function AdvertDetailPage() {
           }}
         />
 
-        {/* Tâches de l'utilisateur */}
         <RelatedTasksSection
           location={locationString}
           onTaskClick={taskId => router.push(`/adverts/${taskId}`)}
@@ -146,10 +138,8 @@ export default function AdvertDetailPage() {
           user={mappedUser}
         />
 
-        {/* Informations de sécurité */}
         <SecurityInfoSection />
 
-        {/* Tâches qui peuvent vous intéresser */}
         <SuggestedTasksSection
           location={locationString}
           onTaskClick={taskId => router.push(`/adverts/${taskId}`)}

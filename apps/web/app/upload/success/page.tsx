@@ -8,12 +8,12 @@ export default function SuccessPage() {
   const router = useRouter();
 
   const handleClose = () => {
-    router.push('/'); // Rediriger vers la page d'accueil
+    router.push('/');
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-8 text-center bg-white">
-      {/* Illustration de succès */}
+      
       <div className="mb-8">
         <Image
           src="/images/upload/illustration.svg"
@@ -24,7 +24,6 @@ export default function SuccessPage() {
         />
       </div>
 
-      {/* Message de succès */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-black mb-4">C'est parfait !</h1>
         <h2 className="text-4xl font-bold text-black">
@@ -32,7 +31,6 @@ export default function SuccessPage() {
         </h2>
       </div>
 
-      {/* Bouton de fermeture */}
       <button
         onClick={handleClose}
         className="w-16 h-16 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity"

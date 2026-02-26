@@ -1,4 +1,3 @@
-// Données mockées centralisées pour les annonces
 
 export interface User {
   id: string;
@@ -25,7 +24,6 @@ export interface Advert {
   };
 }
 
-// Utilisateurs mockés
 export const mockUsers: Record<string, User> = {
   user1: {
     id: 'user1',
@@ -57,7 +55,6 @@ export const mockUsers: Record<string, User> = {
   },
 };
 
-// Annonces mockées complètes
 export const mockAdverts: Record<string, Advert> = {
   '1': {
     id: '1',
@@ -277,17 +274,14 @@ export const mockAdverts: Record<string, Advert> = {
   },
 };
 
-// Fonction pour récupérer une annonce par ID
 export const getAdvertById = (id: string): Advert | null => {
   return mockAdverts[id] || null;
 };
 
-// Fonction pour récupérer toutes les annonces
 export const getAllAdverts = (): Advert[] => {
   return Object.values(mockAdverts);
 };
 
-// Fonction pour récupérer les annonces liées (même utilisateur ou même catégorie)
 export const getRelatedAdverts = (
   currentId: string,
   limit: number = 3,
@@ -306,7 +300,6 @@ export const getRelatedAdverts = (
   return related.slice(0, limit);
 };
 
-// Fonction pour récupérer des annonces suggérées
 export const getSuggestedAdverts = (
   currentId: string,
   limit: number = 3,

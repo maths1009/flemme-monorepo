@@ -19,7 +19,7 @@ export default function LanguagePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <Header title="Langue" />
 
       <div className="flex flex-col mt-4">

@@ -32,7 +32,7 @@ export const TitleStep: React.FC<TitleStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">Titre</h2>
         <p className="text-foreground/60 text-base">
@@ -40,7 +40,6 @@ export const TitleStep: React.FC<TitleStepProps> = ({
         </p>
       </div>
 
-      {/* Champ de saisie */}
       <div className="flex-1 flex flex-col">
         <Input
           type="text"
@@ -51,7 +50,6 @@ export const TitleStep: React.FC<TitleStepProps> = ({
           autoFocus
         />
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="">
           <Button
             onClick={handleContinue}

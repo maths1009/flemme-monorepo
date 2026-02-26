@@ -23,7 +23,7 @@ interface Category {
   icon: string;
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -32,7 +32,6 @@ export default function SearchPage() {
   const [userLocation, setUserLocation] = React.useState<{ lat: number; lng: number } | undefined>(undefined);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // Fetch real adverts for the map based on user location
   React.useEffect(() => {
     if (showMap) {
       setIsLoading(true);
@@ -43,11 +42,11 @@ export default function SearchPage() {
             setUserLocation({ lat: latitude, lng: longitude });
             
             try {
-              // Fetch adverts around the user (e.g., 20km radius)
-              const response = await AnnoncesService.getAll({ 
-                latitude, 
-                longitude, 
-                distance: 20 
+              
+              const response = await AnnoncesService.getAll({
+                latitude,
+                longitude,
+                distance: 20
               });
               setRealAdverts(response.data);
             } catch (error) {
@@ -58,7 +57,7 @@ export default function SearchPage() {
           },
           async (error) => {
             console.warn('Geolocation error or denied:', error);
-            // Fallback: fetch all adverts if geolocation fails
+            
             try {
               const response = await AnnoncesService.getAll();
               setRealAdverts(response.data);
@@ -70,7 +69,7 @@ export default function SearchPage() {
           }
         );
       } else {
-        // Fallback if geolocation is not supported
+        
         const fetchAll = async () => {
           try {
             const response = await AnnoncesService.getAll();
@@ -86,13 +85,10 @@ export default function SearchPage() {
     }
   }, [showMap]);
 
-  // Récupérer la catégorie depuis les paramètres URL
   const selectedCategory = searchParams.get('category');
 
-  // Récupérer toutes les annonces (Mock Data pour la liste)
   const allAdverts = getAllAdverts();
 
-  // Catégories avec leurs icônes
   const categories: Category[] = [
     {
       id: 'paperasse',
@@ -139,35 +135,32 @@ export default function SearchPage() {
   ];
 
   const handleCategoryClick = (categoryId: string) => {
-    // Rediriger vers la même page avec le paramètre de catégorie
+    
     router.push(`/search?category=${categoryId}`);
   };
 
   const handleBackToCategories = () => {
-    // Retourner à la liste des catégories
+    
     router.push('/search');
   };
 
-  // Filtrer les annonces par catégorie (Mock Data)
   const getFilteredAdverts = () => {
     if (!selectedCategory) return [];
 
-    // Mapper les IDs de catégories aux catégories des annonces
     const categoryMapping: Record<string, string> = {
       paperasse: 'paperasse',
       course: 'courses',
-      // Ajouter d'autres mappings si nécessaire
+      
     };
 
     const advertCategory = categoryMapping[selectedCategory];
-    if (!advertCategory) return allAdverts; // Si pas de mapping, retourner toutes les annonces
+    if (!advertCategory) return allAdverts;
 
     return allAdverts.filter((advert) => advert.category === advertCategory);
   };
 
   const filteredAdverts = getFilteredAdverts();
 
-  // Trouver le nom de la catégorie sélectionnée
   const getCategoryName = () => {
     const category = categories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'Catégorie';
@@ -175,12 +168,11 @@ export default function SearchPage() {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      // TODO: Effectuer la recherche
+      
       console.log('Recherche:', searchQuery);
     }
   };
 
-  // Si la carte est active, afficher la carte avec les VRAIES annonces
   if (showMap) {
     const markers = realAdverts
       .filter((ad) => ad.latitude && ad.longitude)
@@ -189,15 +181,15 @@ export default function SearchPage() {
         lng: Number(ad.longitude),
         title: ad.title,
         price: ad.price,
-        image: ad.photos?.[0]?.url || '/images/mock/placeholder.jpg', 
+        image: ad.photos?.[0]?.url || '/images/mock/placeholder.jpg',
         id: ad.id,
       }));
 
     return (
       <div className="min-h-screen bg-primary flex flex-col h-screen">
-        <Header 
-          title="Carte" 
-          onBack={() => setShowMap(false)} 
+        <Header
+          title="Carte"
+          onBack={() => setShowMap(false)}
           variant="search"
           className="pt-8"
         />
@@ -208,8 +200,8 @@ export default function SearchPage() {
              </div>
           )}
           <div className="flex-1 w-full relative">
-            <Map 
-              markers={markers} 
+            <Map
+              markers={markers}
               coordinates={userLocation}
               popupText="Ma position"
             />
@@ -223,9 +215,9 @@ export default function SearchPage() {
   if (selectedCategory) {
     return (
       <div className="min-h-screen bg-primary">
-        <Header 
-          title={getCategoryName()} 
-          onBack={handleBackToCategories} 
+        <Header
+          title={getCategoryName()}
+          onBack={handleBackToCategories}
           variant="search"
           className="pt-8"
         />
@@ -365,9 +357,9 @@ export default function SearchPage() {
   // Affichage par défaut : liste des catégories
   return (
     <div className="min-h-screen bg-primary">
-      <Header 
-        title="Recherche" 
-        onBack={() => router.push('/')} 
+      <Header
+        title="Recherche"
+        onBack={() => router.push('/')}
         variant="search"
         className="pt-8"
       />
@@ -391,7 +383,7 @@ export default function SearchPage() {
         </div>
 
         {/* Titre "Voir la carte" */}
-        <button 
+        <button
           onClick={() => setShowMap(true)}
           className="mb-6 w-full text-left"
         >
@@ -437,5 +429,13 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen bg-primary" />}>
+      <SearchPageContent />
+    </React.Suspense>
   );
 }

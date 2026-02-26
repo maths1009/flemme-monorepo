@@ -16,7 +16,6 @@ const Page = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Salutation */}
       <div className="px-6 mb-6">
         <h2 className="text-4xl font-bold text-gray-800 flex items-center">
           <span className="mr-3">👋</span>
@@ -25,7 +24,6 @@ const Page = () => {
         <p className="text-xl text-gray-800 mt-2 font-medium">Envie de chill ?</p>
       </div>
 
-      {/* Barre de recherche */}
       <div className="px-6 mb-8">
         <div className="flex items-center justify-between">
           <button
@@ -46,13 +44,10 @@ const Page = () => {
         </div>
       </div>
 
-      {/* Carousel */}
       {adverts.length > 0 && <Carousel annonces={adverts} />}
 
-      {/* Panneau "Notre application est là" */}
       <ApplicationPanel />
 
-      {/* Section Dernières tâches */}
       <div className="px-6 mb-8">
         <h2 className="text-xl font-bold text-gray-800 mb-6">Dernières tâches proche de chez moi</h2>
 
@@ -62,14 +57,14 @@ const Page = () => {
           <p className="text-gray-500 text-center py-4">Aucune annonce actuellement</p>
         ) : (
           <>
-            {/* Carousel horizontal de mini cards */}
+            
             <div className="overflow-x-auto">
               <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                 {adverts.slice(0, 5).map(advert => (
                   <MiniTaskCard
-                    image={'https://placehold.co/600x400'} // Placeholder until photos are implemented
+                    image={'https://placehold.co/600x400'}
                     key={advert.id}
-                    location={'À proximité'} // Placeholder until reverse geocoding is implemented
+                    location={'À proximité'}
                     onClick={() => router.push(`/adverts/${advert.id}`)}
                     price={advert.price}
                     title={advert.title}
@@ -96,7 +91,7 @@ const Page = () => {
         )}
       </div>
 
-      <div className="px-6 py-4">{/* Espace pour d'autres contenus futurs */}</div>
+      <div className="px-6 py-4"></div>
     </div>
   );
 };

@@ -33,7 +33,7 @@ const UploadPage = () => {
   });
 
   const handleClose = () => {
-    router.back(); // Retourne à la page précédente
+    router.back();
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -42,13 +42,13 @@ const UploadPage = () => {
     if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     } else if (currentStep === 6) {
-      // Submission logic
+      
       setIsLoading(true);
       try {
         await fetchClient('/annonces', {
           body: JSON.stringify({
             description: formData.description,
-            // Default location if missing (or ensure validation prevents this state)
+            
             latitude: formData.location.coordinates?.lat || 0,
             longitude: formData.location.coordinates?.lng || 0,
             price: Number(formData.price),
@@ -59,7 +59,7 @@ const UploadPage = () => {
         router.push('/upload/success');
       } catch (error) {
         console.error('Failed to create annonce', error);
-        // TODO: Show toast error
+        
       } finally {
         setIsLoading(false);
       }
@@ -133,9 +133,9 @@ const UploadPage = () => {
   return (
     <div className="relative w-full h-screen bg-primary/5">
       <div className="flex h-full flex-col">
-        {/* Header avec titre */}
+        
         <div className="relative flex items-center px-6 pt-5 pb-8 bg-primary/5">
-          {/* Bouton fermer aligné */}
+          
           <button
             aria-label="Fermer"
             className="flex h-8 w-8 items-center justify-center text-foreground hover:opacity-70 transition-opacity cursor-pointer"
@@ -146,14 +146,11 @@ const UploadPage = () => {
 
           <h1 className="flex-1 text-center text-xl font-semibold text-foreground">Proposer une annonce</h1>
 
-          {/* Espace pour équilibrer (même largeur que le bouton) */}
           <div className="w-8 h-8"></div>
         </div>
 
-        {/* Barre de séparation */}
         <hr className="ml-6 mr-6 border-0 h-0.5 bg-[#EFF0DE]" />
 
-        {/* Contenu principal */}
         <div className="flex-1 pt-5">{renderCurrentStep()}</div>
       </div>
     </div>

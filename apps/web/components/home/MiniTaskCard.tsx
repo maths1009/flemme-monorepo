@@ -24,7 +24,7 @@ export const MiniTaskCard: React.FC<MiniTaskCardProps> = ({
       className="rounded-lg overflow-hidden cursor-pointer px-2 w-36"
       onClick={onClick}
     >
-      {/* Image */}
+      
       <div className="w-33.75 h-40.75 rounded-lg overflow-hidden">
         <Image
           src={image}
@@ -36,16 +36,14 @@ export const MiniTaskCard: React.FC<MiniTaskCardProps> = ({
         />
       </div>
 
-      {/* Contenu */}
       <div className="p-1.5">
-        {/* Titre */}
+        
         <h3 className="text-xs font-semibold text-gray-800 mb-0.5 leading-tight line-clamp-1">
           {title}
         </h3>
-        {/* Localisation */}
+        
         {location && <p className="text-xs text-gray-500 mb-1.5">{location}</p>}
 
-        {/* Prix */}
         <div className="flex justify-start">
           <PriceTag price={price} size="small" />
         </div>

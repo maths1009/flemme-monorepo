@@ -10,7 +10,6 @@ export default function DirectionsPage() {
   const router = useRouter();
   const advertId = params.advertId as string;
 
-  // Récupération des données de l'annonce
   const advert = getAdvertById(advertId);
 
   if (!advert) {
@@ -22,13 +21,13 @@ export default function DirectionsPage() {
   }
 
   const handleContinue = () => {
-    // Rediriger vers la page d'accueil ou vers les messages
+    
     router.push('/');
   };
 
   return (
     <div className="min-h-screen bg-primary flex flex-col px-6 py-8">
-      {/* Titre principal */}
+      
       <div className="text-center mb-8">
         <h1
           className="font-bold text-foreground mb-4"

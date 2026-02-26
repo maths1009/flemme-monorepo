@@ -40,7 +40,6 @@ export const fetchClient = async <T = any>(
       throw new ApiError(response.status, errorMessage, errorData);
     }
 
-    // Handle 204 No Content or 202 Accepted (often empty body in NestJS)
     if (response.status === 204 || response.status === 202) {
       return {} as T;
     }

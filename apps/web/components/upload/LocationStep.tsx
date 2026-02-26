@@ -5,7 +5,6 @@ import { LocationAutocomplete } from '@/components/common/LocationAutocomplete';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 
-// Import dynamique du composant Carte
 const Map = dynamic(() => import('@/components/common/Map'), {
   loading: () => (
     <div className="h-full w-full bg-gray-100 flex items-center justify-center text-gray-400">
@@ -37,10 +36,9 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   const [address, setAddress] = React.useState(value.address);
   const [coordinates, setCoordinates] = React.useState(
     value.coordinates || { lat: 48.8566, lng: 2.3522 },
-  ); // Paris par défaut
+  );
   const [isGeocoding, setIsGeocoding] = React.useState(false);
 
-  // Fonction de géocodage avec Nominatim (pour le cas où l'utilisateur ne clique pas sur une suggestion)
   const geocodeAddress = async (addressQuery: string) => {
     if (!addressQuery.trim()) return;
 
@@ -84,14 +82,10 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     onUpdate({ ...value, address: newValue });
   };
 
-  // Géocoder l'adresse saisie après un délai si elle n'a pas été sélectionnée via l'autocomplete
-  // Note: LocationAutocomplete gère ses propres suggestions, mais ce useEffect assure que si l'utilisateur
-  // tape une adresse entière sans cliquer, la carte se met à jour.
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (address.trim().length > 3) {
-         // Petite optimisation: on ne géocode pas si les coords correspondent déjà (approximativement) ce qui est dur à vérifier sans flag.
-         // On laisse comme ça pour l'instant, c'est le comportement d'origine.
+         
         geocodeAddress(address);
       }
     }, 1500);
@@ -109,7 +103,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
           Où aura lieu votre tâche ?
@@ -117,12 +111,10 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         <p className="text-foreground/60 text-base">Adresse*</p>
       </div>
 
-      {/* Carte interactive */}
       <div className="mb-6">
         <div className="w-full h-48 rounded-2xl overflow-hidden relative border border-gray-100 shadow-sm">
           <Map coordinates={coordinates} popupText={address || "Localisation sélectionnée"} />
 
-          {/* Indicateur de chargement */}
           {isGeocoding && (
             <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[1000]">
               <div className="text-sm text-gray-600 font-medium">
@@ -133,7 +125,6 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         </div>
       </div>
 
-      {/* Champ d'adresse */}
       <div className="flex-1 flex flex-col">
         <div className="mb-8 text-black">
           <LocationAutocomplete
@@ -144,7 +135,6 @@ export const LocationStep: React.FC<LocationStepProps> = ({
           />
         </div>
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="mt-auto">
           <Button
             onClick={handleContinue}

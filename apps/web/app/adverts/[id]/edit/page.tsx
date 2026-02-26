@@ -19,7 +19,7 @@ export default function EditAdvertPage() {
     price: '',
     latitude: 0,
     longitude: 0,
-    address: '' // For display/search
+    address: ''
   });
   const [submitting, setSubmitting] = useState(false);
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -47,7 +47,7 @@ export default function EditAdvertPage() {
         price: annonce.price.toString(),
         latitude: annonce.latitude,
         longitude: annonce.longitude,
-        address: '' 
+        address: ''
       });
 
       if (annonce.latitude && annonce.longitude) {
@@ -128,7 +128,7 @@ export default function EditAdvertPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Titre</label>
-            <Input 
+            <Input
               value={formData.title}
               onChange={(e) => setFormData({...formData, title: e.target.value})}
               placeholder="Titre de l'annonce"

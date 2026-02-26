@@ -21,22 +21,20 @@ export default function MessagePage() {
   const [inputText, setInputText] = React.useState('');
   const [showOptions, setShowOptions] = React.useState(false);
 
-  // Récupération des données réelles de l'annonce
   const { annonce: advert, loading, error } = useAnnonce(advertId);
 
-  // Messages mockés (État local)
   const [messages, setMessages] = React.useState<Message[]>([
     {
       id: '1',
       type: 'text',
-      sender: 'vendor', // Le créateur de l'annonce
+      sender: 'vendor',
       content: 'Bonjour ! Je suis intéressé par votre demande.',
       timestamp: '14:30',
     },
     {
       id: '2',
       type: 'text',
-      sender: 'user', // Moi (l'utilisateur connecté)
+      sender: 'user',
       content: 'Parfait ! Quand êtes-vous disponible ?',
       timestamp: '14:32',
     },
@@ -79,11 +77,11 @@ export default function MessagePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
+      
       <div className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-             {/* ... (keep existing user info) */}
+             
             <button
               onClick={() => router.back()}
               className="p-2 hover:bg-gray-100 rounded-full"
@@ -122,7 +120,7 @@ export default function MessagePage() {
           </div>
           
           <div className="relative">
-            <button 
+            <button
               onClick={() => setShowOptions(!showOptions)}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -131,8 +129,8 @@ export default function MessagePage() {
 
             {showOptions && (
               <>
-                <div 
-                  className="fixed inset-0 z-10" 
+                <div
+                  className="fixed inset-0 z-10"
                   onClick={() => setShowOptions(false)}
                 />
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-20 py-1">
@@ -157,7 +155,7 @@ export default function MessagePage() {
       <div className="bg-blue-50 border-b border-blue-100 px-4 py-3">
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-blue-200 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-700">
-             {/* Placeholder image annonce si pas d'image */}
+             
              IMG
           </div>
           <div className="flex-1">
@@ -169,12 +167,11 @@ export default function MessagePage() {
         </div>
       </div>
 
-      {/* Zone de messages */}
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <div className="space-y-4">
           {messages.map((msg) => {
             if (msg.sender === 'vendor') {
-              // Messages de l'autre (le vendeur/créateur) -> À GAUCHE
+              
               return (
                 <div
                   key={msg.id}
@@ -208,7 +205,7 @@ export default function MessagePage() {
                 </div>
               );
             } else {
-              // Messages de moi (l'utilisateur) -> À DROITE
+              
               return (
                 <div
                   key={msg.id}
@@ -232,7 +229,6 @@ export default function MessagePage() {
         </div>
       </div>
 
-      {/* Barre de saisie */}
       <div className="bg-white border-t border-gray-200 px-4 py-3">
         <div className="flex items-center space-x-3">
           <button

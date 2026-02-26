@@ -55,7 +55,6 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
           const itemWidth = scrollContainerRef.current.clientWidth;
           const index = Math.round(scrollLeft / itemWidth);
 
-          // Force le scroll à aller exactement à l'image
           scrollContainerRef.current.scrollTo({
             left: index * itemWidth,
             behavior: 'smooth',
@@ -69,7 +68,7 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
   return (
     <div className="relative px-6 pt-6">
       <div className="relative h-64 w-full rounded-2xl overflow-hidden">
-        {/* Conteneur scrollable */}
+        
         <div
           ref={scrollContainerRef}
           className="flex h-full w-full overflow-x-auto scroll-smooth scrollbar-hide"
@@ -85,7 +84,6 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
           ))}
         </div>
 
-        {/* Boutons overlay */}
         <button
           onClick={() => router.back()}
           className="absolute top-4 left-4 w-10 h-10 bg-transparent rounded-full flex items-center justify-center"
@@ -94,17 +92,17 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
         </button>
 
         <div className="absolute top-4 right-4 flex space-x-2">
-          <button 
+          <button
             onClick={onLikeToggle}
             className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center transition-transform active:scale-95"
           >
-            <Heart 
-              className={`w-6 h-6 ${isLiked ? 'fill-red-500 text-red-500' : 'text-white'}`} 
+            <Heart
+              className={`w-6 h-6 ${isLiked ? 'fill-red-500 text-red-500' : 'text-white'}`}
             />
           </button>
 
           <div className="relative" ref={menuRef}>
-            <button 
+            <button
               onClick={() => setShowMenu(!showMenu)}
               className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center transition-transform active:scale-95"
             >
@@ -152,7 +150,6 @@ export const ImageCarouselSection: React.FC<ImageCarouselSectionProps> = ({
           </div>
         </div>
 
-        {/* Indicateur de photos */}
         <div
           className="absolute bottom-4 right-4 text-white text-sm px-2 py-1"
           style={{

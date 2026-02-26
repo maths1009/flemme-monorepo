@@ -22,13 +22,13 @@ export default function NotificationsPage() {
   const handleToggle = async (newValue: boolean) => {
     if (!user) return;
     setLoading(true);
-    setEnabled(newValue); // Optimistic update
+    setEnabled(newValue);
 
     try {
       await updateUser(user.id, { notif_enabled: newValue });
     } catch (error) {
       console.error('Failed to update notification settings:', error);
-      setEnabled(!newValue); // Revert on error
+      setEnabled(!newValue);
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export default function NotificationsPage() {
   
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <Header title="Notifications" sticky />
 
       <div className="p-6">
@@ -48,10 +48,10 @@ export default function NotificationsPage() {
             </p>
           </div>
           
-          <Toggle 
-            enabled={enabled} 
-            onChange={handleToggle} 
-            disabled={loading} 
+          <Toggle
+            enabled={enabled}
+            onChange={handleToggle}
+            disabled={loading}
           />
         </div>
       </div>

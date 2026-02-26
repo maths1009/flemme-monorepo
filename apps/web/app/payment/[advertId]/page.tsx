@@ -13,7 +13,6 @@ export default function PaymentPage() {
   const advertId = params.advertId as string;
   const [selectedPayment, setSelectedPayment] = React.useState('apple-pay');
 
-  // Récupération des données de l'annonce
   const advert = getAdvertById(advertId);
 
   if (!advert) {
@@ -28,7 +27,6 @@ export default function PaymentPage() {
   const subtotal = advert.price;
   const total = subtotal + serviceFee;
 
-  // Date d'aujourd'hui formatée
   const today = new Date();
   const formattedDate = today.toLocaleDateString('fr-FR', {
     weekday: 'long',
@@ -38,14 +36,14 @@ export default function PaymentPage() {
   });
 
   const handlePayment = () => {
-    // TODO: Logique de paiement
+    
     console.log('Procéder au paiement avec:', selectedPayment);
     router.push(`/payment/${advertId}/success`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      
       <div className="bg-white px-4 py-3 flex items-center justify-between">
         <button
           onClick={() => router.back()}
@@ -59,7 +57,7 @@ export default function PaymentPage() {
       </div>
 
       <div className="px-4 pb-4">
-        {/* Annonce */}
+        
         <div className="bg-white rounded-lg p-4 mb-6 flex items-center space-x-4">
           <Image
             src={advert.image}
@@ -75,14 +73,13 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* Moyens de paiement */}
         <div className="bg-white rounded-lg p-4 mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Ajoutez un moyen de paiement
           </h3>
 
           <div className="space-y-3">
-            {/* Carte de crédit */}
+            
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="radio"
@@ -106,7 +103,6 @@ export default function PaymentPage() {
               </div>
             </label>
 
-            {/* Apple Pay */}
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="radio"
@@ -128,7 +124,6 @@ export default function PaymentPage() {
               </div>
             </label>
 
-            {/* Google Pay */}
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="radio"
@@ -152,7 +147,6 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* Détails de la commande */}
         <div className="bg-white rounded-lg p-4 mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Détails de la commande
@@ -163,7 +157,6 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* Récapitulatif */}
         <div className="bg-white rounded-lg p-4 mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Récapitulatif
@@ -199,7 +192,6 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* Bouton de paiement */}
         <button
           onClick={handlePayment}
           className="w-full bg-gray-800 text-white py-4 rounded-full text-lg font-medium hover:bg-gray-900 transition-colors"

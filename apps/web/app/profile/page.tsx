@@ -102,11 +102,11 @@ export default function ProfilePage() {
           <div className="flex gap-4 overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide">
             {userAdverts.map((advert) => (
               <div key={advert.id} className="flex-shrink-0 w-[160px]">
-                 <MiniTaskCard 
+                 <MiniTaskCard
                    title={advert.title}
                    location=""
                    price={advert.price}
-                   image={''} 
+                   image={''}
                    onClick={() => router.push(`/adverts/${advert.id}`)}
                  />
               </div>

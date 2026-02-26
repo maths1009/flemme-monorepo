@@ -49,8 +49,6 @@ export default function ProfileEditPage() {
     try {
       if (!user) return;
       
-      // Filter out empty strings if needed, or send as is depending on API requirement
-      // Here we assume API handles partial updates well or we send all
       await updateUser(user.id, formData);
       setSuccess('Profil mis à jour avec succès');
       setTimeout(() => {
@@ -66,20 +64,19 @@ export default function ProfileEditPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <Header title="Modifier le profil" sticky />
 
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
             
-          {/* Profile Picture Placeholder - could be expanded later */}
           <div className="flex justify-center mb-8">
             <div className="relative">
               <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center border-2 border-white shadow-lg">
                  {user?.profile_picture_url ? (
-                    <img 
-                        src={user.profile_picture_url} 
-                        alt="Profile" 
+                    <img
+                        src={user.profile_picture_url}
+                        alt="Profile"
                         className="w-full h-full rounded-full object-cover"
                     />
                  ) : (

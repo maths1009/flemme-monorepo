@@ -100,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ code }),
         method: 'POST',
       });
-      // Optionally update user state to reflect verified status if needed
+      
       if (user) {
         const updatedUser = { ...user, email_verified: true };
         setUser(updatedUser);

@@ -47,7 +47,6 @@ export default function PublicProfilePage() {
   const [loadingAnnonces, setLoadingAnnonces] = useState(false);
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(false);
 
-  // Fetch user profile
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -66,7 +65,6 @@ export default function PublicProfilePage() {
     }
   }, [userId]);
 
-  // Fetch annonces when tab is active
   useEffect(() => {
     const fetchAnnonces = async () => {
       try {
@@ -85,7 +83,6 @@ export default function PublicProfilePage() {
     }
   }, [activeTab, userId, annonces.length, user]);
 
-  // Fetch feedbacks when tab is active
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
@@ -104,8 +101,7 @@ export default function PublicProfilePage() {
     }
   }, [activeTab, userId, feedbacks.length, user]);
 
-  // Calculate average rating
-  const averageRating = feedbacks.length > 0 
+  const averageRating = feedbacks.length > 0
     ? (feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length).toFixed(1)
     : '0';
 
@@ -137,7 +133,7 @@ export default function PublicProfilePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
+      
       <div className="flex items-center px-4 py-4 relative justify-center border-b border-gray-100">
         <button
           onClick={() => router.back()}
@@ -148,16 +144,14 @@ export default function PublicProfilePage() {
         <h1 className="text-lg font-semibold text-gray-800">{displayName}</h1>
       </div>
 
-      {/* Tabs */}
       <ProfileTabs
         tabs={TABS}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
 
-      {/* Tab Content */}
       <div className="p-4">
-        {/* Annonces Tab */}
+        
         {activeTab === 'annonces' && (
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -205,10 +199,9 @@ export default function PublicProfilePage() {
           </div>
         )}
 
-        {/* Evaluations Tab */}
         {activeTab === 'evaluations' && (
           <div>
-            {/* Rating Summary */}
+            
             <div className="text-center py-4 border-b border-gray-100 mb-4">
               <div className="text-3xl font-bold text-gray-800">{averageRating}</div>
               <div className="flex items-center justify-center gap-1 mt-1">
@@ -233,7 +226,6 @@ export default function PublicProfilePage() {
             />
           </div>
         )}
-
 
       </div>
     </div>

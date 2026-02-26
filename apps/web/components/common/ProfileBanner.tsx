@@ -11,8 +11,8 @@ interface ProfileBannerProps {
   user: {
     id: string;
     name: string;
-    rating: number; // Fallback or initial
-    reviews: number; // Fallback or initial
+    rating: number;
+    reviews: number;
     avatar: string;
   };
   onMessageClick?: () => void;

@@ -67,5 +67,5 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

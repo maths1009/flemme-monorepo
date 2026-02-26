@@ -315,7 +315,11 @@ importers:
         version: 0.511.0(react@19.2.4)
       nitro:
         specifier: 3.0.1-alpha.2
+<<<<<<< HEAD
         version: 3.0.1-alpha.2(chokidar@5.0.0)(ioredis@5.9.3)(lru-cache@11.2.6)(rollup@4.59.0)(vite@7.1.12(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(xml2js@0.6.2)
+=======
+        version: 3.0.1-alpha.2(better-sqlite3@12.6.0)(chokidar@5.0.0)(ioredis@5.9.1)(rollup@4.55.1)(sqlite3@5.1.7)(vite@7.1.12(@types/node@24.7.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.1))(xml2js@0.6.2)
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
       nuqs:
         specifier: ^2.8.8
         version: 2.8.8(@tanstack/react-router@1.150.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(next@15.5.12(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
@@ -4355,8 +4359,13 @@ packages:
     resolution: {integrity: sha512-xlx1yCK2Oc1APsPXDL2LdlNP6+uu8OCDdhOBSVT279M/S+y75O30C2VuD8T2ogdePBBl7PfPF4504tnLgX3zfw==}
     engines: {node: '>=14.16'}
 
+<<<<<<< HEAD
   caniuse-lite@1.0.30001774:
     resolution: {integrity: sha512-DDdwPGz99nmIEv216hKSgLD+D4ikHQHjBC/seF98N9CPqRX4M5mSxT9eTV6oyisnJcuzxtZy4n17yKKQYmYQOA==}
+=======
+  caniuse-lite@1.0.30001768:
+    resolution: {integrity: sha512-qY3aDRZC5nWPgHUgIB84WL+nySuo19wk0VJpp/XI9T34lrvkyhRvNVOFJOp2kxClQhiFBu+TaUSudf6oa3vkSA==}
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
 
   chai@5.3.3:
     resolution: {integrity: sha512-4zNhdJD/iOjSH0A05ea+Ke6MU5mmpQcbQsSOkgdaUMJ9zTlDTD/GYlwohmIE2u0gaxHYiVHEn1Fw9mZ/ktJWgw==}
@@ -7531,6 +7540,13 @@ packages:
     resolution: {integrity: sha512-2n9t0YnAXPJjinytvxccNgs7rOA5gmE7Wowt/8Dy2dx2fDC6sBhfBpbrCvjYKALlVukPS/Uq3QwkolKNa7P/2Q==}
     engines: {node: '>=20.16.0'}
     hasBin: true
+<<<<<<< HEAD
+=======
+
+  ssri@8.0.1:
+    resolution: {integrity: sha512-97qShzy1AiyxvPNIkLWoGua7xoQzzPjQ0HAH4B0rWKo7SZ6USuPcrUiAFrws0UH8RrbWmgq3LMTObhPIHbbBeQ==}
+    engines: {node: '>= 8'}
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
 
   stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
@@ -8103,8 +8119,13 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
+<<<<<<< HEAD
   undici@7.22.0:
     resolution: {integrity: sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==}
+=======
+  undici@7.18.2:
+    resolution: {integrity: sha512-y+8YjDFzWdQlSE9N5nzKMT3g4a5UBX1HKowfdXh0uvAnTaqqwqB92Jt4UXBAeKekDs5IaDKyJFR4X1gYVCgXcw==}
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
     engines: {node: '>=20.18.1'}
 
   unenv@1.10.0:
@@ -12955,7 +12976,11 @@ snapshots:
 
   camelcase@7.0.1: {}
 
+<<<<<<< HEAD
   caniuse-lite@1.0.30001774: {}
+=======
+  caniuse-lite@1.0.30001768: {}
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
 
   chai@5.3.3:
     dependencies:
@@ -15401,7 +15426,11 @@ snapshots:
     dependencies:
       '@next/env': 15.5.12
       '@swc/helpers': 0.5.15
+<<<<<<< HEAD
       caniuse-lite: 1.0.30001774
+=======
+      caniuse-lite: 1.0.30001768
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
       postcss: 8.4.31
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
@@ -15422,11 +15451,19 @@ snapshots:
 
   nf3@0.3.10: {}
 
+<<<<<<< HEAD
   nitro@3.0.1-alpha.2(chokidar@5.0.0)(ioredis@5.9.3)(lru-cache@11.2.6)(rollup@4.59.0)(vite@7.1.12(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(xml2js@0.6.2):
     dependencies:
       consola: 3.4.2
       crossws: 0.4.4(srvx@0.10.1)
       db0: 0.3.4
+=======
+  nitro@3.0.1-alpha.2(better-sqlite3@12.6.0)(chokidar@5.0.0)(ioredis@5.9.1)(rollup@4.55.1)(sqlite3@5.1.7)(vite@7.1.12(@types/node@24.7.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.1))(xml2js@0.6.2):
+    dependencies:
+      consola: 3.4.2
+      crossws: 0.4.4(srvx@0.10.1)
+      db0: 0.3.4(better-sqlite3@12.6.0)(sqlite3@5.1.7)
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
       h3: 2.0.1-rc.14(crossws@0.4.4(srvx@0.10.1))
       jiti: 2.6.1
       nf3: 0.3.10
@@ -15435,9 +15472,15 @@ snapshots:
       oxc-minify: 0.110.0
       oxc-transform: 0.110.0
       srvx: 0.10.1
+<<<<<<< HEAD
       undici: 7.22.0
       unenv: 2.0.0-rc.24
       unstorage: 2.0.0-alpha.6(chokidar@5.0.0)(db0@0.3.4)(ioredis@5.9.3)(lru-cache@11.2.6)(ofetch@2.0.0-alpha.3)
+=======
+      undici: 7.18.2
+      unenv: 2.0.0-rc.24
+      unstorage: 2.0.0-alpha.6(chokidar@5.0.0)(db0@0.3.4(better-sqlite3@12.6.0)(sqlite3@5.1.7))(ioredis@5.9.1)(ofetch@2.0.0-alpha.3)
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
     optionalDependencies:
       rollup: 4.59.0
       vite: 7.1.12(@types/node@25.3.1)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
@@ -16602,6 +16645,14 @@ snapshots:
   srvx@0.10.1: {}
 
   srvx@0.11.8: {}
+<<<<<<< HEAD
+=======
+
+  ssri@8.0.1:
+    dependencies:
+      minipass: 3.3.6
+    optional: true
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
 
   stack-utils@2.0.6:
     dependencies:
@@ -17090,7 +17141,11 @@ snapshots:
 
   undici-types@7.18.2: {}
 
+<<<<<<< HEAD
   undici@7.22.0: {}
+=======
+  undici@7.18.2: {}
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
 
   unenv@1.10.0:
     dependencies:
@@ -17181,12 +17236,20 @@ snapshots:
       db0: 0.3.4
       ioredis: 5.9.3
 
+<<<<<<< HEAD
   unstorage@2.0.0-alpha.6(chokidar@5.0.0)(db0@0.3.4)(ioredis@5.9.3)(lru-cache@11.2.6)(ofetch@2.0.0-alpha.3):
     optionalDependencies:
       chokidar: 5.0.0
       db0: 0.3.4
       ioredis: 5.9.3
       lru-cache: 11.2.6
+=======
+  unstorage@2.0.0-alpha.6(chokidar@5.0.0)(db0@0.3.4(better-sqlite3@12.6.0)(sqlite3@5.1.7))(ioredis@5.9.1)(ofetch@2.0.0-alpha.3):
+    optionalDependencies:
+      chokidar: 5.0.0
+      db0: 0.3.4(better-sqlite3@12.6.0)(sqlite3@5.1.7)
+      ioredis: 5.9.1
+>>>>>>> 6cac9b5 (✨ feat: Add new  application and expand  application routing with sitemap, legal, and content pages)
       ofetch: 2.0.0-alpha.3
 
   untun@0.1.3:

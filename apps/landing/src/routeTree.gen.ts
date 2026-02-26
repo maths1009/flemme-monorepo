@@ -8,9 +8,21 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as LayoutRouteRouteImport } from './routes/_layout/route'
-import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug';
+import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index';
+import { Route as LayoutCgvRouteImport } from './routes/_layout/cgv';
+import { Route as LayoutContactRouteImport } from './routes/_layout/contact';
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index';
+import { Route as LayoutMentionsLegalesRouteImport } from './routes/_layout/mentions-legales';
+import { Route as LayoutRouteRouteImport } from './routes/_layout/route';
+import { Route as LayoutTeamSlugRouteImport } from './routes/_layout/team/$slug';
+import { Route as LayoutTeamIndexRouteImport } from './routes/_layout/team/index';
+import { Route as R404RouteImport } from './routes/404';
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt';
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt';
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt';
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml';
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   getParentRoute: () => rootRouteImport,
@@ -38,36 +50,153 @@ const R404Route = R404RouteImport.update({
   path: '/404',
 } as any);
 const LayoutRouteRoute = LayoutRouteRouteImport.update({
-  id: '/_layout',
   getParentRoute: () => rootRouteImport,
-} as any)
+  id: '/_layout',
+} as any);
 const LayoutIndexRoute = LayoutIndexRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
   id: '/',
   path: '/',
+} as any);
+const LayoutMentionsLegalesRoute = LayoutMentionsLegalesRouteImport.update({
   getParentRoute: () => LayoutRouteRoute,
-} as any)
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+} as any);
+const LayoutContactRoute = LayoutContactRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/contact',
+  path: '/contact',
+} as any);
+const LayoutCgvRoute = LayoutCgvRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/cgv',
+  path: '/cgv',
+} as any);
+const LayoutTeamIndexRoute = LayoutTeamIndexRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/team/',
+  path: '/team/',
+} as any);
+const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/blog/',
+  path: '/blog/',
+} as any);
+const LayoutTeamSlugRoute = LayoutTeamSlugRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/team/$slug',
+  path: '/team/$slug',
+} as any);
+const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
+  getParentRoute: () => LayoutRouteRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof LayoutIndexRoute
+  '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/cgv': typeof LayoutCgvRoute;
+  '/contact': typeof LayoutContactRoute;
+  '/mentions-legales': typeof LayoutMentionsLegalesRoute;
+  '/': typeof LayoutIndexRoute;
+  '/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/team/$slug': typeof LayoutTeamSlugRoute;
+  '/blog': typeof LayoutBlogIndexRoute;
+  '/team': typeof LayoutTeamIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof LayoutIndexRoute
+  '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/cgv': typeof LayoutCgvRoute;
+  '/contact': typeof LayoutContactRoute;
+  '/mentions-legales': typeof LayoutMentionsLegalesRoute;
+  '/': typeof LayoutIndexRoute;
+  '/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/team/$slug': typeof LayoutTeamSlugRoute;
+  '/blog': typeof LayoutBlogIndexRoute;
+  '/team': typeof LayoutTeamIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/_layout': typeof LayoutRouteRouteWithChildren
-  '/_layout/': typeof LayoutIndexRoute
+  __root__: typeof rootRouteImport;
+  '/_layout': typeof LayoutRouteRouteWithChildren;
+  '/404': typeof R404Route;
+  '/llms-full.txt': typeof LlmsFullDottxtRoute;
+  '/llms.txt': typeof LlmsDottxtRoute;
+  '/robots.txt': typeof RobotsDottxtRoute;
+  '/sitemap.xml': typeof SitemapDotxmlRoute;
+  '/_layout/cgv': typeof LayoutCgvRoute;
+  '/_layout/contact': typeof LayoutContactRoute;
+  '/_layout/mentions-legales': typeof LayoutMentionsLegalesRoute;
+  '/_layout/': typeof LayoutIndexRoute;
+  '/_layout/blog/$slug': typeof LayoutBlogSlugRoute;
+  '/_layout/team/$slug': typeof LayoutTeamSlugRoute;
+  '/_layout/blog/': typeof LayoutBlogIndexRoute;
+  '/_layout/team/': typeof LayoutTeamIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_layout' | '/_layout/'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths:
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/cgv'
+    | '/contact'
+    | '/mentions-legales'
+    | '/'
+    | '/blog/$slug'
+    | '/team/$slug'
+    | '/blog'
+    | '/team';
+  fileRoutesByTo: FileRoutesByTo;
+  to:
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/cgv'
+    | '/contact'
+    | '/mentions-legales'
+    | '/'
+    | '/blog/$slug'
+    | '/team/$slug'
+    | '/blog'
+    | '/team';
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/404'
+    | '/llms-full.txt'
+    | '/llms.txt'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/_layout/cgv'
+    | '/_layout/contact'
+    | '/_layout/mentions-legales'
+    | '/_layout/'
+    | '/_layout/blog/$slug'
+    | '/_layout/team/$slug'
+    | '/_layout/blog/'
+    | '/_layout/team/';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren;
+  R404Route: typeof R404Route;
+  LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute;
+  LlmsDottxtRoute: typeof LlmsDottxtRoute;
+  RobotsDottxtRoute: typeof RobotsDottxtRoute;
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute;
 }
 
 declare module '@tanstack/react-router' {
@@ -108,24 +237,80 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof rootRouteImport;
     };
     '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_layout';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof LayoutRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_layout/': {
-      id: '/_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRouteRoute
-    }
+      id: '/_layout/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof LayoutIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/mentions-legales': {
+      id: '/_layout/mentions-legales';
+      path: '/mentions-legales';
+      fullPath: '/mentions-legales';
+      preLoaderRoute: typeof LayoutMentionsLegalesRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/contact': {
+      id: '/_layout/contact';
+      path: '/contact';
+      fullPath: '/contact';
+      preLoaderRoute: typeof LayoutContactRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/cgv': {
+      id: '/_layout/cgv';
+      path: '/cgv';
+      fullPath: '/cgv';
+      preLoaderRoute: typeof LayoutCgvRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/team/': {
+      id: '/_layout/team/';
+      path: '/team';
+      fullPath: '/team';
+      preLoaderRoute: typeof LayoutTeamIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/blog/': {
+      id: '/_layout/blog/';
+      path: '/blog';
+      fullPath: '/blog';
+      preLoaderRoute: typeof LayoutBlogIndexRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/team/$slug': {
+      id: '/_layout/team/$slug';
+      path: '/team/$slug';
+      fullPath: '/team/$slug';
+      preLoaderRoute: typeof LayoutTeamSlugRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
+    '/_layout/blog/$slug': {
+      id: '/_layout/blog/$slug';
+      path: '/blog/$slug';
+      fullPath: '/blog/$slug';
+      preLoaderRoute: typeof LayoutBlogSlugRouteImport;
+      parentRoute: typeof LayoutRouteRoute;
+    };
   }
 }
 
 interface LayoutRouteRouteChildren {
-  LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutCgvRoute: typeof LayoutCgvRoute;
+  LayoutContactRoute: typeof LayoutContactRoute;
+  LayoutMentionsLegalesRoute: typeof LayoutMentionsLegalesRoute;
+  LayoutIndexRoute: typeof LayoutIndexRoute;
+  LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute;
+  LayoutTeamSlugRoute: typeof LayoutTeamSlugRoute;
+  LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute;
+  LayoutTeamIndexRoute: typeof LayoutTeamIndexRoute;
 }
 
 const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
@@ -134,24 +319,29 @@ const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
   LayoutCgvRoute: LayoutCgvRoute,
   LayoutContactRoute: LayoutContactRoute,
   LayoutIndexRoute: LayoutIndexRoute,
-}
+  LayoutMentionsLegalesRoute: LayoutMentionsLegalesRoute,
+  LayoutTeamIndexRoute: LayoutTeamIndexRoute,
+  LayoutTeamSlugRoute: LayoutTeamSlugRoute,
+};
 
-const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
-  LayoutRouteRouteChildren,
-)
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(LayoutRouteRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRouteRoute: LayoutRouteRouteWithChildren,
-}
-export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  LlmsDottxtRoute: LlmsDottxtRoute,
+  LlmsFullDottxtRoute: LlmsFullDottxtRoute,
+  R404Route: R404Route,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+};
+export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { createStart } from '@tanstack/react-start';
+import type { getRouter } from './router.tsx';
+
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

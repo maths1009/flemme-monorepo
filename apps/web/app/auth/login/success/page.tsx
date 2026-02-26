@@ -30,9 +30,7 @@ const LoginSuccessPage = () => {
 
       {/* Bouton rond en bas */}
       <div className="mb-8">
-        <div onClick={() => router.push('/')}>
-          <CircularButton />
-        </div>
+        <CircularButton onClick={() => router.push('/')} />
       </div>
     </div>
   );

@@ -54,7 +54,7 @@
   "name": "api",
   "private": false,
   "scripts": {
-    "build": "nest build ",
+    "build": "nest build",
     "db:erd": "ts-node -r tsconfig-paths/register scripts/generate-erd.ts",
     "dev": "pnpm run start:services && nest start -w",
     "format": "biome format .",

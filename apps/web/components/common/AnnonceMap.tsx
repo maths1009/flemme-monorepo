@@ -27,8 +27,8 @@ const createUserIcon = () => {
         <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-500 border-2 border-white shadow-sm"></span>
       </div>
     `,
-    iconSize: [24, 24],
     iconAnchor: [0, 0],
+    iconSize: [24, 24],
   });
 };
 
@@ -57,16 +57,16 @@ const AnnonceMap = ({ advertLocation, className }: AnnonceMapProps) => {
   return (
     <MapContainer
       center={centerPosition}
+      className={className}
       key={`${centerPosition[0]}-${centerPosition[1]}`}
       style={{ height: '100%', width: '100%' }}
       zoom={13}
-      className={className}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      
+
       <Marker icon={icon} position={centerPosition}>
         <Popup>Lieu de la mission</Popup>
       </Marker>

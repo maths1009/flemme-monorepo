@@ -71,6 +71,7 @@ describe('AnnoncesService', () => {
       };
       repository.create.mockReturnValue(savedAnnonce);
       repository.save.mockResolvedValue(savedAnnonce);
+      repository.findOne.mockResolvedValue(savedAnnonce);
 
       const result = await service.create(createDto, userId);
 
@@ -112,6 +113,19 @@ describe('AnnoncesService', () => {
       expect(queryBuilder.setParameter).toHaveBeenCalledWith('maxDistance', 10);
       expect(queryBuilder.andWhere).toHaveBeenCalledWith(expect.stringContaining('<= :maxDistance'));
       expect(queryBuilder.orderBy).toHaveBeenCalledWith('distance', 'ASC');
+    });
+
+    it('should filter by specific userId when provided', async () => {
+      const dto = { limit: 10, page: 1, userId: 'target-user' };
+      const paginatedResult = { items: [], meta: {} };
+      paginationService.paginate.mockResolvedValue(paginatedResult as any);
+
+      await service.findAll(dto, userId);
+
+      const queryBuilder = repository.createQueryBuilder();
+      expect(queryBuilder.where).toHaveBeenCalledWith('annonce.user_id = :targetUserId', {
+        targetUserId: 'target-user',
+      });
     });
   });
 

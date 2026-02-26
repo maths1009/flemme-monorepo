@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { PaginationDto } from '@/common/dto/pagination.dto';
 import { AnnonceDto } from '@/features/annonces/dto/annonce.dto';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { PublicUserDto } from '@/features/users/dto/user.dto';
 import { TrackingStatusEnum } from '../enum/tracking-status.enum';
 
 export class CreateTrackingDto {
@@ -43,11 +43,11 @@ export class TrackingDto {
   @ApiProperty({ type: AnnonceDto })
   annonce: AnnonceDto;
 
-  @ApiProperty({ type: UserDto })
-  creator: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  creator: PublicUserDto;
 
-  @ApiProperty({ type: UserDto })
-  accepter: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  accepter: PublicUserDto;
 
   @ApiProperty()
   negotiated_price: number;

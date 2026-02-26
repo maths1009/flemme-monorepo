@@ -25,8 +25,13 @@ export class AnnoncesService {
     const queryBuilder = this.annoncesRepository
       .createQueryBuilder('annonce')
       .leftJoinAndSelect('annonce.user', 'user')
-      .leftJoinAndSelect('user.role', 'role')
-      .where('annonce.user_id != :user_id', { user_id });
+      .leftJoinAndSelect('user.role', 'role');
+
+    if (paginationDto.userId) {
+      queryBuilder.where('annonce.user_id = :targetUserId', { targetUserId: paginationDto.userId });
+    } else {
+      queryBuilder.where('annonce.user_id != :user_id', { user_id });
+    }
 
     if (paginationDto.latitude && paginationDto.longitude) {
       const distanceQuery = `(
@@ -63,7 +68,17 @@ export class AnnoncesService {
     });
 
     const savedAnnonce = await this.annoncesRepository.save(annonce);
-    return annonceToDto(savedAnnonce, this.fileService);
+
+    const reloadedAnnonce = await this.annoncesRepository.findOne({
+      relations: ['user', 'user.role'],
+      where: { id: savedAnnonce.id },
+    });
+
+    if (!reloadedAnnonce) {
+      throw new Error('Failed to create annonce');
+    }
+
+    return annonceToDto(reloadedAnnonce, this.fileService);
   }
 
   async update(id: string, updateAnnonceDto: UpdateAnnonceDto, user_id: string): Promise<void> {
@@ -84,6 +99,12 @@ export class AnnoncesService {
       relations: ['user', 'user.role'],
       where: { id },
     });
+  }
+
+  async getOne(id: string): Promise<AnnonceDto | null> {
+    const annonce = await this.findOne(id);
+    if (!annonce) return null;
+    return annonceToDto(annonce, this.fileService);
   }
 
   async delete(id: string, user_id: string): Promise<void> {

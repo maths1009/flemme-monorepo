@@ -1,36 +1,29 @@
 'use client';
 
-import { OfferMessage } from '@/components/messages';
-import { getAdvertById } from '@/lib/mockData';
-import { MoreHorizontal, Plus, Send, X } from 'lucide-react';
+import { useAnnonce } from '@/hooks/useAnnonces';
+import { ArrowLeft, Flag, MoreHorizontal, Plus, Send, Star } from 'lucide-react';
+import { PriceTag } from '@/components/common/PriceTag';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 
 interface Message {
   id: string;
-  type: 'text' | 'offer';
+  type: 'text';
   sender: 'user' | 'vendor';
-  content?: string;
+  content: string;
   timestamp: string;
-  offer?: {
-    originalPrice: number;
-    proposedPrice: number;
-    status: 'pending' | 'accepted' | 'refused';
-  };
 }
 
 export default function MessagePage() {
   const params = useParams();
   const router = useRouter();
   const advertId = params.advertId as string;
-  const [message, setMessage] = React.useState('');
+  const [inputText, setInputText] = React.useState('');
+  const [showOptions, setShowOptions] = React.useState(false);
 
-  // Récupération des données de l'annonce
-  const advert = getAdvertById(advertId);
+  const { annonce: advert, loading, error } = useAnnonce(advertId);
 
-  // Messages mockés - en réalité, cela viendrait d'une API
-  // Par défaut, pas d'offre - seulement des messages texte
-  const [messages] = React.useState<Message[]>([
+  const [messages, setMessages] = React.useState<Message[]>([
     {
       id: '1',
       type: 'text',
@@ -45,22 +38,34 @@ export default function MessagePage() {
       content: 'Parfait ! Quand êtes-vous disponible ?',
       timestamp: '14:32',
     },
-    // Une offre ne sera ajoutée que si quelqu'un en fait une
-    // Exemple d'offre (à décommenter pour tester) :
-    // {
-    //   id: '3',
-    //   type: 'offer',
-    //   sender: 'vendor',
-    //   timestamp: '14:35',
-    //   offer: {
-    //     originalPrice: advert.price,
-    //     proposedPrice: 4.00,
-    //     status: 'pending'
-    //   }
-    // }
   ]);
 
-  if (!advert) {
+  const handleSendMessage = () => {
+    if (inputText.trim()) {
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        type: 'text',
+        sender: 'user',
+        content: inputText,
+        timestamp: new Date().toLocaleTimeString('fr-FR', {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+      };
+      setMessages([...messages, newMessage]);
+      setInputText('');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">Chargement de la conversation...</p>
+      </div>
+    );
+  }
+
+  if (error || !advert) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <p className="text-gray-500">Annonce non trouvée</p>
@@ -68,171 +73,154 @@ export default function MessagePage() {
     );
   }
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      // TODO: Logique d'envoi de message
-      console.log(
-        "Message envoyé pour l'annonce:",
-        advertId,
-        'Message:',
-        message,
-      );
-      setMessage('');
-    }
-  };
-
-  const handleAddPhoto = () => {
-    // TODO: Logique d'ajout de photo
-    console.log('Ajouter une photo');
-  };
+  const user = advert.user;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
+      
       <div className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
+             
             <button
               onClick={() => router.back()}
               className="p-2 hover:bg-gray-100 rounded-full"
             >
-              <X className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="flex items-center space-x-3">
-              {advert.user.avatar ? (
+              {user.profile_picture_url ? (
                 <img
-                  src={advert.user.avatar}
-                  alt={`Avatar de ${advert.user.name}`}
+                  src={user.profile_picture_url}
+                  alt={`Avatar de ${user.firstname}`}
                   className="w-10 h-10 rounded-full object-cover"
                 />
               ) : (
                 <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                   <span className="text-sm font-semibold text-gray-600">
-                    {advert.user.name.charAt(0).toUpperCase()}
+                    {user.firstname.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
               <div>
                 <div className="flex items-center space-x-2">
                   <h1 className="font-semibold text-gray-800">
-                    {advert.user.name}
+                    {user.firstname} {user.lastname}
                   </h1>
-                  <img
-                    src="/images/messages/stars.svg"
-                    alt="Star"
-                    className="w-5 h-5"
-                  />
+                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   <span className="text-sm font-medium text-gray-800">
-                    ({advert.user.reviews})
+                    (4.8)
                   </span>
                 </div>
                 <p className="text-sm text-gray-500">
-                  Dernière connexion: il y a 2h
+                  En ligne maintenant
                 </p>
               </div>
             </div>
           </div>
-          <button className="p-2 hover:bg-gray-100 rounded-full">
-            <MoreHorizontal className="w-5 h-5 text-gray-600" />
-          </button>
+          
+          <div className="relative">
+            <button
+              onClick={() => setShowOptions(!showOptions)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <MoreHorizontal className="w-5 h-5 text-gray-600" />
+            </button>
+
+            {showOptions && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setShowOptions(false)}
+                />
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-20 py-1">
+                  <button
+                    onClick={() => {
+                      console.log('Signaler annonce');
+                      setShowOptions(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                  >
+                    <Flag className="w-4 h-4" />
+                    <span>Signaler l'annonce</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Contexte de l'annonce */}
       <div className="bg-blue-50 border-b border-blue-100 px-4 py-3">
         <div className="flex items-center space-x-3">
-          <img
-            src={advert.image}
-            alt={advert.title}
-            className="w-12 h-12 rounded-lg object-cover"
-          />
+          <div className="w-12 h-12 bg-blue-200 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-700">
+             
+             IMG
+          </div>
           <div className="flex-1">
-            <h3 className="font-medium text-gray-800">{advert.title}</h3>
-            <p className="text-sm text-gray-600">
-              {advert.price}€ • {advert.location}
-            </p>
+            <h3 className="font-medium text-gray-800 line-clamp-1">{advert.title}</h3>
+            <div className="mt-1">
+              <PriceTag price={advert.price} size="small" />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Zone de messages */}
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <div className="space-y-4">
           {messages.map((msg) => {
             if (msg.sender === 'vendor') {
-              // Messages du vendeur (à gauche avec avatar)
+              
               return (
                 <div
                   key={msg.id}
                   className="flex justify-start items-start space-x-3"
                 >
-                  {advert.user.avatar ? (
+                  {user.profile_picture_url ? (
                     <img
-                      src={advert.user.avatar}
-                      alt={`Avatar de ${advert.user.name}`}
+                      src={user.profile_picture_url}
+                      alt={`Avatar de ${user.firstname}`}
                       className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                     />
                   ) : (
                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-semibold text-gray-600">
-                        {advert.user.name.charAt(0).toUpperCase()}
+                        {user.firstname.charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
 
-                  {msg.type === 'text' ? (
-                    <div
-                      className="border border-gray-800 text-gray-800 max-w-xs"
-                      style={{
-                        borderRadius: '4px',
-                        padding: '12px 18px',
-                      }}
-                    >
-                      <p>{msg.content}</p>
-                    </div>
-                  ) : (
-                    <OfferMessage
-                      originalPrice={msg.offer!.originalPrice}
-                      proposedPrice={msg.offer!.proposedPrice}
-                      status={msg.offer!.status}
-                      onAccept={() => console.log('Offre acceptée')}
-                      onRefuse={() => console.log('Offre refusée')}
-                      onMakeOffer={() => console.log('Faire une contre-offre')}
-                    />
-                  )}
+                  <div
+                    className="bg-transparent text-[#282924] max-w-[75%] flex flex-col justify-center items-start gap-2"
+                    style={{
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                      border: '1px solid #282924',
+                    }}
+                  >
+                    <p>{msg.content}</p>
+                    <span className="text-[10px] text-gray-500 block w-full text-right">{msg.timestamp}</span>
+                  </div>
                 </div>
               );
             } else {
-              // Messages de l'utilisateur (à droite avec avatar)
+              
               return (
                 <div
                   key={msg.id}
                   className="w-full flex justify-end items-start space-x-3"
                 >
-                  {msg.type === 'text' ? (
-                    <div
-                      className="border border-gray-800 text-gray-800 max-w-xs"
-                      style={{
-                        borderRadius: '4px',
-                        padding: '12px 18px',
-                      }}
-                    >
-                      <p>{msg.content}</p>
-                    </div>
-                  ) : (
-                    <OfferMessage
-                      originalPrice={msg.offer!.originalPrice}
-                      proposedPrice={msg.offer!.proposedPrice}
-                      status={msg.offer!.status}
-                      onAccept={() => console.log('Offre acceptée')}
-                      onRefuse={() => console.log('Offre refusée')}
-                      onMakeOffer={() => console.log('Faire une contre-offre')}
-                    />
-                  )}
-                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-semibold text-gray-600">
-                      U
-                    </span>
+                  <div
+                    className="bg-transparent text-[#282924] max-w-[75%] flex flex-col justify-center items-start gap-2"
+                    style={{
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                      border: '1px solid #282924',
+                    }}
+                  >
+                    <p>{msg.content}</p>
+                    <span className="text-[10px] text-gray-500 block w-full text-right">{msg.timestamp}</span>
                   </div>
                 </div>
               );
@@ -241,12 +229,9 @@ export default function MessagePage() {
         </div>
       </div>
 
-      {/* Barre de saisie */}
       <div className="bg-white border-t border-gray-200 px-4 py-3">
         <div className="flex items-center space-x-3">
-          {/* Bouton ajouter photo */}
           <button
-            onClick={handleAddPhoto}
             className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
             aria-label="Ajouter une photo"
           >
@@ -255,20 +240,20 @@ export default function MessagePage() {
 
           <input
             type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
             placeholder="Tapez votre message..."
-            className="flex-1 px-4 py-2 border border-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-800"
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
           />
           <button
             onClick={handleSendMessage}
             className={`p-2 rounded-full transition-colors ${
-              message.trim()
-                ? 'bg-blue-500 text-white hover:bg-blue-600'
+              inputText.trim()
+                ? 'bg-gray-800 text-white hover:bg-gray-900'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
-            disabled={!message.trim()}
+            disabled={!inputText.trim()}
           >
             <Send className="w-5 h-5" />
           </button>

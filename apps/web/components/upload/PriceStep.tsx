@@ -20,7 +20,7 @@ export const PriceStep: React.FC<PriceStepProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    // Permettre seulement les chiffres et le point décimal
+    
     if (/^\d*\.?\d*$/.test(newValue) || newValue === '') {
       setPrice(newValue);
       onUpdate(newValue);
@@ -37,7 +37,7 @@ export const PriceStep: React.FC<PriceStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
           Quel est votre prix ?
@@ -45,7 +45,6 @@ export const PriceStep: React.FC<PriceStepProps> = ({
         <p className="text-foreground/60 text-base">Fixez votre tarif</p>
       </div>
 
-      {/* Champ de prix */}
       <div className="flex-1 flex flex-col">
         <div className="mb-8">
           <div
@@ -65,7 +64,6 @@ export const PriceStep: React.FC<PriceStepProps> = ({
           </div>
         </div>
 
-        {/* Suggestions de prix (optionnel) */}
         <div className="mb-8">
           <p className="text-sm text-foreground/60 mb-4">Suggestions :</p>
           <div className="flex flex-wrap gap-2">
@@ -84,7 +82,6 @@ export const PriceStep: React.FC<PriceStepProps> = ({
           </div>
         </div>
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="">
           <Button
             onClick={handleContinue}

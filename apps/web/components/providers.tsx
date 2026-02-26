@@ -1,4 +1,5 @@
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { AuthProvider } from '@/context/AuthContext';
 import type { ReactNode } from 'react';
 
 type ProvidersProps = {
@@ -6,7 +7,11 @@ type ProvidersProps = {
 };
 
 const Providers = ({ children }: Readonly<ProvidersProps>) => {
-  return <NuqsAdapter>{children}</NuqsAdapter>;
+  return (
+    <AuthProvider>
+      <NuqsAdapter>{children}</NuqsAdapter>
+    </AuthProvider>
+  );
 };
 
 export { Providers };

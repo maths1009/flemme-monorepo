@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { PriceTag } from '@/components/common/PriceTag';
 
 interface OfferMessageProps {
   originalPrice: number;
@@ -52,9 +53,7 @@ export const OfferMessage: React.FC<OfferMessageProps> = ({
       <div className="space-y-3">
         <div>
           <div className="flex items-baseline space-x-2">
-            <span className="text-lg font-semibold">
-              {proposedPrice.toFixed(2)} €
-            </span>
+            <PriceTag price={proposedPrice} size="medium" />
             <span className="text-sm text-gray-500 line-through">
               {originalPrice.toFixed(2)} €
             </span>

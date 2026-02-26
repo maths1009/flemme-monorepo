@@ -40,3 +40,5 @@ yarn-error.log*
 
 .react-email
 swagger-spec.json
+
+.output/

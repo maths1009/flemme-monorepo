@@ -38,6 +38,26 @@ export class AnnoncesController {
     return this.annoncesService.findAll(paginationDto, user.id);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get an annonce by id' })
+  @ApiParam({ description: 'Annonce id', name: 'id' })
+  @ApiResponse({
+    description: 'The annonce',
+    status: HttpStatus.OK,
+    type: AnnonceDto,
+  })
+  @ApiException(() => NotFoundException, {
+    description: AnnonceErrorMessages.ANNONCE_NOT_FOUND,
+  })
+  async findOne(@Param('id') id: string) {
+    const annonce = await this.annoncesService.findOne(id);
+    if (!annonce) {
+      throw new NotFoundException(AnnonceErrorMessages.ANNONCE_NOT_FOUND);
+    }
+
+    return this.annoncesService.getOne(id);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create a new annonce' })
   @ApiBody({ type: CreateAnnonceDto })

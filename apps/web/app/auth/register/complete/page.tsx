@@ -2,6 +2,7 @@
 
 import { Button, Input, PhotoUpload } from '@/components/common';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import * as React from 'react';
 
 const CompleteProfilePage = () => {
@@ -12,14 +13,16 @@ const CompleteProfilePage = () => {
 
   const handleImageChange = (file: File | null, preview: string | null) => {
     setProfileImage(file);
-    setError(''); // Clear any previous errors
+    setError('');
   };
 
   const handleImageError = (errorMessage: string) => {
     setError(errorMessage);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { updateUser, user } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -33,19 +36,28 @@ const CompleteProfilePage = () => {
       return;
     }
 
-    // Ici vous pourriez envoyer les données au serveur
-    console.log('Pseudo:', pseudo);
-    console.log('Profile Image:', profileImage);
+    if (!user) {
+        router.push('/auth/login');
+        return;
+    }
 
-    // Redirection vers la page de succès ou dashboard
-    router.push('/auth/register/success');
+    try {
+        await updateUser(user.id, {
+            username: pseudo,
+        });
+        
+        router.push('/');
+        
+    } catch (err: any) {
+        setError(err.message || 'Erreur lors de la mise à jour');
+    }
   };
 
   return (
     <div className="relative mx-auto h-screen max-w-[390px] bg-primary/5">
       <div className="flex h-full flex-col">
         <div className="flex flex-1 flex-col gap-8 px-6 pt-12">
-          {/* Titre principal */}
+          
           <div className="text-center">
             <h1 className="mb-6 text-4xl font-extrabold text-foreground text-center">
               Fais-toi une place ici !
@@ -99,7 +111,6 @@ const CompleteProfilePage = () => {
           </form>
         </div>
 
-        {/* Bouton en bas */}
         <div className="px-6 pb-8">
           <Button
             onClick={handleSubmit}

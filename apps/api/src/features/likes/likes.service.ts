@@ -50,7 +50,20 @@ export class LikesService {
       user_id: userId,
     });
 
-    return this.likesRepository.save(like);
+    const savedLike = await this.likesRepository.save(like);
+
+    const relatedLike = await this.likesRepository.findOne({
+      where: {
+        id: savedLike.id
+      },
+      relations: ['user', 'annonce', 'user.role', 'annonce.user', 'annonce.user.role'],
+    });
+
+    if(!relatedLike) {
+      throw new Error('Failed to create like');
+    }
+
+    return relatedLike;
   }
 
   async findAll(params: LikeParamsDto, userId: string): Promise<PaginatedResponseDto<LikeDto>> {

@@ -14,9 +14,9 @@ export const ApplicationPanel: React.FC = () => {
         className="relative rounded-3xl p-6 overflow-hidden"
         style={{ backgroundColor: '#EDE5DA' }}
       >
-        {/* Contenu principal */}
+        
         <div className="flex items-center justify-between">
-          {/* Texte et bouton */}
+          
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 leading-tight">
               Notre application
@@ -32,7 +32,6 @@ export const ApplicationPanel: React.FC = () => {
             </button>
           </div>
 
-          {/* Illustration */}
           <div className="flex-shrink-0 ml-4">
             <Image
               src="/images/home/illustration_application_presente.svg"

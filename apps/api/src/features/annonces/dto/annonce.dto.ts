@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
-import { UserDto } from '@/features/users/dto/user.dto';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { PublicUserDto } from '@/features/users/dto/user.dto';
 
 export class AnnonceDto {
   @ApiProperty()
@@ -27,28 +27,33 @@ export class AnnonceDto {
   @ApiProperty()
   longitude: number;
 
-  @ApiProperty({ type: UserDto })
-  user: UserDto;
+  @ApiProperty({ type: PublicUserDto })
+  user: PublicUserDto;
 }
 
 export class UpdateAnnonceDto {
   @ApiProperty()
   @IsString()
+  @IsOptional()
   title?: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   description?: string;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   price?: number;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   latitude?: number;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   longitude?: number;
 }

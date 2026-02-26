@@ -1,44 +1,18 @@
 'use client';
 
 import { Button } from '@/components/common';
-import { MapPin } from 'lucide-react';
+import { LocationAutocomplete } from '@/components/common/LocationAutocomplete';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 
-// Import dynamique pour éviter les erreurs SSR avec Leaflet
-const MapContainer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.MapContainer),
-  { ssr: false },
-);
-const TileLayer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.TileLayer),
-  { ssr: false },
-);
-const Marker = dynamic(
-  () => import('react-leaflet').then((mod) => mod.Marker),
-  { ssr: false },
-);
-const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+const Map = dynamic(() => import('@/components/common/Map'), {
+  loading: () => (
+    <div className="h-full w-full bg-gray-100 flex items-center justify-center text-gray-400">
+      Chargement de la carte...
+    </div>
+  ),
   ssr: false,
 });
-
-// Configuration des icônes Leaflet pour Next.js - chargée uniquement côté client
-let customIcon: any;
-if (typeof window !== 'undefined') {
-  const L = require('leaflet');
-  customIcon = new L.Icon({
-    iconUrl:
-      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-    iconRetinaUrl:
-      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-    shadowUrl:
-      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-}
 
 interface LocationStepProps {
   value: {
@@ -62,35 +36,9 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   const [address, setAddress] = React.useState(value.address);
   const [coordinates, setCoordinates] = React.useState(
     value.coordinates || { lat: 48.8566, lng: 2.3522 },
-  ); // Paris par défaut
+  );
   const [isGeocoding, setIsGeocoding] = React.useState(false);
-  const [suggestions, setSuggestions] = React.useState<
-    Array<{ display_name: string; lat: string; lon: string }>
-  >([]);
-  const [showSuggestions, setShowSuggestions] = React.useState(false);
 
-  // Fonction pour récupérer les suggestions d'adresses
-  const fetchAddressSuggestions = async (query: string) => {
-    if (query.trim().length < 3) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=fr`,
-      );
-      const data = await response.json();
-      setSuggestions(data || []);
-      setShowSuggestions(true);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des suggestions:', error);
-      setSuggestions([]);
-    }
-  };
-
-  // Fonction de géocodage avec Nominatim
   const geocodeAddress = async (addressQuery: string) => {
     if (!addressQuery.trim()) return;
 
@@ -116,48 +64,34 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     }
   };
 
-  // Sélectionner une suggestion
-  const selectSuggestion = (suggestion: {
-    display_name: string;
-    lat: string;
-    lon: string;
+  const handleAddressSelect = (location: {
+    address: string;
+    lat: number;
+    lng: number;
   }) => {
-    setAddress(suggestion.display_name);
-    const newCoordinates = {
-      lat: parseFloat(suggestion.lat),
-      lng: parseFloat(suggestion.lon),
-    };
-    setCoordinates(newCoordinates);
-    onUpdate({ address: suggestion.display_name, coordinates: newCoordinates });
-    setShowSuggestions(false);
-    setSuggestions([]);
+    setAddress(location.address);
+    setCoordinates({ lat: location.lat, lng: location.lng });
+    onUpdate({
+      address: location.address,
+      coordinates: { lat: location.lat, lng: location.lng },
+    });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
+  const handleAddressChange = (newValue: string) => {
     setAddress(newValue);
     onUpdate({ ...value, address: newValue });
   };
 
-  // Récupérer les suggestions avec un délai
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      fetchAddressSuggestions(address);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [address]);
-
-  // Géocoder l'adresse sélectionnée avec un délai plus long
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      if (address.trim().length > 3 && !showSuggestions) {
+      if (address.trim().length > 3) {
+         
         geocodeAddress(address);
       }
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [address, showSuggestions]);
+  }, [address]);
 
   const handleContinue = () => {
     if (address.trim()) {
@@ -169,7 +103,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
           Où aura lieu votre tâche ?
@@ -177,91 +111,30 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         <p className="text-foreground/60 text-base">Adresse*</p>
       </div>
 
-      {/* Carte interactive */}
       <div className="mb-6">
-        <div className="w-full h-48 rounded-2xl overflow-hidden relative">
-          {typeof window !== 'undefined' && (
-            <MapContainer
-              center={[coordinates.lat, coordinates.lng]}
-              zoom={13}
-              style={{ height: '100%', width: '100%' }}
-              key={`${coordinates.lat}-${coordinates.lng}`}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-              />
-              {address && (
-                <Marker
-                  position={[coordinates.lat, coordinates.lng]}
-                  icon={customIcon}
-                >
-                  <Popup>{address || 'Localisation sélectionnée'}</Popup>
-                </Marker>
-              )}
-            </MapContainer>
-          )}
+        <div className="w-full h-48 rounded-2xl overflow-hidden relative border border-gray-100 shadow-sm">
+          <Map coordinates={coordinates} popupText={address || "Localisation sélectionnée"} />
 
-          {/* Indicateur de chargement */}
           {isGeocoding && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-2xl">
-              <div className="text-sm text-gray-600">
-                Recherche de l'adresse...
+            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[1000]">
+              <div className="text-sm text-gray-600 font-medium">
+                Mise à jour de la carte...
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Champ d'adresse */}
       <div className="flex-1 flex flex-col">
-        <div className="mb-8 relative">
-          <div
-            className="flex items-center border border-gray-300 bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
-            style={{ borderRadius: '24px' }}
-          >
-            <div className="px-4 text-gray-600 text-base">
-              <MapPin className="w-5 h-5" />
-            </div>
-            <div className="w-px h-12 bg-gray-300"></div>
-            <input
-              type="text"
-              value={address}
-              onChange={handleInputChange}
-              onFocus={() => setShowSuggestions(suggestions.length > 0)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              placeholder="Saisissez votre adresse..."
-              className="flex-1 px-4 py-3 text-base bg-transparent border-none outline-none placeholder-gray-400"
-              autoFocus
-            />
-          </div>
-
-          {/* Suggestions d'adresses */}
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
-              {suggestions.map((suggestion, index) => (
-                <button
-                  key={index}
-                  onClick={() => selectSuggestion(suggestion)}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
-                >
-                  <div className="text-sm text-gray-800 font-medium">
-                    {suggestion.display_name.split(',')[0]}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {suggestion.display_name
-                      .split(',')
-                      .slice(1)
-                      .join(',')
-                      .trim()}
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
+        <div className="mb-8 text-black">
+          <LocationAutocomplete
+            value={address}
+            onChange={handleAddressChange}
+            onSelect={handleAddressSelect}
+            className="w-full"
+          />
         </div>
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="mt-auto">
           <Button
             onClick={handleContinue}

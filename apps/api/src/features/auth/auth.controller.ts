@@ -11,9 +11,10 @@ import {
   Req,
   UnauthorizedException,
   UseGuards,
+  Res,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Public } from '@/common/decorators/public.decorator';
 import { CurrentUser } from '@/common/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
@@ -80,9 +81,10 @@ export class AuthController {
     description: 'Disconnection successful',
     status: HttpStatus.ACCEPTED,
   })
-  async logout(@Req() req: Request) {
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     await this.authService.logout(req.sessionID);
     await this.destroySession(req);
+    res.clearCookie('connect.sid');
   }
 
   @Post('logout-all')
@@ -94,9 +96,10 @@ export class AuthController {
     description: 'Disconnection successful from all sessions',
     status: HttpStatus.ACCEPTED,
   })
-  async logoutAll(@Req() req: Request, @CurrentUser() user: User) {
+  async logoutAll(@Req() req: Request, @CurrentUser() user: User, @Res({ passthrough: true }) res: Response) {
     await this.authService.logoutAll(user.id);
     await this.destroySession(req);
+    res.clearCookie('connect.sid');
   }
 
   @Post('verify-email')

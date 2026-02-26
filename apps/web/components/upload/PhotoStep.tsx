@@ -24,7 +24,7 @@ export const PhotoStep: React.FC<PhotoStepProps> = ({
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    const newPhotos = [...photos, ...files].slice(0, 4); // Limite à 4 photos
+    const newPhotos = [...photos, ...files].slice(0, 4);
     setPhotos(newPhotos);
     onUpdate(newPhotos);
   };
@@ -102,13 +102,12 @@ export const PhotoStep: React.FC<PhotoStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">Photos</h2>
         <p className="text-foreground/60 text-base">Faut-il des photos ?</p>
       </div>
 
-      {/* Boutons Oui/Non */}
       <div className="mb-8">
         <div className="flex space-x-3">
           <button
@@ -144,7 +143,6 @@ export const PhotoStep: React.FC<PhotoStepProps> = ({
         </div>
       </div>
 
-      {/* Grille de photos */}
       <div className="flex-1 flex flex-col">
         <div
           className="grid grid-cols-2 gap-4 mb-8"
@@ -157,7 +155,6 @@ export const PhotoStep: React.FC<PhotoStepProps> = ({
           ))}
         </div>
 
-        {/* Input file caché */}
         <input
           ref={fileInputRef}
           type="file"
@@ -167,7 +164,6 @@ export const PhotoStep: React.FC<PhotoStepProps> = ({
           className="hidden"
         />
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="mt-auto">
           <Button
             onClick={handleContinue}

@@ -37,17 +37,15 @@ const PhotoUpload = React.forwardRef<HTMLInputElement, PhotoUploadProps>(
         return;
       }
 
-      // Vérifier le type de fichier
       if (!acceptedFormats.some((format) => file.type === format)) {
         const formatsText = acceptedFormats
-          .map((f) => f.split('/')[1].toUpperCase())
+          .map((f) => (f.split('/')[1] ?? f).toUpperCase())
           .join(', ');
         onError?.(`Format non supporté. Formats acceptés : ${formatsText}`);
         resetUpload();
         return;
       }
 
-      // Vérifier la taille
       if (file.size > maxSizeInMB * 1024 * 1024) {
         onError?.(`L'image ne doit pas dépasser ${maxSizeInMB}MB`);
         resetUpload();
@@ -56,7 +54,6 @@ const PhotoUpload = React.forwardRef<HTMLInputElement, PhotoUploadProps>(
 
       setSelectedFile(file);
 
-      // Créer un aperçu
       const reader = new FileReader();
       reader.onload = (e) => {
         const preview = e.target?.result as string;
@@ -70,13 +67,13 @@ const PhotoUpload = React.forwardRef<HTMLInputElement, PhotoUploadProps>(
       setSelectedFile(null);
       setImagePreview(null);
       onImageChange?.(null, null);
-      // Reset input value
+      
       if (ref && 'current' in ref && ref.current) {
         ref.current.value = '';
       }
     };
 
-    const iconSize = Math.round(size * 0.25); // 25% de la taille du cercle
+    const iconSize = Math.round(size * 0.25);
 
     return (
       <div
@@ -108,7 +105,6 @@ const PhotoUpload = React.forwardRef<HTMLInputElement, PhotoUploadProps>(
           </div>
         </div>
 
-        {/* Bouton de suppression si une image est sélectionnée */}
         {imagePreview && (
           <button
             type="button"

@@ -20,7 +20,10 @@ export class UsersService {
 
   async create(userData: Partial<User>): Promise<User> {
     const existingUser = await this.usersRepository.findOne({
-      where: [{ email: userData.email }, { username: userData.username }],
+      where: [
+        { email: userData.email },
+        ...(userData.username ? [{ username: userData.username }] : []),
+      ],
     });
 
     if (existingUser) {

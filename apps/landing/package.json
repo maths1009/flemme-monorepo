@@ -13,10 +13,10 @@
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "dayjs": "catalog:",
-    "framer-motion": "^12.27.1",
+    "framer-motion": "^12.34.3",
     "lucide-react": "^0.511.0",
     "nitro": "3.0.1-alpha.2",
-    "nuqs": "^2.7.3",
+    "nuqs": "^2.8.8",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-ga4": "^2.1.0",
@@ -44,5 +44,5 @@
     "typecheck": "tsc --noEmit"
   },
   "type": "module",
-  "version": "2.3.0"
+  "version": "2.4.0"
 }

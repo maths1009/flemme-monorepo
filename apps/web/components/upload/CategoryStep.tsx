@@ -40,7 +40,7 @@ export const CategoryStep: React.FC<CategoryStepProps> = ({
 
   return (
     <div className="flex h-full flex-col px-6 py-8">
-      {/* Titre de l'étape */}
+      
       <div className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
           Catégorie
@@ -50,7 +50,6 @@ export const CategoryStep: React.FC<CategoryStepProps> = ({
         </p>
       </div>
 
-      {/* Options de catégorie */}
       <div className="flex-1 flex flex-col space-y-4">
         {categories.map((category) => (
           <label
@@ -95,7 +94,6 @@ export const CategoryStep: React.FC<CategoryStepProps> = ({
 
         <div className="text-foreground/60 text-sm mt-6">voir plus...</div>
 
-        {/* Bouton continuer - fixé en bas */}
         <div className="pt-8">
           <Button
             onClick={handleContinue}

@@ -55,7 +55,7 @@ export class FeedbackService {
   }
 
   async findAll(params: FeedbackParamsDto, userId: string): Promise<PaginatedResponseDto<FeedbackDto>> {
-    if (userId !== params.receiver_id && userId !== params.sender_id) {
+    if (params.sender_id !== undefined && userId !== params.sender_id) {
       throw new BadRequestException(FeedbackErrorMessages.CANNOT_VIEW_OTHER_FEEDBACKS);
     }
     const options: FindManyOptions<Feedback> = {

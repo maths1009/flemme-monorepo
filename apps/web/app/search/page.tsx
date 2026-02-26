@@ -1,10 +1,20 @@
 'use client';
 
+import { PriceTag } from '@/components/common/PriceTag';
 import { getAllAdverts } from '@/lib/mockData';
-import { ArrowLeft, Filter, Search } from 'lucide-react';
+import { ArrowLeft, Filter, Search, List, Map as MapIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import dynamic from 'next/dynamic';
+
+import { Header } from '@/components/common/Header';
+import { Annonce, AnnoncesService } from '@/services/annonces.service';
+
+const Map = dynamic(() => import('@/components/common/Map'), {
+  loading: () => <div className="h-full w-full bg-gray-100 animate-pulse" />,
+  ssr: false,
+});
 
 interface Category {
   id: string;
@@ -13,18 +23,72 @@ interface Category {
   icon: string;
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [showMap, setShowMap] = React.useState(false);
+  const [realAdverts, setRealAdverts] = React.useState<Annonce[]>([]);
+  const [userLocation, setUserLocation] = React.useState<{ lat: number; lng: number } | undefined>(undefined);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  // Récupérer la catégorie depuis les paramètres URL
+  React.useEffect(() => {
+    if (showMap) {
+      setIsLoading(true);
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
+            
+            try {
+              
+              const response = await AnnoncesService.getAll({
+                latitude,
+                longitude,
+                distance: 20
+              });
+              setRealAdverts(response.data);
+            } catch (error) {
+              console.error('Error fetching nearby adverts:', error);
+            } finally {
+              setIsLoading(false);
+            }
+          },
+          async (error) => {
+            console.warn('Geolocation error or denied:', error);
+            
+            try {
+              const response = await AnnoncesService.getAll();
+              setRealAdverts(response.data);
+            } catch (err) {
+              console.error('Error fetching adverts:', err);
+            } finally {
+              setIsLoading(false);
+            }
+          }
+        );
+      } else {
+        
+        const fetchAll = async () => {
+          try {
+            const response = await AnnoncesService.getAll();
+            setRealAdverts(response.data);
+          } catch (error) {
+            console.error('Error fetching adverts:', error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+        fetchAll();
+      }
+    }
+  }, [showMap]);
+
   const selectedCategory = searchParams.get('category');
 
-  // Récupérer toutes les annonces
   const allAdverts = getAllAdverts();
 
-  // Catégories avec leurs icônes
   const categories: Category[] = [
     {
       id: 'paperasse',
@@ -71,35 +135,32 @@ export default function SearchPage() {
   ];
 
   const handleCategoryClick = (categoryId: string) => {
-    // Rediriger vers la même page avec le paramètre de catégorie
+    
     router.push(`/search?category=${categoryId}`);
   };
 
   const handleBackToCategories = () => {
-    // Retourner à la liste des catégories
+    
     router.push('/search');
   };
 
-  // Filtrer les annonces par catégorie
   const getFilteredAdverts = () => {
     if (!selectedCategory) return [];
 
-    // Mapper les IDs de catégories aux catégories des annonces
     const categoryMapping: Record<string, string> = {
       paperasse: 'paperasse',
       course: 'courses',
-      // Ajouter d'autres mappings si nécessaire
+      
     };
 
     const advertCategory = categoryMapping[selectedCategory];
-    if (!advertCategory) return allAdverts; // Si pas de mapping, retourner toutes les annonces
+    if (!advertCategory) return allAdverts;
 
     return allAdverts.filter((advert) => advert.category === advertCategory);
   };
 
   const filteredAdverts = getFilteredAdverts();
 
-  // Trouver le nom de la catégorie sélectionnée
   const getCategoryName = () => {
     const category = categories.find((cat) => cat.id === selectedCategory);
     return category ? category.name : 'Catégorie';
@@ -107,27 +168,60 @@ export default function SearchPage() {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      // TODO: Effectuer la recherche
+      
       console.log('Recherche:', searchQuery);
     }
   };
 
+  if (showMap) {
+    const markers = realAdverts
+      .filter((ad) => ad.latitude && ad.longitude)
+      .map((ad) => ({
+        lat: Number(ad.latitude),
+        lng: Number(ad.longitude),
+        title: ad.title,
+        price: ad.price,
+        image: ad.photos?.[0]?.url || '/images/mock/placeholder.jpg',
+        id: ad.id,
+      }));
+
+    return (
+      <div className="min-h-screen bg-primary flex flex-col h-screen">
+        <Header
+          title="Carte"
+          onBack={() => setShowMap(false)}
+          variant="search"
+          className="pt-8"
+        />
+        <div className="flex-1 overflow-hidden relative rounded-t-3xl bg-gray-50 flex flex-col">
+          {userLocation && realAdverts.length === 0 && !isLoading && (
+             <div className="bg-orange-50 text-orange-800 px-4 py-3 text-sm font-medium text-center border-b border-orange-100 relative z-10">
+               Aucune annonce n'a été trouvée dans un rayon de 20km autour de vous
+             </div>
+          )}
+          <div className="flex-1 w-full relative">
+            <Map
+              markers={markers}
+              coordinates={userLocation}
+              popupText="Ma position"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Si une catégorie est sélectionnée, afficher les annonces filtrées
   if (selectedCategory) {
     return (
-      <div className="min-h-screen bg-primary px-6 py-8">
-        {/* Header avec retour */}
-        <div className="flex items-center mb-6">
-          <button
-            onClick={handleBackToCategories}
-            className="mr-4 p-2 hover:bg-white hover:bg-opacity-10 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-foreground" />
-          </button>
-          <h1 className="text-xl font-semibold text-foreground">
-            {getCategoryName()}
-          </h1>
-        </div>
+      <div className="min-h-screen bg-primary">
+        <Header
+          title={getCategoryName()}
+          onBack={handleBackToCategories}
+          variant="search"
+          className="pt-8"
+        />
+        <div className="px-6 pb-8">
 
         {/* Barre de recherche */}
         <div className="mb-6">
@@ -239,8 +333,8 @@ export default function SearchPage() {
                       <span className="text-sm text-gray-500">
                         {advert.location}
                       </span>
-                      <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {advert.price}€
+                      <div className="bg-transparent">
+                        <PriceTag price={advert.price} size="small" />
                       </div>
                     </div>
                   </div>
@@ -256,71 +350,92 @@ export default function SearchPage() {
           )}
         </div>
       </div>
+    </div>
     );
   }
 
   // Affichage par défaut : liste des catégories
   return (
-    <div className="min-h-screen bg-primary px-6 py-8">
-      {/* Barre de recherche */}
-      <div className="mb-6">
-        <div className="relative">
-          <div className="flex items-center bg-foreground rounded-full px-4 py-3">
-            <Search className="w-4 h-4 text-gray-400 mr-3" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Trouver des tâches"
-              className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none text-base"
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            />
+    <div className="min-h-screen bg-primary">
+      <Header
+        title="Recherche"
+        onBack={() => router.push('/')}
+        variant="search"
+        className="pt-8"
+      />
+      
+      <div className="px-6 pb-8">
+        {/* Barre de recherche */}
+        <div className="mb-6">
+          <div className="relative">
+            <div className="flex items-center bg-foreground rounded-full px-4 py-3">
+              <Search className="w-4 h-4 text-gray-400 mr-3" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Trouver des tâches"
+                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none text-base"
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Titre "Voir la carte" */}
-      <div className="mb-6">
-        <h2 className="text-lg font-medium text-gray-600">Voir la carte</h2>
-      </div>
+        {/* Titre "Voir la carte" */}
+        <button
+          onClick={() => setShowMap(true)}
+          className="mb-6 w-full text-left"
+        >
+          <h2 className="text-lg font-medium text-gray-600 hover:text-gray-800 transition-colors">Voir la carte</h2>
+        </button>
 
-      {/* Liste des catégories */}
-      <div className="space-y-0">
-        {categories.map((category, index) => (
-          <React.Fragment key={category.id}>
-            <button
-              onClick={() => handleCategoryClick(category.id)}
-              className="w-full flex items-center py-4 hover:bg-white hover:bg-opacity-10 transition-colors"
-            >
-              {/* Icône de catégorie */}
-              <div className="w-10 h-10 mr-3 flex-shrink-0">
-                <Image
-                  src={category.icon}
-                  alt={category.name}
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                />
-              </div>
+        {/* Liste des catégories */}
+        <div className="space-y-0">
+          {categories.map((category, index) => (
+            <React.Fragment key={category.id}>
+              <button
+                onClick={() => handleCategoryClick(category.id)}
+                className="w-full flex items-center py-4 hover:bg-white hover:bg-opacity-10 transition-colors"
+              >
+                {/* Icône de catégorie */}
+                <div className="w-10 h-10 mr-3 flex-shrink-0">
+                  <Image
+                    src={category.icon}
+                    alt={category.name}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
 
-              {/* Contenu texte */}
-              <div className="flex-1 text-left">
-                <h3 className="text-lg font-semibold text-foreground mb-1">
-                  {category.name}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {category.description}
-                </p>
-              </div>
-            </button>
+                {/* Contenu texte */}
+                <div className="flex-1 text-left">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {category.description}
+                  </p>
+                </div>
+              </button>
 
-            {/* Séparateur HR - pas pour le dernier élément */}
-            {index < categories.length - 1 && (
-              <hr className="border-gray-300 border-t-1" />
-            )}
-          </React.Fragment>
-        ))}
+              {/* Séparateur HR - pas pour le dernier élément */}
+              {index < categories.length - 1 && (
+                <hr className="border-gray-300 border-t-1" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen bg-primary" />}>
+      <SearchPageContent />
+    </React.Suspense>
   );
 }

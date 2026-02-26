@@ -8,12 +8,12 @@ import { Button } from './Button';
 export const Navbar: React.FC = () => {
   return (
     <div className="w-full bg-white px-6 py-4">
-      {/* Navigation icons et bouton */}
+      
       <div className="flex items-center justify-between mb-6">
-        {/* Icônes de navigation */}
+        
         <div className="flex items-center space-x-4">
-          {/* Icône profil */}
-          <Link href="/profil" className="p-2">
+          
+          <Link href="/profile" className="p-2">
             <Image
               src="/images/home/account.svg"
               alt="Profil"
@@ -23,7 +23,6 @@ export const Navbar: React.FC = () => {
             />
           </Link>
 
-          {/* Icône chat */}
           <Link href="/messages" className="p-2">
             <Image
               src="/images/home/discuss.svg"
@@ -34,7 +33,6 @@ export const Navbar: React.FC = () => {
             />
           </Link>
 
-          {/* Icône recherche */}
           <Link href="/search" className="p-2">
             <Image
               src="/images/home/search.svg"
@@ -46,7 +44,6 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Bouton Proposer une tâche */}
         <Link href="/upload">
           <Button variant="secondary" className="text-sm">
             Proposer une tâche

@@ -2,7 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { RoleEnum } from '@/features/roles/enum/role.enum';
 
-export class UserDto {
+/**
+ * Public user info - visible to all users (profile pages, annonces, feedbacks, tracking)
+ */
+export class PublicUserDto {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
@@ -12,9 +15,23 @@ export class UserDto {
   @ApiProperty()
   lastname: string;
 
-  @ApiProperty()
-  username: string;
+  @ApiPropertyOptional()
+  username?: string;
 
+  @ApiPropertyOptional()
+  profile_picture_url?: string;
+
+  @ApiProperty()
+  score: number;
+
+  @ApiProperty()
+  average_response_time: number;
+}
+
+/**
+ * Private user info - only visible to the connected user (my profile)
+ */
+export class MyProfileDto extends PublicUserDto {
   @ApiProperty()
   email: string;
 
@@ -30,17 +47,8 @@ export class UserDto {
   @ApiProperty()
   notif_enabled: boolean;
 
-  @ApiProperty()
-  score: number;
-
-  @ApiProperty()
-  average_response_time: number;
-
   @ApiProperty({ enum: RoleEnum })
   role?: RoleEnum;
-
-  @ApiPropertyOptional()
-  profile_picture_url?: string;
 }
 
 export class UpdateUserDto {

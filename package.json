@@ -5,7 +5,7 @@
     }
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.7",
+    "@biomejs/biome": "^2.4.4",
     "@changesets/cli": "^2.29.8",
     "@types/node": "catalog:",
     "commitizen": "^4.3.1",
@@ -14,7 +14,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "turbo": "^2.5.8",
+    "turbo": "^2.8.11",
     "typescript": "catalog:",
     "zod": "catalog:"
   },

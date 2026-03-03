@@ -123,6 +123,15 @@ export default function AdvertDetailPage() {
 
         <ProfileBanner onMessageClick={() => router.push(`/messages/${advert.id}`)} user={mappedUser} />
 
+        {!isOwner && (
+          <button
+            className="w-full bg-gray-800 text-white px-6 py-3 rounded-xl font-medium transition mt-6"
+            onClick={() => router.push(`/messages/${advert.id}`)}
+          >
+            Participer
+          </button>
+        )}
+
         <LocationSection
           advertId={advert.id}
           coordinates={{

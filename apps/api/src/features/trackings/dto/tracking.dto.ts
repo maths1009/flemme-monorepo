@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, Matches } from 'class-validator';
 import { PaginationDto } from '@/common/dto/pagination.dto';
 import { AnnonceDto } from '@/features/annonces/dto/annonce.dto';
 import { PublicUserDto } from '@/features/users/dto/user.dto';
@@ -8,7 +8,7 @@ import { TrackingStatusEnum } from '../enum/tracking-status.enum';
 export class CreateTrackingDto {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
   @IsNotEmpty()
-  @IsUUID()
+  @Matches(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, { message: 'annonce_id must be a valid UUID format' })
   annonce_id: string;
 }
 
@@ -91,17 +91,17 @@ export class TrackingDto {
 
 export class TrackingParamsDto extends PaginationDto {
   @ApiPropertyOptional({ example: '123e4567-e89b-12d3-a456-426614174000' })
-  @IsUUID()
+  @Matches(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, { message: 'annonce_id must be a valid UUID format' })
   @IsOptional()
   annonce_id?: string;
 
   @ApiPropertyOptional({ example: '123e4567-e89b-12d3-a456-426614174000' })
-  @IsUUID()
+  @Matches(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, { message: 'creator_id must be a valid UUID format' })
   @IsOptional()
   creator_id?: string;
 
   @ApiPropertyOptional({ example: '123e4567-e89b-12d3-a456-426614174000' })
-  @IsUUID()
+  @Matches(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, { message: 'accepter_id must be a valid UUID format' })
   @IsOptional()
   accepter_id?: string;
 

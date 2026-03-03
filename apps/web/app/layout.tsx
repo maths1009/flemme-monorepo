@@ -9,6 +9,9 @@ const RootLayout = ({
 }>) => {
   return (
     <html suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>

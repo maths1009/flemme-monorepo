@@ -5,6 +5,10 @@ import { ArrowLeft, Flag, MoreHorizontal, Plus, Send, Star } from 'lucide-react'
 import { PriceTag } from '@/components/common/PriceTag';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
+import { TrackingBanner } from '@/components/messages';
+import { TrackingsService, Tracking } from '@/services/trackings.service';
+import { ApiError } from '@/lib/api';
 import * as React from 'react';
 
 interface Message {
@@ -21,8 +25,41 @@ export default function MessagePage() {
   const advertId = params.advertId as string;
   const [inputText, setInputText] = React.useState('');
   const [showOptions, setShowOptions] = React.useState(false);
+  const { user: currentUser } = useAuth();
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   const { annonce: advert, loading, error } = useAnnonce(advertId);
+  const [hasTracking, setHasTracking] = React.useState(false);
+  const [participateLoading, setParticipateLoading] = React.useState(false);
+  const [trackingRefreshKey, setTrackingRefreshKey] = React.useState(0);
+
+  // Check if tracking exists on mount
+  React.useEffect(() => {
+    if (currentUser && advertId) {
+      TrackingsService.getByAnnonceId(advertId)
+        .then(res => {
+          const found = res.data?.some((t: Tracking) => t.accepter?.id === currentUser.id);
+          if (found) setHasTracking(true);
+        })
+        .catch(() => {});
+    }
+  }, [currentUser, advertId]);
+
+  const handleParticipate = async () => {
+    try {
+      setParticipateLoading(true);
+      await TrackingsService.create(advertId);
+      setHasTracking(true);
+      setTrackingRefreshKey(k => k + 1);
+    } catch (err) {
+      const msg = (err as ApiError)?.message || '';
+      if (msg.toLowerCase().includes('already exists')) {
+        setHasTracking(true);
+      }
+    } finally {
+      setParticipateLoading(false);
+    }
+  };
 
   const [messages, setMessages] = React.useState<Message[]>([
     {
@@ -55,6 +92,7 @@ export default function MessagePage() {
       };
       setMessages([...messages, newMessage]);
       setInputText('');
+      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
     }
   };
 
@@ -75,9 +113,10 @@ export default function MessagePage() {
   }
 
   const user = advert.user;
+  const isOwner = user.id === currentUser?.id;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-[100dvh] bg-gray-50 flex flex-col">
       
       <div className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
@@ -166,17 +205,27 @@ export default function MessagePage() {
                className="object-cover"
              />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h3 className="font-medium text-gray-800 line-clamp-1">{advert.title}</h3>
             <div className="mt-1">
               <PriceTag price={advert.price} size="small" />
             </div>
           </div>
+          {!isOwner && !hasTracking && (
+            <button
+              onClick={handleParticipate}
+              disabled={participateLoading}
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-900 transition disabled:opacity-50 flex-shrink-0"
+            >
+              {participateLoading ? '...' : 'Participer'}
+            </button>
+          )}
         </div>
       </div>
 
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <div className="space-y-4">
+          <TrackingBanner advertId={advertId} isOwner={isOwner} refreshKey={trackingRefreshKey} />
           {messages.map((msg) => {
             if (msg.sender === 'vendor') {
               
@@ -237,10 +286,11 @@ export default function MessagePage() {
               );
             }
           })}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
-      <div className="bg-white border-t border-gray-200 px-4 py-3">
+      <div className="bg-white border-t border-gray-200 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center space-x-3">
           <button
             className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"

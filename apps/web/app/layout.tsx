@@ -1,4 +1,5 @@
 import { Providers } from '@/components/providers';
+import { MobileOnlyGuard } from '@/components/common/MobileOnlyGuard';
 import '@/styles/globals.css';
 import { ReactNode } from 'react';
 
@@ -13,7 +14,9 @@ const RootLayout = ({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <MobileOnlyGuard>{children}</MobileOnlyGuard>
+        </Providers>
       </body>
     </html>
   );

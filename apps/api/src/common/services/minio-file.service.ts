@@ -19,7 +19,7 @@ export class MinioFileService extends BaseFileService {
       endPoint: this.configService.get('MINIO_ENDPOINT')!,
       port: this.configService.get('MINIO_PORT'),
       secretKey: this.configService.get('MINIO_SECRET_KEY'),
-      useSSL: this.configService.get('NODE_ENV') === 'production',
+      useSSL: false,
     });
 
     this.initializeBuckets();

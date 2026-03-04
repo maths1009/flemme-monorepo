@@ -28,8 +28,6 @@ export const fetchClient = async <T = any>(endpoint: string, options: FetchOptio
     ...options,
     credentials: 'include' as RequestCredentials,
     headers,
-    credentials: 'include' as RequestCredentials,
-    cache: 'no-store' as RequestCache,
   };
 
   try {

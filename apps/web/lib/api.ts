@@ -1,4 +1,6 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+import { env } from '@/env';
+
+export const API_URL = env.NEXT_PUBLIC_API_URL;
 
 type FetchOptions = RequestInit & {
   headers?: Record<string, string>;

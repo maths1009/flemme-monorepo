@@ -28,6 +28,8 @@ export const fetchClient = async <T = any>(endpoint: string, options: FetchOptio
     ...options,
     credentials: 'include' as RequestCredentials,
     headers,
+    credentials: 'include' as RequestCredentials,
+    cache: 'no-store' as RequestCache,
   };
 
   try {
@@ -35,13 +37,19 @@ export const fetchClient = async <T = any>(endpoint: string, options: FetchOptio
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = Array.isArray(errorData.message)
-        ? errorData.message.join(', ')
-        : errorData.message || 'An error occurred';
+      let errorMessage: string;
+      if (Array.isArray(errorData)) {
+        // NestJS ValidationPipe: new HttpException(string[], 400) → raw array
+        errorMessage = errorData.join(', ');
+      } else if (Array.isArray(errorData.message)) {
+        errorMessage = errorData.message.join(', ');
+      } else {
+        errorMessage = errorData.message || 'An error occurred';
+      }
       throw new ApiError(response.status, errorMessage, errorData);
     }
 
-    if (response.status === 204 || response.status === 202) {
+    if (response.status === 204) {
       return {} as T;
     }
 

@@ -12,12 +12,16 @@ const getProfilePictureUrl = async (
 ): Promise<string | undefined> => {
   if (!fileService) return undefined;
 
-  const filename = `${userId}.png`;
-  const bucket = BucketEnum.PROFILE_PICTURE;
-  const fileExists = await fileService.exists(filename, bucket);
+  try {
+    const filename = `${userId}.png`;
+    const bucket = BucketEnum.PROFILE_PICTURE;
+    const fileExists = await fileService.exists(filename, bucket);
 
-  if (fileExists) {
-    return await fileService.getSignedUrl(filename, bucket, 3600);
+    if (fileExists) {
+      return await fileService.getSignedUrl(filename, bucket, 3600);
+    }
+  } catch {
+    // MinIO/S3 unavailable — gracefully degrade
   }
   return undefined;
 };

@@ -11,9 +11,11 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@/common/decorators/user.decorator';
+import { PaginatedResponseDto } from '@/common/dto/pagination.dto';
 import { FILE_SERVICE, FileServiceInterface } from '@/common/services/file.service';
 import { User } from '../users/entities/user.entity';
 import {
@@ -23,6 +25,7 @@ import {
   ConfirmTrackingDto,
   CreateTrackingDto,
   TrackingDto,
+  TrackingParamsDto,
 } from './dto/tracking.dto';
 import { TrackingErrorMessages } from './errors/tracking-error-messages.enum';
 import { trackingToDto } from './mappers/tracking.mapper';
@@ -35,6 +38,35 @@ export class TrackingsController {
     private readonly trackingsService: TrackingsService,
     @Inject(FILE_SERVICE) private readonly fileService: FileServiceInterface,
   ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all trackings with pagination and filters' })
+  @ApiResponse({
+    description: 'List of trackings paginated',
+    status: HttpStatus.OK,
+    type: () => PaginatedResponseDto<TrackingDto>,
+  })
+  async findAll(@Query() paginationDto: TrackingParamsDto, @CurrentUser() user: User) {
+    console.log('DEBUG [GET /trackings]: Incoming request with params ->', paginationDto);
+    console.log('DEBUG [GET /trackings]: Request from User ID ->', user?.id);
+    
+    try {
+      const { data, meta } = await this.trackingsService.findAll(paginationDto);
+
+      const checkAccess = (tracking: any) =>
+        tracking.creator_id === user.id || tracking.accepter_id === user.id;
+
+      const accessibleData = data.filter(checkAccess);
+      console.log('DEBUG [GET /trackings]: Found raw trackings count ->', data.length);
+      console.log('DEBUG [GET /trackings]: Accessible trackings count ->', accessibleData.length);
+
+      const dtos = await Promise.all(accessibleData.map((t) => trackingToDto(t, this.fileService)));
+      return { data: dtos, meta };
+    } catch (error) {
+      console.error('ERROR [GET /trackings]: Failed to fetch trackings:', error);
+      throw error;
+    }
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

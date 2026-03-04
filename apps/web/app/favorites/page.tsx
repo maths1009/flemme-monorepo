@@ -85,8 +85,8 @@ export default function FavoritesPage() {
               
               // Image par défaut si pas de photo
               const image = annonce?.photos && annonce.photos.length > 0
-                ? annonce.photos[0]?.url ?? '/images/mock/150.jpeg'
-                : '/images/mock/150.jpeg';
+                ? annonce.photos[0]?.url ?? `https://picsum.photos/seed/${annonce.id}/400/300`
+                : `https://picsum.photos/seed/${annonce.id}/400/300`;
 
               const location = annonce.latitude && annonce.longitude
                 ? `Angers (49000)` // Mock location name as coordinates are not user friendly

@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { FILE_SERVICE } from '@/common/services/file.service';
 import { Env } from '@/common/utils';
 import { AnnoncesService } from '@/features/annonces/annonces.service';
-import { CreateTrackingDto } from './dto/tracking.dto';
+import { CreateTrackingDto, TrackingParamsDto } from './dto/tracking.dto';
 import { Tracking } from './entities/tracking.entity';
 import { TrackingStatusEnum } from './enum/tracking-status.enum';
 import { TrackingErrorMessages } from './errors/tracking-error-messages.enum';
@@ -184,6 +184,41 @@ export class TrackingsService {
     }
 
     return tracking;
+  }
+
+  async findAll(params: TrackingParamsDto): Promise<{ data: Tracking[]; meta: any }> {
+    const { annonce_id, creator_id, accepter_id, status, page = 1, limit = 10 } = params;
+
+    const queryBuilder = this.trackingsRepository
+      .createQueryBuilder('tracking')
+      .leftJoinAndSelect('tracking.annonce', 'annonce')
+      .leftJoinAndSelect('tracking.creator', 'creator')
+      .leftJoinAndSelect('tracking.accepter', 'accepter')
+      .leftJoinAndSelect('annonce.user', 'au')
+      .leftJoinAndSelect('creator.role', 'cr')
+      .leftJoinAndSelect('accepter.role', 'ar');
+
+    if (annonce_id) queryBuilder.andWhere('tracking.annonce_id = :annonce_id', { annonce_id });
+    if (creator_id) queryBuilder.andWhere('tracking.creator_id = :creator_id', { creator_id });
+    if (accepter_id) queryBuilder.andWhere('tracking.accepter_id = :accepter_id', { accepter_id });
+    if (status) queryBuilder.andWhere('tracking.status = :status', { status });
+
+    queryBuilder.orderBy('tracking.created_at', 'DESC');
+
+    const skip = (page - 1) * limit;
+    queryBuilder.skip(skip).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+      meta: {
+        currentPage: page,
+        itemsPerPage: limit,
+        totalItems: total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   private async checkDeadlines(tracking: Tracking): Promise<void> {

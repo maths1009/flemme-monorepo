@@ -12,13 +12,19 @@
     "react-email": "5.2.8",
     "typescript": "catalog:"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "name": "@flemme/emails",
   "private": true,
   "scripts": {
-    "build": "email build",
+    "build:email": "email build",
+    "build": "tsc",
     "dev": "email dev -p 3002",
     "start": "email start -p 3002"
   },

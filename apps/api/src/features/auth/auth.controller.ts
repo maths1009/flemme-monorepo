@@ -9,14 +9,17 @@ import {
   NotFoundException,
   Post,
   Req,
+  Res,
   UnauthorizedException,
   UseGuards,
-  Res,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { Public } from '@/common/decorators/public.decorator';
 import { CurrentUser } from '@/common/decorators/user.decorator';
+import type { Env } from '@/common/utils';
+import { getSessionCookieOptions } from '@/common/utils';
 import { User } from '../users/entities/user.entity';
 import { UserErrorMessages } from '../users/errors/user-error-message';
 import { AuthService } from './auth.service';
@@ -30,7 +33,10 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService<Env>,
+  ) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
@@ -84,7 +90,7 @@ export class AuthController {
   async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     await this.authService.logout(req.sessionID);
     await this.destroySession(req);
-    res.clearCookie('connect.sid');
+    res.clearCookie('connect.sid', getSessionCookieOptions(this.configService));
   }
 
   @Post('logout-all')
@@ -99,7 +105,7 @@ export class AuthController {
   async logoutAll(@Req() req: Request, @CurrentUser() user: User, @Res({ passthrough: true }) res: Response) {
     await this.authService.logoutAll(user.id);
     await this.destroySession(req);
-    res.clearCookie('connect.sid');
+    res.clearCookie('connect.sid', getSessionCookieOptions(this.configService));
   }
 
   @Post('verify-email')

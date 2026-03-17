@@ -3,12 +3,11 @@
 import { MiniTaskCard } from '@/components/home';
 import { Avatar } from '@/components/common/Avatar';
 import { useAuth } from '@/context/AuthContext';
-import { useAnnonces } from '@/hooks/useAnnonces';
-import { AnnoncesService, Annonce } from '@/services/annonces.service';
-import { ArrowLeft, ChevronRight, Heart, History, Settings, Star } from 'lucide-react';
+import { AnnoncesService } from '@/services/annonces.service';
+import type { Annonce } from '@/services/annonces.service';
+import { ArrowLeft, Heart, History, Settings, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 export default function ProfilePage() {
@@ -17,13 +16,20 @@ export default function ProfilePage() {
   const [userAdverts, setUserAdverts] = useState<Annonce[]>([]);
   const [loadingAdverts, setLoadingAdverts] = useState(true);
 
+  const safeBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.replace('/');
+  };
+
   useEffect(() => {
     const fetchUserAdverts = async () => {
       if (user?.id) {
         try {
           setLoadingAdverts(true);
-          setLoadingAdverts(true);
-          const response = await AnnoncesService.getAll({ userId: user.id } as any);
+          const response = await AnnoncesService.getAll({ userId: user.id });
           setUserAdverts(response.data);
         } catch (error) {
           console.error('Error fetching user adverts:', error);
@@ -48,7 +54,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-[#FDFBF7]">
       
       <div className="flex items-center px-4 py-4 relative justify-center">
-        <button onClick={() => router.back()} className="absolute left-4 p-2 -ml-2">
+        <button type="button" onClick={safeBack} className="absolute left-4 p-2 -ml-2">
           <ArrowLeft className="w-6 h-6 text-[#1A1A1A]" />
         </button>
         <h1 className="text-xl font-bold text-[#1A1A1A]">Profil</h1>
@@ -120,9 +126,9 @@ export default function ProfilePage() {
   );
 }
 
-function MenuItem({ icon: Icon, label, onClick }: { icon: React.ElementType, label: string, onClick?: () => void }) {
+function MenuItem({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick?: () => void }) {
     return (
-        <button onClick={onClick} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
+        <button type="button" onClick={onClick} className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
             <Icon className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.5} />
             <span className="flex-1 text-left text-base font-medium text-[#1A1A1A]">{label}</span>
         </button>

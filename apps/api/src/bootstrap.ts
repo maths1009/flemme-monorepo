@@ -13,6 +13,29 @@ import { Env } from '@/common/utils';
 import { swagger } from '@/swagger';
 import { AppModule } from './app.module';
 
+const splitCsv = (value?: string): string[] =>
+  (value ?? '')
+    .split(',')
+    .map(v => v.trim())
+    .filter(Boolean);
+
+const deriveCookieDomainFromUrl = (urlString: string): string | undefined => {
+  try {
+    const hostname = new URL(urlString).hostname;
+    // Don't set Domain for localhost-style environments.
+    if (hostname === 'localhost' || hostname.endsWith('.localhost')) return undefined;
+
+    const parts = hostname.split('.').filter(Boolean);
+    if (parts.length < 2) return undefined;
+
+    // Simple base-domain derivation (example: app.example.com -> .example.com)
+    const base = parts.slice(-2).join('.');
+    return `.${base}`;
+  } catch {
+    return undefined;
+  }
+};
+
 /**
  * This function initializes the NestJS application with various middlewares, settings, and configurations.
  * It is used to set up global configurations for security, validation, logging, CORS, and more.
@@ -27,6 +50,13 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
   const configService = app.get(ConfigService<Env>);
 
   app.useLogger(logger);
+
+  // In production we are typically behind a TLS-terminating proxy (NGINX/Ingress/Cloudflare).
+  // Without trust proxy, req.secure may be false and secure cookies won't be set.
+  if (configService.get('NODE_ENV') === 'production') {
+    const hops = configService.get('TRUST_PROXY_HOPS') ?? 1;
+    app.getHttpAdapter().getInstance().set('trust proxy', hops);
+  }
 
   if (configService.get('NODE_ENV') !== 'production') {
     await swagger(app);
@@ -54,7 +84,21 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
     credentials: true,
     exposedHeaders: ['Content-Length', 'Date'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    origin: configService.get('FRONTEND_URL'),
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      const frontendUrl = configService.get('FRONTEND_URL') as string;
+      const allowedOrigins = new Set<string>([
+        frontendUrl,
+        ...splitCsv(configService.get('CORS_ALLOWED_ORIGINS')),
+      ]);
+
+      if (allowedOrigins.has(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`), false);
+    },
   });
 
   app.use(helmet());
@@ -66,12 +110,20 @@ export const bootstrap = async (app: NestExpressApplication): Promise<void> => {
 
   await redisClient.connect().catch(console.error);
 
+  const isProd = configService.get('NODE_ENV') === 'production';
+  const frontendUrl = configService.get('FRONTEND_URL') as string;
+  const sessionCookieDomain =
+    configService.get('SESSION_COOKIE_DOMAIN') ??
+    (isProd ? deriveCookieDomainFromUrl(frontendUrl) : undefined);
+
   app.use(
     session({
       cookie: {
+        domain: sessionCookieDomain,
         httpOnly: true,
         maxAge: configService.get('SESSION_EXPIRATION_TIME'),
-        secure: configService.get('NODE_ENV') === 'production',
+        sameSite: isProd ? 'lax' : undefined,
+        secure: isProd,
       },
       resave: false,
       saveUninitialized: false,

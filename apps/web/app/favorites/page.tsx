@@ -38,14 +38,21 @@ export default function FavoritesPage() {
   const [likes, setLikes] = useState<LikeDto[]>([]);
   const [loading, setLoading] = useState(true);
   
+  const safeBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.replace('/profile');
+  };
+
   useEffect(() => {
     const fetchLikes = async () => {
-      if (!user?.id) return;
+      const userId = user?.id;
+      if (!userId) return;
       try {
-        const response = await fetchClient<PaginatedResponse<LikeDto>>(`/likes?user_id=${user.id}`);
-        if (response && response.data) {
-          setLikes(response.data);
-        }
+        const response = await fetchClient<PaginatedResponse<LikeDto>>(`/likes?user_id=${userId}`);
+        if (response?.data) setLikes(response.data);
       } catch (error) {
         console.error('Error fetching likes:', error);
       } finally {
@@ -54,12 +61,12 @@ export default function FavoritesPage() {
     };
 
     fetchLikes();
-  }, []);
+  }, [user?.id]);
 
   return (
     <div className="min-h-screen bg-white">
       
-      <Header title="Favoris" onBack={() => router.push('/profile')} />
+      <Header title="Favoris" onBack={safeBack} />
 
       <div className="px-4 py-6">
         <h2 className="text-xl font-medium text-gray-400 mb-6">Mes favoris</h2>

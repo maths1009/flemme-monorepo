@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const EnvSchema = z.object({
+  CORS_ALLOWED_ORIGINS: z.string().optional(),
   DB_HOST: z.string(),
   DB_NAME: z.string(),
   DB_PASSWORD: z.string(),
@@ -26,11 +27,16 @@ export const EnvSchema = z.object({
   REDIS_HOST: z.string(),
   REDIS_PASSWORD: z.string(),
   REDIS_PORT: z.string().transform(data => +data),
+  SESSION_COOKIE_DOMAIN: z.string().optional(),
   SESSION_EXPIRATION_TIME: z.string().transform(data => +data),
   SESSION_SECRET: z.string(),
   TRACKING_ACCEPTANCE_DEADLINE_HOURS: z.string().transform(data => +data),
   TRACKING_COMPLETION_DEADLINE_HOURS: z.string().transform(data => +data),
   TRACKING_CONFIRMATION_DEADLINE_HOURS: z.string().transform(data => +data),
+  TRUST_PROXY_HOPS: z
+    .string()
+    .optional()
+    .transform(v => (v == null || v.trim() === '' ? undefined : Number(v))),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

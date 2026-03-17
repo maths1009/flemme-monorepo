@@ -13,18 +13,18 @@ export default function AuthLayout({
   const router = useRouter();
 
   useEffect(() => {
-    
-    const token = localStorage.getItem('access_token');
-    if (!loading && (user || token)) {
+    if (!loading && user) {
       router.replace('/');
     }
   }, [user, loading, router]);
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-  
-  if (!loading && (user || token)) {
-      return null;
+  if (!loading && user) {
+    return (
+      <div className="mx-auto flex min-h-screen max-w-[390px] flex-col items-center justify-center bg-primary/5 px-6 text-center">
+        <p className="text-base font-medium text-foreground/80">Redirection…</p>
+      </div>
+    );
   }
 
-  return <>{children}</>;
+  return children;
 }
